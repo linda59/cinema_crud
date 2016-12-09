@@ -49,8 +49,10 @@ if (filter_input(INPUT_SERVER, 'REQUEST_METHOD') === "GET") {
             <h1>Séances du cinéma <?= $cinema['DENOMINATION'] ?></h1>
             <h2><?= $cinema['ADRESSE'] ?></h2>
             <?php if ($filmsUnplanned) : ?>
+             <?php if ($adminConnected){?>
                 <form action="editShowtime.php" method="get">
-                    <fieldset>
+                   
+                    <fieldset>                      
                         <legend>Ajouter un film à la programmation</legend>
                         <input name="cinemaID" type="hidden" value="<?= $cinemaID ?>">
                         <select name="filmID">
@@ -65,7 +67,9 @@ if (filter_input(INPUT_SERVER, 'REQUEST_METHOD') === "GET") {
                         <input name = "from" type = "hidden" value = "<?= $_SERVER['SCRIPT_NAME'] ?>">
                         <button type = "submit">Ajouter</button>
                     </fieldset>
+                     
                 </form>
+             <?php } ?>
             <?php endif; ?>
         </header>
         <ul>

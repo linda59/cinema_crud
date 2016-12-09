@@ -48,6 +48,7 @@ if (filter_input(INPUT_SERVER, 'REQUEST_METHOD') === "GET") {
             <h1>Séances du film <?= $film['TITRE'] ?></h1>
             <h2><?= $film['TITREORIGINAL'] ?></h2>
             <?php if ($cinemasUnplanned) : ?>
+             <?php if ($adminConnected){?>
                 <form action="editShowtime.php" method="get">
                     <fieldset>
                         <legend>Programmer le film dans un cinéma</legend>
@@ -65,6 +66,7 @@ if (filter_input(INPUT_SERVER, 'REQUEST_METHOD') === "GET") {
                         <button type = "submit">Ajouter</button>
                     </fieldset>
                 </form>
+            <?php } ?>
             <?php endif; ?>
         </header>
         <ul>
