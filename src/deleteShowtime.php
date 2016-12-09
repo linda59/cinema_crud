@@ -26,7 +26,13 @@ if (filter_input(INPUT_SERVER, 'REQUEST_METHOD') === "POST") {
     ]);
 
     // suppression de la séance
+    /*
     $fctManager->deleteShowtime($sanitizedEntries['cinemaID'],
+            $sanitizedEntries['filmID'], $sanitizedEntries['heureDebut'],
+            $sanitizedEntries['heureFin']
+    );
+     * */
+     $fctSeance->deleteShowtime($sanitizedEntries['cinemaID'],
             $sanitizedEntries['filmID'], $sanitizedEntries['heureDebut'],
             $sanitizedEntries['heureFin']
     );

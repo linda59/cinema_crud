@@ -19,7 +19,8 @@ if (filter_input(INPUT_SERVER, 'REQUEST_METHOD') === "POST") {
     $sanitizedEntries = filter_input_array(INPUT_POST, ['filmID' => FILTER_SANITIZE_NUMBER_INT]);
 
     // suppression de la préférence de film
-    $fctManager->deleteMovie($sanitizedEntries['filmID']);
+    //$fctManager->deleteMovie($sanitizedEntries['filmID']);
+    $fctFilm->deleteMovie($sanitizedEntries['filmID']);
 }
 // redirection vers la liste des films
 header("Location: moviesList.php");
