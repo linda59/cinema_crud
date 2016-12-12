@@ -20,9 +20,11 @@ if (filter_input(INPUT_SERVER, 'REQUEST_METHOD') === "POST") {
 
     // suppression de la préférence de film
     //$fctManager->deleteMovie($sanitizedEntries['filmID']);
-    $fctFilm->deleteMovie($sanitizedEntries['filmID']);
+    //$fctFilm->deleteMovie($sanitizedEntries['filmID']);
+    $managers["filmsMgr"]->deleteMovie($sanitizedEntries['filmID']);
 }
 // redirection vers la liste des films
-header("Location: moviesList.php");
+//header("Location: moviesList.php");
+header("Location: index.php?action=moviesList");
 exit;
 

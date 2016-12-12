@@ -9,8 +9,12 @@
         <header>
             <h1>Séances du film <?= $film['TITRE'] ?></h1>
             <h2><?= $film['TITREORIGINAL'] ?></h2>
-            <?php if ( ($cinemasUnplanned) && ($adminConnected) ): ?>            
+            <?php if ( ($cinemasUnplanned) && ($adminConnected) ): ?> 
+            <!--
                 <form action="editShowtime.php" method="get">
+            -->
+            <form name="editShowtime" method="GET" action="index.php">
+            <input name="action" type="hidden" value="editShowtime"/> 
                     <fieldset>
                         <legend>Programmer le film dans un cinéma</legend>
                         <input name="filmID" type="hidden" value="<?= $filmID ?>">
@@ -33,7 +37,8 @@
             <?php
             // on récupère la liste des cinémas de ce film
             //$cinemas = $fctManager->getMovieCinemasByMovieID($filmID);
-            $cinemas = $fctFilm->getMovieCinemasByMovieID($filmID);
+            //$cinemas = $fctFilm->getMovieCinemasByMovieID($filmID);
+             $cinemas = $managers["filmsMgr"]->getMovieCinemasByMovieID($filmID);
             if (count($cinemas) > 0):
                 // on boucle sur les résultats
                 foreach ($cinemas as $cinema) {
@@ -55,8 +60,11 @@
                         $seances = $fctManager->getMovieShowtimes($cinema['CINEMAID'],
                                 $filmID);
                          * */
-                        
+                        /*
                         $seances = $fctSeance->getMovieShowtimes($cinema['CINEMAID'],
+                                $filmID);
+                         */
+                        $seances = $managers["seancesMgr"]->getMovieShowtimes($cinema['CINEMAID'],
                                 $filmID);
                         // boucle sur les séances
                         foreach ($seances as $seance) {
@@ -81,7 +89,11 @@
                                 <td><?= $seance['VERSION'] ?></td>
                                 <?php if ($adminConnected): ?>
                                     <td>
+                                        <!--
                                         <form name="modifyMovieShowtime" action="editShowtime.php" method="GET">
+                                        -->
+                                        <form name="modifyMovieShowtime" method="GET" action="index.php">
+                                            <input name="action" type="hidden" value="editShowtime"/>
                                             <input type="hidden" name="cinemaID" value="<?= $cinema['CINEMAID'] ?>"/>
                                             <input type="hidden" name="filmID" value="<?= $filmID ?>"/>
                                             <input type="hidden" name="heureDebut" value="<?= $seance['HEUREDEBUT'] ?>"/>
@@ -110,7 +122,11 @@
                             ?>
                             <tr class="new">
                                 <td colspan="6">
+                                    <!--
                                     <form action="editShowtime.php" method="get">
+                                    -->
+                                    <form method="GET" action="index.php">
+                                        <input name="action" type="hidden" value="editShowtime"/>
                                         <input name="cinemaID" type="hidden" value="<?= $cinema['CINEMAID'] ?>">
                                         <input name="filmID" type="hidden" value="<?= $filmID ?>">
                                         <input name="from" type="hidden" value="<?= $_SERVER['SCRIPT_NAME'] ?>">
@@ -128,7 +144,11 @@
             endif;
             ?>
         </ul>
+        <!--
         <form action="moviesList.php">
+        -->
+        <form name="moviesList" method="GET" action="index.php">
+            <input name="action" type="hidden" value="moviesList"/> 
             <input type="submit" value="Retour à la liste des films"/>
         </form>
     </body>

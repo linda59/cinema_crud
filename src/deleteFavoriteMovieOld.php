@@ -24,10 +24,15 @@ if (filter_input(INPUT_SERVER,
     // suppression de la préférence de film
    // $fctManager->deleteFavoriteMovie($sanitizedEntries['userID'],
    //         $sanitizedEntries['filmID']);
-    $fctPrefere->deleteFavoriteMovie($sanitizedEntries['userID'],
+   /* 
+      $fctPrefere->deleteFavoriteMovie($sanitizedEntries['userID'],
+            $sanitizedEntries['filmID']);   
+    */
+    $managers["preferesMgr"]->deleteFavoriteMovie($sanitizedEntries['userID'],
             $sanitizedEntries['filmID']);
 }
 // redirection vers la liste des préférences de films
-header("Location: editFavoriteMoviesList.php");
+//header("Location: editFavoriteMoviesList.php");
+header("Location: index.php?action=editFavoriteMoviesList");
 exit;
 

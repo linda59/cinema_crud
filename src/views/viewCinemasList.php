@@ -15,9 +15,9 @@
             </tr>
             <?php
             // on récupère la liste des cinémas ainsi que leurs informations
-            //$cinemas = $fctManager->getCinemasList();
-            //
-            $cinemas = $fctCinema->getCinemasList();
+            //$cinemas = $fctManager->getCinemasList();          
+            //$cinemas = $fctCinema->getCinemasList();
+            $cinemas = $managers["cinemasMgr"]->getCinemasList();
             // boucle de construction de la liste des cinémas
             foreach ($cinemas as $cinema) {
                 ?>
@@ -25,7 +25,11 @@
                     <td><?= $cinema['DENOMINATION'] ?></td>
                     <td><?= $cinema['ADRESSE'] ?></td>
                     <td>
+                        <!--
                         <form name="cinemaShowtimes" action="cinemaShowtimes.php" method="GET">
+                        -->
+                        <form name="cinemaShowtimes" action="index.php">
+                            <input name="action" type="hidden" value="cinemaShowtimes"/> 
                             <input name="cinemaID" type="hidden" value="<?= $cinema['CINEMAID'] ?>"/>
                             <input type="submit" value="Consulter les séances"/>
                         </form>
@@ -34,13 +38,20 @@
                     if ($isUserAdmin):
                         ?>
                         <td>
+                            <!--
                             <form name="modifyCinema" action="editCinema.php" method="GET">
+                            -->
+                            <form name="modifyCinema" action="index.php">
+                                <input name="action" type="hidden" value="editCinema"/> 
                                 <input type="hidden" name="cinemaID" value="<?= $cinema['CINEMAID'] ?>"/>
                                 <input type="image" src="images/modifyIcon.png" alt="Modify"/>
                             </form>
                         </td>
                         <td>
+                            <!--
                             <form name="deleteCinema" action="deleteCinema.php" method="POST">
+                            -->
+                            <form name="deleteCinema" action="index.php?action=deleteCinema" method="POST">
                                 <input type="hidden" name="cinemaID" value="<?= $cinema['CINEMAID'] ?>"/>
                                 <input type="image" src="images/deleteIcon.png" alt="Delete"/>
                             </form>
@@ -53,7 +64,11 @@
                 ?>
                 <tr class="new">
                     <td colspan="5">
+                        <!--
                         <form name="addCinema" action="editCinema.php">
+                        -->
+                        <form name="addCinema" action="index.php">
+                            <input name="action" type="hidden" value="editCinema"/> 
                             <button class="add" type="submit">Cliquer ici pour ajouter un cinéma</button>
                         </form>
                     </td>

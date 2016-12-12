@@ -32,16 +32,25 @@ if (filter_input(INPUT_SERVER, 'REQUEST_METHOD') === "POST") {
             $sanitizedEntries['heureFin']
     );
      * */
-     $fctSeance->deleteShowtime($sanitizedEntries['cinemaID'],
+    /*
+      $fctSeance->deleteShowtime($sanitizedEntries['cinemaID'],
+            $sanitizedEntries['filmID'], $sanitizedEntries['heureDebut'],
+            $sanitizedEntries['heureFin']
+    );
+     * 
+     */
+    $managers["seancesMgr"]->deleteShowtime($sanitizedEntries['cinemaID'],
             $sanitizedEntries['filmID'], $sanitizedEntries['heureDebut'],
             $sanitizedEntries['heureFin']
     );
     // en fonction d'où je viens, je redirige
     if (strstr($sanitizedEntries['from'], 'movie')) {
-        header('Location: movieShowtimes.php?filmID=' . $sanitizedEntries['filmID']);
+        //header('Location: movieShowtimes.php?filmID=' . $sanitizedEntries['filmID']);
+        header('Location: index.php?action=movieShowtimes&filmID=' . $sanitizedEntries['filmID']);
         exit;
     } else {
-        header('Location: cinemaShowtimes.php?cinemaID=' . $sanitizedEntries['cinemaID']);
+        //header('Location: cinemaShowtimes.php?cinemaID=' . $sanitizedEntries['cinemaID']);
+        header('Location: index.php?action=cinemaShowtimes&cinemaID=' . $sanitizedEntries['cinemaID']);
         exit;
     }
 } else {

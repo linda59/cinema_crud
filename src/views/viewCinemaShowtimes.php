@@ -10,8 +10,11 @@
             <h1>Séances du cinéma <?= $cinema['DENOMINATION'] ?></h1>
             <h2><?= $cinema['ADRESSE'] ?></h2>
             <?php if (($filmsUnplanned) && ($adminConnected)) : ?>
+                <!-- 
                 <form action="editShowtime.php" method="get">
-
+                -->
+                <form action="index.php" method="get">
+                    <input name="action" type="hidden" value="editShowtime"/> 
                     <fieldset>                      
                         <legend>Ajouter un film à la programmation</legend>
                         <input name="cinemaID" type="hidden" value="<?= $cinemaID ?>">
@@ -35,7 +38,8 @@
             <?php
             // on récupère la liste des films de ce cinéma
             //$films = $fctManager->getCinemaMoviesByCinemaID($cinemaID);
-            $films = $fctSeance->getCinemaMoviesByCinemaID($cinemaID);
+            //$films = $fctSeance->getCinemaMoviesByCinemaID($cinemaID);
+            $films = $managers["seancesMgr"]->getCinemaMoviesByCinemaID($cinemaID);
             // si au moins un résultat
             if (count($films) > 0) {
                 // on boucle sur les résultats
@@ -55,7 +59,8 @@
                         <?php
                         // on récupère pour chaque film de ce cinéma, la liste des séances
                         //$seances = $fctManager->getMovieShowtimes($cinemaID, $film['FILMID']);
-                        $seances = $fctSeance->getMovieShowtimes($cinemaID, $film['FILMID']);
+                        //$seances = $fctSeance->getMovieShowtimes($cinemaID, $film['FILMID']);
+                        $seances = $managers["seancesMgr"]->getMovieShowtimes($cinemaID, $film['FILMID']);
                         // boucle sur les séances
                         foreach ($seances as $seance) {
                             /*
@@ -76,9 +81,13 @@
                                 <td><?= $heureDebut ?></td>
                                 <td><?= $heureFin ?></td>
                                 <td><?= $seance['VERSION'] ?></td>
-            <?php if ($adminConnected): ?>
+                                <?php if ($adminConnected): ?>
                                     <td>
+                                        <!--
                                         <form name="modifyMovieShowtime" action="editShowtime.php" method="GET">
+                                        -->
+                                        <form name="modifyMovieShowtime" action="index.php" method="get">
+                                            <input name="action" type="hidden" value="editShowtime"/>
                                             <input type="hidden" name="cinemaID" value="<?= $cinemaID ?>"/>
                                             <input type="hidden" name="filmID" value="<?= $film['FILMID'] ?>"/>
                                             <input type="hidden" name="heureDebut" value="<?= $seance['HEUREDEBUT'] ?>"/>
@@ -89,7 +98,10 @@
                                         </form>
                                     </td>
                                     <td>
-                                        <form name="deleteMovieShowtime" action="deleteShowtime.php" method="POST">
+                                    <!--
+                                    <form name="deleteMovieShowtime" action="deleteShowtime.php" method="POST">
+                                    -->
+                                    <form name="deleteMovieShowtime" action="index.php?action=deleteShowtime" method="POST">
                                             <input type="hidden" name="cinemaID" value="<?= $cinemaID ?>"/>
                                             <input type="hidden" name="filmID" value="<?= $film['FILMID'] ?>"/>
                                             <input type="hidden" name="heureDebut" value="<?= $seance['HEUREDEBUT'] ?>"/>
@@ -99,16 +111,20 @@
                                             <input name="from" type="hidden" value="<?= $_SERVER['SCRIPT_NAME'] ?>">
                                         </form>
                                     </td>
-            <?php endif; ?>
+                                <?php endif; ?>
                             </tr>
 
-            <?php
-        }
-        if ($adminConnected):
-            ?>
+                            <?php
+                        }
+                        if ($adminConnected):
+                            ?>
                             <tr class="new">
                                 <td colspan="6">
+                                    <!--
                                     <form action="editShowtime.php" method="get">
+                                    -->               
+                                    <form action="index.php" method="get">
+                                        <input name="action" type="hidden" value="editShowtime"/>
                                         <input name="cinemaID" type="hidden" value="<?= $cinemaID ?>">
                                         <input name="filmID" type="hidden" value="<?= $film['FILMID'] ?>">
                                         <input name="from" type="hidden" value="<?= $_SERVER['SCRIPT_NAME'] ?>">
@@ -116,18 +132,25 @@
                                     </form>
                                 </td>
                             </tr>
-        <?php endif;
-        ?>
+                        <?php endif;
+                        ?>
                     </table>
                     <br>
-        <?php
-    } // fin de la boucle de parcours des films
-} // fin du if au moins un film
-?>
+                    <?php
+                } // fin de la boucle de parcours des films
+            } // fin du if au moins un film
+            ?>
         </ul>
         <br>
+        <!-- 
         <form action = "cinemasList.php">
             <input type = "submit" value = "Retour à la liste des cinémas"/>
+        </form>
+        -->
+
+        <form name="cinemasList" method="GET" action="index.php">
+            <input name="action" type="hidden" value="cinemasList"/> 
+            <input type="submit" value="Retour à la liste des cinémas"/> 
         </form>
     </body>
 </html>

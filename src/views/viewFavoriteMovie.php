@@ -6,7 +6,10 @@
         <link rel="stylesheet" type="text/css" href="css/cinema.css"/>
     </head>
     <body>
+        <!--
         <form method="POST" name="editFavoriteMovie" action="editFavoriteMovie.php">
+         -->   
+            <form method="POST" name="editFavoriteMovie" action="index.php?action=editFavoriteMovie">
             <label>Titre :</label>
             <select name="filmID" <?php
             if (!$isItACreation): echo "disabled";
@@ -16,7 +19,8 @@
                         // si c'est une création, on crée la liste des films dynamiquement
                         if ($isItACreation) {
                             //$films = $fctManager->getMoviesNonAlreadyMarkedAsFavorite($_SESSION['userID']);                            
-                            $films =  $fctPrefere->getMoviesNonAlreadyMarkedAsFavorite($_SESSION['userID']);
+                            //$films =  $fctPrefere->getMoviesNonAlreadyMarkedAsFavorite($_SESSION['userID']);
+                            $films =  $managers["preferesMgr"]->getMoviesNonAlreadyMarkedAsFavorite($_SESSION['userID']);
                             // s'il y a des résultats
                             if ($films) {
                                 foreach ($films as $film) {

@@ -20,9 +20,11 @@ if (filter_input(INPUT_SERVER, 'REQUEST_METHOD') === "POST") {
 
     // suppression de la préférence de film
     //$fctManager->deleteCinema($sanitizedEntries['cinemaID']);
-    $fctCinema->deleteCinema($sanitizedEntries['cinemaID']);
+    //$fctCinema->deleteCinema($sanitizedEntries['cinemaID']);
+    $managers["cinemasMgr"]->deleteCinema($sanitizedEntries['cinemaID']);
 }
 // redirection vers la liste des cinémas
-header("Location: cinemasList.php");
+//header("Location: cinemasList.php");
+header("Location: index.php?action=cinemasList");
 exit;
 
