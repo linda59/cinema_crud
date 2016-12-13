@@ -1,5 +1,5 @@
 <?php
-
+use Semeformation\Mvc\Cinema_crud\models\View;
 function home($managers) {
 // personne d'authentifié à ce niveau
     $loginSuccess = false;
@@ -38,7 +38,9 @@ function home($managers) {
             }
         }
     }
-    require 'views/viewHome.php';
+    $vue = new View('Home');
+    $vue->generer((['areCredentialsOK'=>$areCredentialsOK,'loginSuccess'=>$loginSuccess]));
+//    require 'views/viewHome.php';
 }
 
 function cinemasList($managers) {
@@ -48,7 +50,9 @@ function cinemasList($managers) {
     if (array_key_exists("user", $_SESSION) and $_SESSION['user'] == 'admin@adm.adm') {
         $isUserAdmin = true;
     }
-    require 'views/viewCinemasList.php';
+    $vue = new View('CinemasList');
+    $vue->generer((['isUserAdmin'=>$isUserAdmin,'managers'=>$managers]));
+//    require 'views/viewCinemasList.php';
 }
 
 function createNewUser($managers) {
@@ -138,7 +142,16 @@ function createNewUser($managers) {
         $sanitizedEntries['lastName'] = '';
         $sanitizedEntries['email'] = '';
     }
-    require 'views/viewCreateUser.php';
+    $vue = new View('CreateUser');
+    $vue->generer((['sanitizedEntries'=>$sanitizedEntries,'managers'=>$managers,
+                    'isFirstNameEmpty'=>$isFirstNameEmpty,
+                    'isLastNameEmpty'=>$isLastNameEmpty,
+                    'isEmailAddressEmpty'=>$isEmailAddressEmpty,
+                    'isUserUnique'=>$isUserUnique,
+                    'isPasswordEmpty'=>$isPasswordEmpty,
+                    'isPasswordConfirmationEmpty'=>$isPasswordConfirmationEmpty,
+                    'isPasswordValid'=>$isPasswordValid]));
+//    require 'views/viewCreateUser.php';
 }
 
 function editFavoriteMoviesList($managers) {
@@ -155,8 +168,9 @@ function editFavoriteMoviesList($managers) {
         //$utilisateur = $utilisateursMgr->getCompleteUsernameByEmailAddress($_SESSION['user']);
         $utilisateur = $managers["utilisateursMgr"]->getCompleteUsernameByEmailAddress($_SESSION['user']);
     }
-
-    require 'views/viewFavoriteMoviesList.php';
+    $vue = new View('FavoriteMoviesList');
+    $vue->generer((['utilisateur'=>$utilisateur,'managers'=>$managers]));
+//    require 'views/viewFavoriteMoviesList.php';
 }
 
 function editFavoriteMovie($managers) {
@@ -273,7 +287,12 @@ function editFavoriteMovie($managers) {
                 "commentaire" => ""];
         }
     }
-    require 'views/viewFavoriteMovie.php';
+    $vue = new View('FavoriteMoviesList');
+    $vue->generer((['sanitizedEntries'=>$sanitizedEntries,'managers'=>$managers,
+                    'preference'=>$preference,
+                    'aFilmIsSelected'=>$aFilmIsSelected,
+                    'isItACreation'=>$isItACreation]));
+//    require 'views/viewFavoriteMovie.php';
 }
 
 function cinemaShowtimes($managers) {
@@ -313,8 +332,12 @@ function cinemaShowtimes($managers) {
         header('Location: index.php');
         exit();
     }
-
-    require 'views/viewCinemaShowtimes.php';
+    $vue = new View('CinemaShowtimes');
+    $vue->generer((['sanitizedEntries'=>$sanitizedEntries,'managers'=>$managers,
+                    'cinemaID'=>$cinemaID,
+                    'cinema'=>$cinema,
+                    'filmsUnplanned'=>$filmsUnplanned]));
+//    require 'views/viewCinemaShowtimes.php';
 }
 
 function moviesList($managers) {
@@ -325,7 +348,9 @@ function moviesList($managers) {
     if (array_key_exists("user", $_SESSION) and $_SESSION['user'] == 'admin@adm.adm') {
         $isUserAdmin = true;
     }
-    require 'views/viewMoviesList.php';
+    $vue = new View('MoviesList');
+    $vue->generer((['isUserAdmin'=>$isUserAdmin,'managers'=>$managers]));
+//    require 'views/viewMoviesList.php';
 }
 
 function movieShowtimes($managers) {
@@ -364,7 +389,12 @@ function movieShowtimes($managers) {
         header('Location: index.php');
         exit();
     }
-    require 'views/viewMovieShowtimes.php';
+    $vue = new View('MovieShowtimes');
+    $vue->generer((['sanitizedEntries'=>$sanitizedEntries,'managers'=>$managers,
+                    'cinemaID'=>$cinemaID,
+                    'cinema'=>$cinema,
+                    'filmsUnplanned'=>$filmsUnplanned]));
+//    require 'views/viewMovieShowtimes.php';
 }
 
 function editCinema($managers) {
@@ -414,7 +444,7 @@ function editCinema($managers) {
                 $managers["cinemasMgr"]->updateCinema($sanEntries['cinemaID'], $sanEntries['denomination'], $sanEntries['adresse']);
             }
             // on revient à la liste des cinémas
-            //header('Location: cinemasList.php');
+            //header('Location: cinemasList.php');.
             header('Location: index.php?action=cinemasList');
             exit;
         }
@@ -438,7 +468,11 @@ function editCinema($managers) {
             ];
         }
     }
-    require 'views/viewEditCinema.php';
+    $vue = new View('EditCinema');
+    $vue->generer((['sanEntries'=>$sanEntries,'managers'=>$managers,
+                    'cinema'=>$cinema,
+                    'isItACreation'=>$isItACreation]));
+//    require 'views/viewEditCinema.php';
 }
 
 function editShowtime($managers) {
