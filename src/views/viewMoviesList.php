@@ -11,6 +11,7 @@
             <tr>
                 <th>Titre</th>
                 <th>Titre original</th>
+                <th>Date sortie</th>
                 <th colspan="3">Action</th>
             </tr>
             <?php
@@ -24,6 +25,7 @@
                 <tr>
                     <td><?= $film['TITRE'] ?></td>
                     <td><?= $film['TITREORIGINAL'] ?></td>
+                    <td><?= $film['DATESORTIE'] ?></td>
                     <td>
                         <!--
                         <form name="movieShowtimes" action="movieShowtimes.php" method="GET">

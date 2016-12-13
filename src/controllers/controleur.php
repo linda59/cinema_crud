@@ -638,6 +638,7 @@ function editMovie($managers) {
             'filmID' => FILTER_SANITIZE_NUMBER_INT,
             'titre' => FILTER_SANITIZE_STRING,
             'titreOriginal' => FILTER_SANITIZE_STRING,
+            'dateSortie' => FILTER_SANITIZE_STRING,
             'modificationInProgress' => FILTER_SANITIZE_STRING]);
 
         // si l'action demandée est retour en arrière
@@ -655,14 +656,16 @@ function editMovie($managers) {
                 // on ajoute le film
                 //$fctManager->insertNewMovie($sanEntries['titre'], $sanEntries['titreOriginal']);
                 //$fctFilm->insertNewMovie($sanEntries['titre'], $sanEntries['titreOriginal']);
-                $managers["filmsMgr"]->insertNewMovie($sanEntries['titre'], $sanEntries['titreOriginal']);
+                $verifieFilm = $managers["filmsMgr"]->verifierFilm($sanEntries['titre'], $sanEntries['titreOriginal'], $sanEntries['dateSortie']);
+                if(empty($verifieFilm))
+                     $managers["filmsMgr"]->insertNewMovie($sanEntries['titre'], $sanEntries['titreOriginal'], $sanEntries['dateSortie']);
             }
             // sinon, nous sommes dans le cas d'une modification
             else {
                 // mise à jour du film
                 //$fctManager->updateMovie($sanEntries['filmID'], $sanEntries['titre'], $sanEntries['titreOriginal']);
                 //$fctFilm->updateMovie($sanEntries['filmID'], $sanEntries['titre'], $sanEntries['titreOriginal']);
-                $managers["filmsMgr"]->updateMovie($sanEntries['filmID'], $sanEntries['titre'], $sanEntries['titreOriginal']);
+                $managers["filmsMgr"]->updateMovie($sanEntries['filmID'], $sanEntries['titre'], $sanEntries['titreOriginal'], $sanEntries['dateSortie']);
             }
             // on revient à la liste des films
             //header('Location: moviesList.php');
@@ -685,7 +688,8 @@ function editMovie($managers) {
             $film = [
                 'FILMID' => '',
                 'TITRE' => '',
-                'TITREORIGINAL' => ''
+                'TITREORIGINAL' => '',
+                'DATESORTIE' => ''
             ];
         }
     }

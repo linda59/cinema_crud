@@ -25,21 +25,36 @@ class Film extends DBFunctions{
         // on retourne le résultat
         return $this->extraireNxN($requete, null, false);
     }
+    
+    
+    /**
+     * 
+     * @param type $titre
+     * @param type $titreOriginal
+     */
+    public function verifierFilm($titre, $titreOriginal = null,$dateSortie) {
+        
+        
+         $requete = "SELECT * FROM film WHERE titre = '". $titre."' and titreOriginal ='". $titreOriginal."'  and dateSortie ='". $dateSortie."'";
+        $resultat = $this->extraire1xN($requete);
+        // on retourne le résultat extrait
+        return $resultat;        
+        
+    }
+    
 
     /**
      * 
      * @param type $titre
      * @param type $titreOriginal
      */
-    public function insertNewMovie($titre, $titreOriginal = null) {
+    public function insertNewMovie($titre, $titreOriginal = null,$dateSortie) {
         // construction
-        $requete = "INSERT INTO film (titre, titreOriginal) VALUES ("
-                . ":titre"
-                . ", :titreOriginal)";
+        $requete = "INSERT INTO film (titre, titreOriginal, dateSortie) VALUES (" . ":titre". ", :titreOriginal". ",:dateSortie)";
         // exécution
         $this->executeQuery($requete,
                 ['titre' => $titre,
-            'titreOriginal' => $titreOriginal]);
+            'titreOriginal' => $titreOriginal,'dateSortie' => $dateSortie]);
         // log
         if ($this->logger) {
             $this->logger->info('Movie ' . $titre . ' successfully added.');
@@ -52,13 +67,15 @@ class Film extends DBFunctions{
      * @param type $titre
      * @param type $titreOriginal
      */
-    public function updateMovie($filmID, $titre, $titreOriginal) {
+    public function updateMovie($filmID, $titre, $titreOriginal,$dateSortie) {
         // on construit la requête d'insertion
         $requete = "UPDATE film SET "
                 . "titre = "
                 . "'" . $titre . "'"
                 . ", titreOriginal = "
                 . "'" . $titreOriginal . "'"
+                 . ", dateSortie = "
+                 . "'" . $dateSortie . "'"
                 . " WHERE filmID = "
                 . $filmID;
         // exécution de la requête
