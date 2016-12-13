@@ -3,13 +3,13 @@
  require_once __DIR__ . '/vendor/autoload.php'; 
  
 // init. des managers 
-require_once __DIR__ . './includes/Manager.php';
+require_once __DIR__ . '/includes/Manager.php';
 
 // initialisation de l'application 
-require_once __DIR__ . './init.php';
+require_once __DIR__ . '/init.php';
 
 // appel au contrôleur serviteur
-require __DIR__ . './controllers/controleur.php';
+require __DIR__ . '/controllers/controleur.php';
 
 // on "sainifie" les entrées
 session_start();
@@ -76,10 +76,10 @@ if ($sanitizedEntries && $sanitizedEntries['action'] !== '') {
  require_once __DIR__ . '/vendor/autoload.php';
  
 
-require_once __DIR__ . './includes/Manager.php';
+require_once __DIR__ . '/includes/Manager.php';
 
 // initialisation de l'application
-require_once __DIR__ . './init.php';
+require_once __DIR__ . '/init.php';
 
 
 
