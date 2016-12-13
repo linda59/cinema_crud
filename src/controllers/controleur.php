@@ -686,7 +686,7 @@ function editMovie($managers) {
             ];
         }
     }
-    require 'editMovie.php';
+    require 'views/viewEditMovie.php';
 }
 
 function deleteMovie($managers) {
