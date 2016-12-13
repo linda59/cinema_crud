@@ -18,16 +18,15 @@ function home($managers) {
             $sanitizedEntries = filter_input_array(INPUT_POST, ['email' => FILTER_SANITIZE_EMAIL,
                 'password' => FILTER_DEFAULT]);
             try {
-                
 
-                $managers["utilisateursMgr"]->verifyUserCredentials($sanitizedEntries['email'],
-                        $sanitizedEntries['password']);
+
+                $managers["utilisateursMgr"]->verifyUserCredentials($sanitizedEntries['email'], $sanitizedEntries['password']);
 
                 // on enregistre l'utilisateur
                 $_SESSION['user'] = $sanitizedEntries['email'];
                 //$_SESSION['userID'] = $fctManager->getUserIDByEmailAddress($_SESSION['user']);          
-            //$_SESSION['userID'] = $utilisateursMgr->getUserIDByEmailAddress($_SESSION['user']);
-            $_SESSION['userID'] = $managers["utilisateursMgr"]->getUserIDByEmailAddress($_SESSION['user']);
+                //$_SESSION['userID'] = $utilisateursMgr->getUserIDByEmailAddress($_SESSION['user']);
+                $_SESSION['userID'] = $managers["utilisateursMgr"]->getUserIDByEmailAddress($_SESSION['user']);
                 // on redirige vers la page d'édition des films préférés
                 //header("Location: editFavoriteMoviesList.php");
                 //header("Location: index.php?action=editFavoriteMoviesList.php");
@@ -42,8 +41,6 @@ function home($managers) {
     require 'views/viewHome.php';
 }
 
-
-
 function cinemasList($managers) {
 
     $isUserAdmin = false;
@@ -54,8 +51,7 @@ function cinemasList($managers) {
     require 'views/viewCinemasList.php';
 }
 
-
-function createNewUser($managers){
+function createNewUser($managers) {
     // variables de contrôles du formulaire de création
     $isFirstNameEmpty = false;
     $isLastNameEmpty = false;
@@ -122,8 +118,7 @@ function createNewUser($managers){
               $password);
              * */
             //$utilisateursMgr->createUser($sanitizedEntries['firstName'], $sanitizedEntries['lastName'], $sanitizedEntries['email'], $password);
-            $managers["utilisateursMgr"]->createUser($sanitizedEntries['firstName'], 
-                    $sanitizedEntries['lastName'], $sanitizedEntries['email'], $password);
+            $managers["utilisateursMgr"]->createUser($sanitizedEntries['firstName'], $sanitizedEntries['lastName'], $sanitizedEntries['email'], $password);
             //session_start();
             // authentifier l'utilisateur
             $_SESSION['user'] = $sanitizedEntries['email'];
@@ -146,9 +141,7 @@ function createNewUser($managers){
     require 'views/viewCreateUser.php';
 }
 
-
-
-function editFavoriteMoviesList($managers){
+function editFavoriteMoviesList($managers) {
 // session_start();
 // si l'utilisateur n'est pas connecté
     if (!array_key_exists("user", $_SESSION)) {
@@ -166,8 +159,7 @@ function editFavoriteMoviesList($managers){
     require 'views/viewFavoriteMoviesList.php';
 }
 
-
-function editFavoriteMovie($managers){
+function editFavoriteMovie($managers) {
 // si l'utilisateur n'est pas connecté
     if (!array_key_exists("user", $_SESSION)) {
         // renvoi à la page d'accueil
@@ -284,10 +276,10 @@ function editFavoriteMovie($managers){
     require 'views/viewFavoriteMovie.php';
 }
 
-function cinemaShowtimes($managers){
+function cinemaShowtimes($managers) {
     $adminConnected = false;
 
-  //  session_start();
+    //  session_start();
 // si l'utilisateur admin est connexté
     if (array_key_exists("user", $_SESSION) and $_SESSION['user'] == 'admin@adm.adm') {
         $adminConnected = true;
@@ -325,8 +317,6 @@ function cinemaShowtimes($managers){
     require 'views/viewCinemaShowtimes.php';
 }
 
-
-
 function moviesList($managers) {
     $isUserAdmin = false;
 
@@ -337,8 +327,6 @@ function moviesList($managers) {
     }
     require 'views/viewMoviesList.php';
 }
-
-
 
 function movieShowtimes($managers) {
     $adminConnected = false;
@@ -378,7 +366,6 @@ function movieShowtimes($managers) {
     }
     require 'views/viewMovieShowtimes.php';
 }
-
 
 function editCinema($managers) {
     //   session_start();
@@ -451,9 +438,8 @@ function editCinema($managers) {
             ];
         }
     }
-    require 'editCinema.php';
+    require 'views/viewEditCinema.php';
 }
-
 
 function editShowtime($managers) {
     // si l'utilisateur n'est pas connecté ou sinon s'il n'est pas amdinistrateur
@@ -555,8 +541,14 @@ function editShowtime($managers) {
             // nous sommes en Français
             setlocale(LC_TIME, 'fra_fra');
             // date du jour de projection de la séance
-            $datetimeDebut = new DateTime($sanitizedEntries['datedebut'] . ' ' . $sanitizedEntries['heuredebut']);
-            $datetimeFin = new DateTime($sanitizedEntries['datefin'] . ' ' . $sanitizedEntries['heurefin']);
+            // Correction bug #3
+            // AVANT
+            //$datetimeDebut = new DateTime($sanitizedEntries['datedebut'] . ' ' . $sanitizedEntries['heuredebut']);
+            //$datetimeFin = new DateTime($sanitizedEntries['datefin'] . ' ' . $sanitizedEntries['heurefin']);
+            // APRES
+            $datetimeDebut = DateTime::createFromFormat('d/m/Y H:i', $sanitizedEntries['datedebut'] . ' ' . $sanitizedEntries['heuredebut']);
+            $datetimeFin = DateTime::createFromFormat('d/m/Y H:i', $sanitizedEntries['datefin'] . ' ' . $sanitizedEntries['heurefin']);
+            // Fin correction bug #3
             // Est-on dans le cas d'une insertion ?
             if (!isset($sanitizedEntries['modificationInProgress'])) {
                 // j'insère dans la base
@@ -624,9 +616,8 @@ function editShowtime($managers) {
         header('Location: index.php');
         exit();
     }
-    require 'editShowtime.php';
+    require 'views/viewEditShowtimes.php';
 }
-
 
 function editMovie($managers) {
     // si l'utilisateur n'est pas connecté ou sinon s'il n'est pas amdinistrateur
@@ -698,7 +689,7 @@ function editMovie($managers) {
             ];
         }
     }
-    require 'editMovie.php';
+    require 'views/viewEditMovie.php';
 }
 
 function deleteMovie($managers) {
@@ -725,7 +716,6 @@ function deleteMovie($managers) {
     header("Location: index.php?action=moviesList");
     exit;
 }
-
 
 function deleteShowtime($managers) {
     // si l'utilisateur n'est pas connecté
@@ -780,7 +770,7 @@ function deleteShowtime($managers) {
     }
 }
 
-function deleteCinema($managers){
+function deleteCinema($managers) {
     // si l'utilisateur n'est pas connecté ou sinon s'il n'est pas amdinistrateur
     if (!array_key_exists("user", $_SESSION) or $_SESSION['user'] !== 'admin@adm.adm') {
         // renvoi à la page d'accueil
@@ -797,6 +787,7 @@ function deleteCinema($managers){
         // suppression de la préférence de film
         //$fctManager->deleteCinema($sanitizedEntries['cinemaID']);
         //$fctCinema->deleteCinema($sanitizedEntries['cinemaID']);
+        $managers["seancesMgr"]->deleteShowtimeByIdCinema($sanitizedEntries['cinemaID']);
         $managers["cinemasMgr"]->deleteCinema($sanitizedEntries['cinemaID']);
     }
 // redirection vers la liste des cinémas
@@ -805,8 +796,7 @@ function deleteCinema($managers){
     exit;
 }
 
-
-function deleteFavoriteMovie($managers){
+function deleteFavoriteMovie($managers) {
     // si l'utilisateur n'est pas connecté
     if (!array_key_exists("user", $_SESSION)) {
 // renvoi à la page d'accueil
