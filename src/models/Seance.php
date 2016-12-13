@@ -137,7 +137,7 @@ class Seance extends DBFunctions{
      * @param string $version
      */
     public function insertNewShowtime($cinemaID, $filmID, $dateheuredebut,
-            $dateheurefin, $version): \PDOStatement {
+            $dateheurefin, $version) {
         // construction
         $requete = "INSERT INTO seance (cinemaID, filmID, heureDebut, heureFin, version) VALUES ("
                 . ":cinemaID"

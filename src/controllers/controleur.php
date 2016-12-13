@@ -568,12 +568,17 @@ function editShowtime($managers) {
                   $sanitizedEntries['version']);
                  * */
                 //$resultat = $fctSeance->insertNewShowtime($sanitizedEntries['cinemaID'], $sanitizedEntries['filmID'], $datetimeDebut->format("Y-m-d H:i"), $datetimeFin->format("Y-m-d H:i"), $sanitizedEntries['version']);
-            $resultat = $managers["seancesMgr"]->insertNewShowtime($sanitizedEntries['cinemaID'], 
-                    $sanitizedEntries['filmID'], 
-                    $datetimeDebut->format("Y-m-d H:i"), 
-                    $datetimeFin->format("Y-m-d H:i"), 
-                    $sanitizedEntries['version']);
                 
+                // Le try/catch permet de corriger la contrainte des clés primaires et étrangères
+                // (cas où l'ajout/mise à jour correspond à une séance déjà existante)
+                try {
+                    $resultat = $managers["seancesMgr"]->insertNewShowtime($sanitizedEntries['cinemaID'],
+                            $sanitizedEntries['filmID'], $datetimeDebut->format("Y-m-d H:i"),
+                            $datetimeFin->format("Y-m-d H:i"), 
+                            $sanitizedEntries['version']);
+                } catch (Exception $ex) {
+                    echo $ex->getMessage();
+                }
             } else {
                 // c'est une mise à jour
                 /*
@@ -586,6 +591,10 @@ function editShowtime($managers) {
                   $sanitizedEntries['version']);
                  * */
                // $resultat = $fctSeance->updateShowtime($sanitizedEntries['cinemaID'], $sanitizedEntries['filmID'], $sanitizedEntries['dateheuredebutOld'], $sanitizedEntries['dateheurefinOld'], $datetimeDebut->format("Y-m-d H:i"), $datetimeFin->format("Y-m-d H:i"), $sanitizedEntries['version']);
+                
+                // Le try/catch permet de corriger la contrainte des clés primaires et étrangères
+                // (cas où l'ajout/mise à jour correspond à une séance déjà existante) 
+                try{
                 $resultat = $managers["seancesMgr"]->updateShowtime($sanitizedEntries['cinemaID'], 
                         $sanitizedEntries['filmID'], 
                         $sanitizedEntries['dateheuredebutOld'], 
@@ -593,6 +602,9 @@ function editShowtime($managers) {
                         $datetimeDebut->format("Y-m-d H:i"), 
                         $datetimeFin->format("Y-m-d H:i"),
                         $sanitizedEntries['version']);
+                } catch (Exception $ex) {
+                    echo $ex->getMessage();
+                }
                 
             }
             // en fonction d'où je viens, je redirige

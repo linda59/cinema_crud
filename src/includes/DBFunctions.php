@@ -29,19 +29,19 @@ abstract class DBFunctions {
      * @return PDOStatement Résultats de la requête
      */
     public function executeQuery($sql, $params = null) {
-        // si pas de paramètres
-        if ($params == null) {
-            // exécution directe
-            $resultat = DBFactory::getFactory($this->logger)->getConnection()->query($sql);
-        } else {
-            // requête préparée
-            $resultat = DBFactory::getFactory($this->logger)->getConnection()->prepare($sql);
-            $resultat->execute($params);
-        }
-        if ($this->logger) {
-            $this->logger->debug('Query successfully executed : ' . $sql);
-        }
-        return $resultat;
+            // si pas de paramètres
+            if ($params == null) {
+                // exécution directe
+                $resultat = DBFactory::getFactory($this->logger)->getConnection()->query($sql);
+            } else {
+                // requête préparée
+                $resultat = DBFactory::getFactory($this->logger)->getConnection()->prepare($sql);
+                $resultat->execute($params);
+            }
+            if ($this->logger) {
+                $this->logger->debug('Query successfully executed : ' . $sql);
+            }
+            return $resultat;
     }
 
     //public abstract  function verifyUserCredentials($email, $passwordSaisi);
