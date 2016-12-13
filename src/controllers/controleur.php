@@ -451,7 +451,7 @@ function editCinema($managers) {
             ];
         }
     }
-    require 'editCinema.php';
+    require 'views/viewEditCinema.php';
 }
 
 
@@ -612,7 +612,7 @@ function editShowtime($managers) {
         header('Location: index.php');
         exit();
     }
-    require 'editShowtime.php';
+    require 'views/viewEditShowtime.php';
 }
 
 
