@@ -45,7 +45,8 @@ DROP TABLE IF EXISTS `film`;
 CREATE TABLE IF NOT EXISTS `film` (
   `FILMID` int(11) NOT NULL,
   `TITRE` varchar(100) NOT NULL,
-  `TITREORIGINAL` varchar(100) DEFAULT NULL
+  `TITREORIGINAL` varchar(100) DEFAULT NULL,
+  `CLASSIFICATION` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -88,7 +89,8 @@ CREATE TABLE IF NOT EXISTS `utilisateur` (
   `NOM` varchar(50) NOT NULL,
   `PRENOM` varchar(30) NOT NULL,
   `ADRESSECOURRIEL` varchar(90) NOT NULL,
-  `PASSWORD` varchar(255) NOT NULL
+  `PASSWORD` varchar(255) NOT NULL,
+  `AGE` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --

@@ -17,6 +17,19 @@
             <input name="titreOriginal" type="text" value="<?= $film['TITREORIGINAL'] ?>" />
             <br/>
             <input type="hidden" value="<?= $film['FILMID'] ?>" name="filmID"/>
+            
+            <!--ajout de la liste deroulante pour choisir la categorie du film
+                ajout de FILMTYPE-->
+            <label>Catégorie du film :</label>
+            <select type="hidden" name="modificationInProgress" value=<?= $film['CLASSIFICATION'] ?>>
+                <option value="18">-18</option>
+                <option value="16">-16</option>
+                <option value="12">-12</option>
+                <option value="10">-10</option>
+                <option value="3">-3</option>
+            </select>
+            <br/>
+            <br/>
             <?php
             // si c'est une modification, c'est une information dont nous avons besoin
             if (!$isItACreation) {

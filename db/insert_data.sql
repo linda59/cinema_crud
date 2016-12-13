@@ -40,11 +40,11 @@ TRUNCATE TABLE `film`;
 -- Contenu de la table `film`
 --
 
-INSERT INTO `film` (`FILMID`, `TITRE`, `TITREORIGINAL`) VALUES
-(1, 'Un beau dimanche', NULL),
-(2, 'La Grande Aventure Lego', 'The Lego Movie'),
-(3, 'American Bluff', 'American Hustle'),
-(4, 'Dallas Buyers Club', NULL);
+INSERT INTO `film` (`FILMID`, `TITRE`, `TITREORIGINAL`, `CLASSIFICATION`) VALUES
+(1, 'Un beau dimanche', NULL, 3),
+(2, 'La Grande Aventure Lego', 'The Lego Movie', 10),
+(3, 'American Bluff', 'American Hustle', 12),
+(4, 'Dallas Buyers Club', NULL, 12);
 
 --
 -- Vider la table avant d'insérer `prefere`
@@ -84,10 +84,11 @@ TRUNCATE TABLE `utilisateur`;
 -- Contenu de la table `utilisateur`
 --
 
-INSERT INTO `utilisateur` (`USERID`, `NOM`, `PRENOM`, `ADRESSECOURRIEL`, `PASSWORD`) VALUES
-(18, 'Ponsard', 'Yann', 'yp@yp.yp', '$2y$10$cOyLS7z8BjbpjEflNjFYFuBhMp0zsCJxrjrkXIGZzYhTH/xdwFxpe'),
-(19, 'rp', 'rp', 'rp@rp.rp', '$2y$10$5QzyFQLLfzuGNkveZnmqjOLSgxGvQuhxno63tzViYw4E04cgKjk76'),
-(20, 'admin', 'admin', 'admin@adm.adm', '$2y$10$r2maAvjdNftF8bzZMRl8..m6aIxo.jthpa..tgSp1ehDN.YLNFuNe');
+INSERT INTO `utilisateur` (`USERID`, `NOM`, `PRENOM`, `ADRESSECOURRIEL`, `PASSWORD`, `AGE`) VALUES
+(18, 'Ponsard', 'Yann', 'yp@yp.yp', '$2y$10$cOyLS7z8BjbpjEflNjFYFuBhMp0zsCJxrjrkXIGZzYhTH/xdwFxpe', 8),
+(19, 'rp', 'rp', 'rp@rp.rp', '$2y$10$5QzyFQLLfzuGNkveZnmqjOLSgxGvQuhxno63tzViYw4E04cgKjk76', 13),
+(20, 'admin', 'admin', 'admin@adm.adm', '$2y$10$r2maAvjdNftF8bzZMRl8..m6aIxo.jthpa..tgSp1ehDN.YLNFuNe', 28),
+(21, 'hs', 'hs', 'hs@hs.hs', '$2y$10$QkZ9yvL8/pns8jt5EG504.kyKMLR.Wdgwjhd/QSdhnMBqMsH5P3Qi', 17);
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
