@@ -71,9 +71,15 @@ class Film extends DBFunctions{
      * @param type $movieID
      */
     public function deleteMovie($movieID) {
+         $this->executeQuery("DELETE FROM seance WHERE filmID = "
+                        . $movieID);
+        $this->executeQuery("DELETE FROM prefere WHERE filmID = "
+                        . $movieID);
         $this->executeQuery("DELETE FROM film WHERE filmID = "
                 . $movieID);
-
+       
+        
+        
         if ($this->logger) {
             $this->logger->info('Movie ' . $movieID . ' successfully deleted.');
         }
