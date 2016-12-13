@@ -592,7 +592,7 @@ function editShowtime($managers) {
         header('Location: index.php');
         exit();
     }
-    require 'views/viewEditShowtime.php';
+    require 'views/viewEditShowtimes.php';
 }
 
 function editMovie($managers) {
