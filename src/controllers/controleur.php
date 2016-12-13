@@ -1,20 +1,20 @@
 <?php
 
 function home($managers) {
-// personne d'authentifié à ce niveau
+// personne d'authentifiÃ© Ã  ce niveau
     $loginSuccess = false;
 
-// variables de contrôle du formulaire
+// variables de contrÃ´le du formulaire
     $areCredentialsOK = true;
 
-// si l'utilisateur est déjà authentifié
+// si l'utilisateur est dÃ©jÃ  authentifiÃ©
     if (array_key_exists("user", $_SESSION)) {
         $loginSuccess = true;
-// Sinon (pas d'utilisateur authentifié pour l'instant)
+// Sinon (pas d'utilisateur authentifiÃ© pour l'instant)
     } else {
-        // si la méthode POST a été employée
+        // si la mÃ©thode POST a Ã©tÃ© employÃ©e
         if (filter_input(INPUT_SERVER, 'REQUEST_METHOD') === "POST") {
-            // on "sainifie" les entrées
+            // on "sainifie" les entrÃ©es
             $sanitizedEntries = filter_input_array(INPUT_POST, ['email' => FILTER_SANITIZE_EMAIL,
                 'password' => FILTER_DEFAULT]);
             try {
@@ -27,7 +27,7 @@ function home($managers) {
                 //$_SESSION['userID'] = $fctManager->getUserIDByEmailAddress($_SESSION['user']);          
                 //$_SESSION['userID'] = $utilisateursMgr->getUserIDByEmailAddress($_SESSION['user']);
                 $_SESSION['userID'] = $managers["utilisateursMgr"]->getUserIDByEmailAddress($_SESSION['user']);
-                // on redirige vers la page d'édition des films préférés
+                // on redirige vers la page d'Ã©dition des films prÃ©fÃ©rÃ©s
                 //header("Location: editFavoriteMoviesList.php");
                 //header("Location: index.php?action=editFavoriteMoviesList.php");
                 header("Location: index.php?action=editFavoriteMoviesList");
@@ -52,7 +52,7 @@ function cinemasList($managers) {
 }
 
 function createNewUser($managers) {
-    // variables de contrôles du formulaire de création
+    // variables de contrÃ´les du formulaire de crÃ©ation
     $isFirstNameEmpty = false;
     $isLastNameEmpty = false;
     $isEmailAddressEmpty = false;
@@ -61,57 +61,57 @@ function createNewUser($managers) {
     $isPasswordConfirmationEmpty = false;
     $isPasswordValid = true;
 
-// si la méthode POST est utilisée, cela signifie que le formulaire a été envoyé
+// si la mÃ©thode POST est utilisÃ©e, cela signifie que le formulaire a Ã©tÃ© envoyÃ©
     if (filter_input(INPUT_SERVER, 'REQUEST_METHOD') === "POST") {
-        // on "sainifie" les entrées
+        // on "sainifie" les entrÃ©es
         $sanitizedEntries = filter_input_array(INPUT_POST, ['firstName' => FILTER_SANITIZE_STRING,
             'lastName' => FILTER_SANITIZE_STRING,
             'email' => FILTER_SANITIZE_EMAIL,
             'password' => FILTER_DEFAULT,
             'passwordConfirmation' => FILTER_DEFAULT]);
 
-        // si le prénom n'a pas été renseigné
+        // si le prÃ©nom n'a pas Ã©tÃ© renseignÃ©
         if ($sanitizedEntries['firstName'] === "") {
             $isFirstNameEmpty = true;
         }
 
-        // si le nom n'a pas été renseigné
+        // si le nom n'a pas Ã©tÃ© renseignÃ©
         if ($sanitizedEntries['lastName'] === "") {
             $isLastNameEmpty = true;
         }
 
-        // si l'adresse email n'a pas été renseignée
+        // si l'adresse email n'a pas Ã©tÃ© renseignÃ©e
         if ($sanitizedEntries['email'] === "") {
             $isEmailAddressEmpty = true;
         } else {
-            // On vérifie l'existence de l'utilisateur
+            // On vÃ©rifie l'existence de l'utilisateur
             //$userID = $fctManager->getUserIDByEmailAddress($sanitizedEntries['email']);
             //$userID = $utilisateursMgr->getUserIDByEmailAddress($sanitizedEntries['email']);
             $userID = $managers["utilisateursMgr"]->getUserIDByEmailAddress($sanitizedEntries['email']);
-            // si on a un résultat, cela signifie que cette adresse email existe déjà
+            // si on a un rÃ©sultat, cela signifie que cette adresse email existe dÃ©jÃ 
             if ($userID) {
                 $isUserUnique = false;
             }
         }
-        // si le password n'a pas été renseigné
+        // si le password n'a pas Ã©tÃ© renseignÃ©
         if ($sanitizedEntries['password'] === "") {
             $isPasswordEmpty = true;
         }
-        // si la confirmation du password n'a pas été renseigné
+        // si la confirmation du password n'a pas Ã©tÃ© renseignÃ©
         if ($sanitizedEntries['passwordConfirmation'] === "") {
             $isPasswordConfirmationEmpty = true;
         }
 
-        // si le mot de passe et sa confirmation sont différents
+        // si le mot de passe et sa confirmation sont diffÃ©rents
         if ($sanitizedEntries['password'] !== $sanitizedEntries['passwordConfirmation']) {
             $isPasswordValid = false;
         }
 
-        // si les champs nécessaires ne sont pas vides, que l'utilisateur est unique et que le mot de passe est valide
+        // si les champs nÃ©cessaires ne sont pas vides, que l'utilisateur est unique et que le mot de passe est valide
         if (!$isFirstNameEmpty && !$isLastNameEmpty && !$isEmailAddressEmpty && $isUserUnique && !$isPasswordEmpty && $isPasswordValid) {
             // hash du mot de passe
             $password = password_hash($sanitizedEntries['password'], PASSWORD_DEFAULT);
-            // créer l'utilisateur
+            // crÃ©er l'utilisateur
             /* $fctManager->createUser($sanitizedEntries['firstName'],
               $sanitizedEntries['lastName'],
               $sanitizedEntries['email'],
@@ -125,13 +125,13 @@ function createNewUser($managers) {
             //$_SESSION['userID'] = $fctManager->getUserIDByEmailAddress($_SESSION['user']);
             //$_SESSION['userID'] = $utilisateursMgr->getUserIDByEmailAddress($_SESSION['user']);
             $_SESSION['userID'] = $managers["utilisateursMgr"]->getUserIDByEmailAddress($_SESSION['user']);
-            // on redirige vers la page d'édition des films préférés
+            // on redirige vers la page d'Ã©dition des films prÃ©fÃ©rÃ©s
             //header("Location: editFavoriteMoviesList.php");
             header("Location: index.php?action=editFavoriteMoviesList");
             exit;
         }
     }
-// sinon (le formulaire n'a pas été envoyé)
+// sinon (le formulaire n'a pas Ã©tÃ© envoyÃ©)
     else {
         // initialisation des variables du formulaire
         $sanitizedEntries['firstName'] = '';
@@ -143,13 +143,13 @@ function createNewUser($managers) {
 
 function editFavoriteMoviesList($managers) {
 // session_start();
-// si l'utilisateur n'est pas connecté
+// si l'utilisateur n'est pas connectÃ©
     if (!array_key_exists("user", $_SESSION)) {
-        // renvoi à la page d'accueil
+        // renvoi Ã  la page d'accueil
         header('Location: index.php');
         exit;
     }
-// l'utilisateur est loggué
+// l'utilisateur est logguÃ©
     else {
         //$utilisateur = $fctManager->getCompleteUsernameByEmailAddress($_SESSION['user']);
         //$utilisateur = $utilisateursMgr->getCompleteUsernameByEmailAddress($_SESSION['user']);
@@ -160,43 +160,43 @@ function editFavoriteMoviesList($managers) {
 }
 
 function editFavoriteMovie($managers) {
-// si l'utilisateur n'est pas connecté
+// si l'utilisateur n'est pas connectÃ©
     if (!array_key_exists("user", $_SESSION)) {
-        // renvoi à la page d'accueil
+        // renvoi Ã  la page d'accueil
         header('Location: index.php');
         exit;
     }
 
-// variable de contrôle de formulaire
+// variable de contrÃ´le de formulaire
     $aFilmIsSelected = true;
-// variable qui sert à conditionner l'affichage du formulaire
+// variable qui sert Ã  conditionner l'affichage du formulaire
     $isItACreation = false;
 
-// si la méthode de formulaire est la méthode POST
+// si la mÃ©thode de formulaire est la mÃ©thode POST
     if (filter_input(INPUT_SERVER, 'REQUEST_METHOD') === "POST") {
 
-        // on "sainifie" les entrées
+        // on "sainifie" les entrÃ©es
         $sanitizedEntries = filter_input_array(INPUT_POST, ['backToList' => FILTER_DEFAULT,
             'filmID' => FILTER_SANITIZE_NUMBER_INT,
             'userID' => FILTER_SANITIZE_NUMBER_INT,
             'comment' => FILTER_SANITIZE_STRING,
             'modificationInProgress' => FILTER_SANITIZE_STRING]);
 
-        // si l'action demandée est retour en arrière
+        // si l'action demandÃ©e est retour en arriÃ¨re
         if ($sanitizedEntries['backToList'] !== NULL) {
-            // on redirige vers la page d'édition des films favoris
+            // on redirige vers la page d'Ã©dition des films favoris
             //header('Location: editFavoriteMoviesList.php');
             header("Location: index.php?action=editFavoriteMoviesList");
             exit;
         }
-        // sinon (l'action demandée est la sauvegarde d'un favori)
+        // sinon (l'action demandÃ©e est la sauvegarde d'un favori)
         else {
-            // si un film a été selectionné 
+            // si un film a Ã©tÃ© selectionnÃ© 
             if ($sanitizedEntries['filmID'] !== NULL) {
 
-                // et que nous ne sommes pas en train de modifier une préférence
+                // et que nous ne sommes pas en train de modifier une prÃ©fÃ©rence
                 if ($sanitizedEntries['modificationInProgress'] == NULL) {
-                    // on ajoute la préférence de l'utilisateur
+                    // on ajoute la prÃ©fÃ©rence de l'utilisateur
                     /* $fctManager->insertNewFavoriteMovie($sanitizedEntries['userID'],
                       $sanitizedEntries['filmID'],
                       $sanitizedEntries['comment']);
@@ -211,7 +211,7 @@ function editFavoriteMovie($managers) {
                 }
                 // sinon, nous sommes dans le cas d'une modification
                 else {
-                    // mise à jour de la préférence
+                    // mise Ã  jour de la prÃ©fÃ©rence
                     /*
                       $fctManager->updateFavoriteMovie($sanitizedEntries['userID'],
                       $sanitizedEntries['filmID'],
@@ -225,12 +225,12 @@ function editFavoriteMovie($managers) {
                      */
                     $managers["preferesMgr"]->updateFavoriteMovie($sanitizedEntries['userID'], $sanitizedEntries['filmID'], $sanitizedEntries['comment']);
                 }
-                // on revient à la liste des préférences
+                // on revient Ã  la liste des prÃ©fÃ©rences
                 //header('Location: editFavoriteMoviesList.php');
                 header('Location: index.php?action=editFavoriteMoviesList');
                 exit;
             }
-            // sinon (un film n'a pas été sélectionné)
+            // sinon (un film n'a pas Ã©tÃ© sÃ©lectionnÃ©)
             else {
                 // 
                 $aFilmIsSelected = false;
@@ -244,15 +244,15 @@ function editFavoriteMovie($managers) {
                 $userID = $sanitizedEntries['userID'];
             }
         }
-// sinon (nous sommes en GET) et que l'id du film et l'id du user sont bien renseignés
+// sinon (nous sommes en GET) et que l'id du film et l'id du user sont bien renseignÃ©s
     } elseif (filter_input(INPUT_SERVER, 'REQUEST_METHOD') === "GET") {
 
-        // on "sainifie" les entrées
+        // on "sainifie" les entrÃ©es
         $sanitizedEntries = filter_input_array(INPUT_GET, ['filmID' => FILTER_SANITIZE_NUMBER_INT,
             'userID' => FILTER_SANITIZE_NUMBER_INT]);
 
         if ($sanitizedEntries && $sanitizedEntries['filmID'] !== NULL && $sanitizedEntries['filmID'] !== '' && $sanitizedEntries['userID'] !== NULL && $sanitizedEntries['userID'] !== '') {
-            // on récupère les informations manquantes (le commentaire afférent)
+            // on rÃ©cupÃ¨re les informations manquantes (le commentaire affÃ©rent)
             /* $preference = $fctManager->getFavoriteMovieInformations($sanitizedEntries['userID'],
               $sanitizedEntries['filmID']);
              * */
@@ -261,11 +261,11 @@ function editFavoriteMovie($managers) {
               $sanitizedEntries['filmID']);
              */
             $preference = $managers["preferesMgr"]->getFavoriteMovieInformations($sanitizedEntries['userID'], $sanitizedEntries['filmID']);
-            // sinon, c'est une création
+            // sinon, c'est une crÃ©ation
         } else {
-            // C'est une création
+            // C'est une crÃ©ation
             $isItACreation = true;
-            // on initialise les autres variables de formulaire à vide
+            // on initialise les autres variables de formulaire Ã  vide
             $preference = [
                 "userID" => $_SESSION['userID'],
                 "filmID" => "",
@@ -280,31 +280,31 @@ function cinemaShowtimes($managers) {
     $adminConnected = false;
 
     //  session_start();
-// si l'utilisateur admin est connexté
+// si l'utilisateur admin est connextÃ©
     if (array_key_exists("user", $_SESSION) and $_SESSION['user'] == 'admin@adm.adm') {
         $adminConnected = true;
     }
 
-// si la méthode de formulaire est la méthode GET
+// si la mÃ©thode de formulaire est la mÃ©thode GET
     if (filter_input(INPUT_SERVER, 'REQUEST_METHOD') === "GET") {
 
-        // on assainie les entrées
+        // on assainie les entrÃ©es
         $sanitizedEntries = filter_input_array(INPUT_GET, ['cinemaID' => FILTER_SANITIZE_NUMBER_INT]);
 
-        // si l'identifiant du cinéma a bien été passé en GET
+        // si l'identifiant du cinÃ©ma a bien Ã©tÃ© passÃ© en GET
         if ($sanitizedEntries && $sanitizedEntries['cinemaID'] !== NULL && $sanitizedEntries['cinemaID'] != '') {
-            // on récupère l'identifiant du cinéma
+            // on rÃ©cupÃ¨re l'identifiant du cinÃ©ma
             $cinemaID = $sanitizedEntries['cinemaID'];
-            // puis on récupère les informations du cinéma en question
+            // puis on rÃ©cupÃ¨re les informations du cinÃ©ma en question
             //$cinema = $fctManager->getCinemaInformationsByID($cinemaID);
             //$cinema = $fctCinema->getCinemaInformationsByID($cinemaID);
             $cinema = $managers["cinemasMgr"]->getCinemaInformationsByID($cinemaID);
-            // on récupère les films pas encore projetés
+            // on rÃ©cupÃ¨re les films pas encore projetÃ©s
             //$filmsUnplanned = $fctManager->getNonPlannedMovies($cinemaID);
             //$filmsUnplanned = $fctSeance->getNonPlannedMovies($cinemaID);
             $filmsUnplanned = $managers["seancesMgr"]->getNonPlannedMovies($cinemaID);
         }
-        // sinon, on retourne à l'accueil
+        // sinon, on retourne Ã  l'accueil
         else {
             header('Location: index.php');
             exit();
@@ -321,7 +321,7 @@ function moviesList($managers) {
     $isUserAdmin = false;
 
 //session_start();
-// si l'utilisateur est pas connecté et qu'il est amdinistrateur
+// si l'utilisateur est pas connectÃ© et qu'il est amdinistrateur
     if (array_key_exists("user", $_SESSION) and $_SESSION['user'] == 'admin@adm.adm') {
         $isUserAdmin = true;
     }
@@ -332,30 +332,30 @@ function movieShowtimes($managers) {
     $adminConnected = false;
 
     //session_start();
-// si l'utilisateur admin est connexté
+// si l'utilisateur admin est connextÃ©
     if (array_key_exists("user", $_SESSION) and $_SESSION['user'] == 'admin@adm.adm') {
         $adminConnected = true;
     }
 
-// si la méthode de formulaire est la méthode GET
+// si la mÃ©thode de formulaire est la mÃ©thode GET
     if (filter_input(INPUT_SERVER, 'REQUEST_METHOD') === "GET") {
 
-        // on "sainifie" les entrées
+        // on "sainifie" les entrÃ©es
         $sanitizedEntries = filter_input_array(INPUT_GET, ['filmID' => FILTER_SANITIZE_NUMBER_INT]);
-        // si l'identifiant du film a bien été passé en GET'
+        // si l'identifiant du film a bien Ã©tÃ© passÃ© en GET'
         if ($sanitizedEntries && $sanitizedEntries['filmID'] !== NULL && $sanitizedEntries['filmID'] !== '') {
-            // on récupère l'identifiant du cinéma
+            // on rÃ©cupÃ¨re l'identifiant du cinÃ©ma
             $filmID = $sanitizedEntries['filmID'];
-            // puis on récupère les informations du film en question
+            // puis on rÃ©cupÃ¨re les informations du film en question
             // $film = $fctManager->getMovieInformationsByID($filmID);
             //$film = $fctFilm->getMovieInformationsByID($filmID);
             $film = $managers["filmsMgr"]->getMovieInformationsByID($filmID);
-            // on récupère les cinémas qui ne projettent pas encore le film
+            // on rÃ©cupÃ¨re les cinÃ©mas qui ne projettent pas encore le film
             //$cinemasUnplanned = $fctManager->getNonPlannedCinemas($filmID);
             //$cinemasUnplanned = $fctSeance->getNonPlannedCinemas($filmID);
             $cinemasUnplanned = $managers["seancesMgr"]->getNonPlannedCinemas($filmID);
         }
-        // sinon, on retourne à l'accueil
+        // sinon, on retourne Ã  l'accueil
         else {
             header('Location: index.php');
             exit();
@@ -369,66 +369,66 @@ function movieShowtimes($managers) {
 
 function editCinema($managers) {
     //   session_start();
-// si l'utilisateur n'est pas connecté ou sinon s'il n'est pas amdinistrateur
+// si l'utilisateur n'est pas connectÃ© ou sinon s'il n'est pas amdinistrateur
     if (!array_key_exists("user", $_SESSION) or $_SESSION['user'] !== 'admin@adm.adm') {
-        // renvoi à la page d'accueil
+        // renvoi Ã  la page d'accueil
         header('Location: index.php');
         exit;
     }
 
-// variable qui sert à conditionner l'affichage du formulaire
+// variable qui sert Ã  conditionner l'affichage du formulaire
     $isItACreation = false;
 
-// si la méthode de formulaire est la méthode POST
+// si la mÃ©thode de formulaire est la mÃ©thode POST
     if (filter_input(INPUT_SERVER, 'REQUEST_METHOD') === "POST") {
 
-        // on "sainifie" les entrées
+        // on "sainifie" les entrÃ©es
         $sanEntries = filter_input_array(INPUT_POST, ['backToList' => FILTER_DEFAULT,
             'cinemaID' => FILTER_SANITIZE_NUMBER_INT,
             'adresse' => FILTER_SANITIZE_STRING,
             'denomination' => FILTER_SANITIZE_STRING,
             'modificationInProgress' => FILTER_SANITIZE_STRING]);
 
-        // si l'action demandée est retour en arrière
+        // si l'action demandÃ©e est retour en arriÃ¨re
         if ($sanEntries['backToList'] !== NULL) {
-            // on redirige vers la page des cinémas
+            // on redirige vers la page des cinÃ©mas
             // header('Location: cinemasList.php');
             header('Location: index.php?action=cinemasList');
             exit;
         }
-        // sinon (l'action demandée est la sauvegarde d'un cinéma)
+        // sinon (l'action demandÃ©e est la sauvegarde d'un cinÃ©ma)
         else {
 
-            // et que nous ne sommes pas en train de modifier un cinéma
+            // et que nous ne sommes pas en train de modifier un cinÃ©ma
             if ($sanEntries['modificationInProgress'] == NULL) {
-                // on ajoute le cinéma
+                // on ajoute le cinÃ©ma
                 //$fctManager->insertNewCinema($sanEntries['denomination'], $sanEntries['adresse']);
                 //$fctCinema->insertNewCinema($sanEntries['denomination'], $sanEntries['adresse']);
                 $managers["cinemasMgr"]->insertNewCinema($sanEntries['denomination'], $sanEntries['adresse']);
             }
             // sinon, nous sommes dans le cas d'une modification
             else {
-                // mise à jour du cinéma
+                // mise Ã  jour du cinÃ©ma
                 //$fctManager->updateCinema($sanEntries['cinemaID'], $sanEntries['denomination'], $sanEntries['adresse']);
                 //$fctCinema->updateCinema($sanEntries['cinemaID'], $sanEntries['denomination'], $sanEntries['adresse']);
                 $managers["cinemasMgr"]->updateCinema($sanEntries['cinemaID'], $sanEntries['denomination'], $sanEntries['adresse']);
             }
-            // on revient à la liste des cinémas
+            // on revient Ã  la liste des cinÃ©mas
             //header('Location: cinemasList.php');
             header('Location: index.php?action=cinemasList');
             exit;
         }
-    }// si la page est chargée avec $_GET
+    }// si la page est chargÃ©e avec $_GET
     elseif (filter_input(INPUT_SERVER, 'REQUEST_METHOD') === "GET") {
-        // on "sainifie" les entrées
+        // on "sainifie" les entrÃ©es
         $sanEntries = filter_input_array(INPUT_GET, ['cinemaID' => FILTER_SANITIZE_NUMBER_INT]);
         if ($sanEntries && $sanEntries['cinemaID'] !== NULL && $sanEntries['cinemaID'] !== '') {
-            // on récupère les informations manquantes 
+            // on rÃ©cupÃ¨re les informations manquantes 
             //$cinema = $fctManager->getCinemaInformationsByID($sanEntries['cinemaID']);
             //$cinema = $fctCinema->getCinemaInformationsByID($sanEntries['cinemaID']);
             $cinema = $managers["cinemasMgr"]->getCinemaInformationsByID($sanEntries['cinemaID']);
         }
-        // sinon, c'est une création
+        // sinon, c'est une crÃ©ation
         else {
             $isItACreation = true;
             $cinema = [
@@ -442,14 +442,14 @@ function editCinema($managers) {
 }
 
 function editShowtime($managers) {
-    // si l'utilisateur n'est pas connecté ou sinon s'il n'est pas amdinistrateur
+    // si l'utilisateur n'est pas connectÃ© ou sinon s'il n'est pas amdinistrateur
     if (!array_key_exists("user", $_SESSION) or $_SESSION['user'] !== 'admin@adm.adm') {
-// renvoi à la page d'accueil
+// renvoi Ã  la page d'accueil
         header('Location: index.php');
         exit;
     }
 
-// init. des flags. Etat par défaut => je viens du cinéma et je créé
+// init. des flags. Etat par dÃ©faut => je viens du cinÃ©ma et je crÃ©Ã©
     $fromCinema = true;
     $fromFilm = false;
     $isItACreation = true;
@@ -473,24 +473,24 @@ function editShowtime($managers) {
             'heureDebut' => FILTER_SANITIZE_STRING,
             'heureFin' => FILTER_SANITIZE_STRING,
             'version' => FILTER_SANITIZE_STRING]);
-        // pour l'instant, on vérifie les données en GET
+        // pour l'instant, on vÃ©rifie les donnÃ©es en GET
         if ($sanitizedEntries && isset($sanitizedEntries['cinemaID'], $sanitizedEntries['filmID'], $sanitizedEntries['from'])) {
-            // on récupère l'identifiant du cinéma
+            // on rÃ©cupÃ¨re l'identifiant du cinÃ©ma
             $cinemaID = $sanitizedEntries['cinemaID'];
             // l'identifiant du film
             $filmID = $sanitizedEntries['filmID'];
-            // d'où vient on ?
+            // d'oÃ¹ vient on ?
             $from = $sanitizedEntries['from'];
-            // puis on récupère les informations du cinéma en question
+            // puis on rÃ©cupÃ¨re les informations du cinÃ©ma en question
             //$cinema = $fctManager->getCinemaInformationsByID($cinemaID);
             //$cinema = $fctCinema->getCinemaInformationsByID($cinemaID);
             $cinema = $managers["cinemasMgr"]->getCinemaInformationsByID($cinemaID);
-            // puis on récupère les informations du film en question
+            // puis on rÃ©cupÃ¨re les informations du film en question
             //$film = $fctManager->getMovieInformationsByID($filmID);
             //$film = $fctFilm->getMovieInformationsByID($filmID);
             $film = $managers["filmsMgr"]->getMovieInformationsByID($filmID);
 
-            // s'il on vient des séances du film
+            // s'il on vient des sÃ©ances du film
             if (strstr($sanitizedEntries['from'], 'movie')) {
                 $fromCinema = false;
                 // on vient du film
@@ -501,23 +501,23 @@ function editShowtime($managers) {
             if (isset($sanitizedEntries['heureDebut'], $sanitizedEntries['heureFin'], $sanitizedEntries['version'])) {
                 // nous sommes dans le cas d'une modification
                 $isItACreation = false;
-                // on récupère les anciennes valeurs (utile pour retrouver la séance avant de la modifier
+                // on rÃ©cupÃ¨re les anciennes valeurs (utile pour retrouver la sÃ©ance avant de la modifier
                 $seance['dateheureDebutOld'] = $sanitizedEntries['heureDebut'];
                 $seance['dateheureFinOld'] = $sanitizedEntries['heureFin'];
                 // dates PHP
                 $dateheureDebut = new DateTime($sanitizedEntries['heureDebut']);
                 $dateheureFin = new DateTime($sanitizedEntries['heureFin']);
-                // découpage en heures
+                // dÃ©coupage en heures
                 $seance['heureDebut'] = $dateheureDebut->format("H:i");
                 $seance['heureFin'] = $dateheureFin->format("H:i");
-                // découpage en jour/mois/année
+                // dÃ©coupage en jour/mois/annÃ©e
                 $seance['dateDebut'] = $dateheureDebut->format("d/m/Y");
                 $seance['dateFin'] = $dateheureFin->format("d/m/Y");
-                // on récupère la version
+                // on rÃ©cupÃ¨re la version
                 $seance['version'] = $sanitizedEntries['version'];
             }
         }
-        // sinon, on retourne à l'accueil
+        // sinon, on retourne Ã  l'accueil
         else {
             header('Location: index.php');
             exit();
@@ -536,11 +536,11 @@ function editShowtime($managers) {
             'version' => FILTER_SANITIZE_STRING,
             'from' => FILTER_SANITIZE_STRING,
             'modificationInProgress' => FILTER_SANITIZE_STRING]);
-        // si toutes les valeurs sont renseignées
+        // si toutes les valeurs sont renseignÃ©es
         if ($sanitizedEntries && isset($sanitizedEntries['cinemaID'], $sanitizedEntries['filmID'], $sanitizedEntries['datedebut'], $sanitizedEntries['heuredebut'], $sanitizedEntries['datefin'], $sanitizedEntries['heurefin'], $sanitizedEntries['dateheuredebutOld'], $sanitizedEntries['dateheurefinOld'], $sanitizedEntries['version'], $sanitizedEntries['from'])) {
-            // nous sommes en Français
+            // nous sommes en FranÃ§ais
             setlocale(LC_TIME, 'fra_fra');
-            // date du jour de projection de la séance
+            // date du jour de projection de la sÃ©ance
             // Correction bug #3
             // AVANT
             //$datetimeDebut = new DateTime($sanitizedEntries['datedebut'] . ' ' . $sanitizedEntries['heuredebut']);
@@ -551,7 +551,7 @@ function editShowtime($managers) {
             // Fin correction bug #3
             // Est-on dans le cas d'une insertion ?
             if (!isset($sanitizedEntries['modificationInProgress'])) {
-                // j'insère dans la base
+                // j'insÃ¨re dans la base
                 /*
                   $resultat = $fctManager->insertNewShowtime($sanitizedEntries['cinemaID'],
                   $sanitizedEntries['filmID'],
@@ -562,7 +562,7 @@ function editShowtime($managers) {
                 //$resultat = $fctSeance->insertNewShowtime($sanitizedEntries['cinemaID'], $sanitizedEntries['filmID'], $datetimeDebut->format("Y-m-d H:i"), $datetimeFin->format("Y-m-d H:i"), $sanitizedEntries['version']);
                 $resultat = $managers["seancesMgr"]->insertNewShowtime($sanitizedEntries['cinemaID'], $sanitizedEntries['filmID'], $datetimeDebut->format("Y-m-d H:i"), $datetimeFin->format("Y-m-d H:i"), $sanitizedEntries['version']);
             } else {
-                // c'est une mise à jour
+                // c'est une mise Ã  jour
                 /*
                   $resultat = $fctManager->updateShowtime($sanitizedEntries['cinemaID'],
                   $sanitizedEntries['filmID'],
@@ -575,7 +575,7 @@ function editShowtime($managers) {
                 // $resultat = $fctSeance->updateShowtime($sanitizedEntries['cinemaID'], $sanitizedEntries['filmID'], $sanitizedEntries['dateheuredebutOld'], $sanitizedEntries['dateheurefinOld'], $datetimeDebut->format("Y-m-d H:i"), $datetimeFin->format("Y-m-d H:i"), $sanitizedEntries['version']);
                 $resultat = $managers["seancesMgr"]->updateShowtime($sanitizedEntries['cinemaID'], $sanitizedEntries['filmID'], $sanitizedEntries['dateheuredebutOld'], $sanitizedEntries['dateheurefinOld'], $datetimeDebut->format("Y-m-d H:i"), $datetimeFin->format("Y-m-d H:i"), $sanitizedEntries['version']);
             }
-            // en fonction d'où je viens, je redirige
+            // en fonction d'oÃ¹ je viens, je redirige
             if (strstr($sanitizedEntries['from'], 'movie')) {
                 //header('Location: movieShowtimes.php?filmID=' . $sanitizedEntries['filmID']);
                 header('Location: index.php?action=movieShowtimes&filmID=' . $sanitizedEntries['filmID']);
@@ -587,7 +587,7 @@ function editShowtime($managers) {
             }
         }
     }
-// sinon, on retourne à l'accueil
+// sinon, on retourne Ã  l'accueil
     else {
         header('Location: index.php');
         exit();
@@ -596,34 +596,34 @@ function editShowtime($managers) {
 }
 
 function editMovie($managers) {
-    // si l'utilisateur n'est pas connecté ou sinon s'il n'est pas amdinistrateur
+    // si l'utilisateur n'est pas connectÃ© ou sinon s'il n'est pas amdinistrateur
     if (!array_key_exists("user", $_SESSION) or $_SESSION['user'] !== 'admin@adm.adm') {
-// renvoi à la page d'accueil
+// renvoi Ã  la page d'accueil
         header('Location: index.php');
         exit;
     }
 
-// variable qui sert à conditionner l'affichage du formulaire
+// variable qui sert Ã  conditionner l'affichage du formulaire
     $isItACreation = false;
 
-// si la méthode de formulaire est la méthode POST
+// si la mÃ©thode de formulaire est la mÃ©thode POST
     if (filter_input(INPUT_SERVER, 'REQUEST_METHOD') === "POST") {
 
-        // on "sainifie" les entrées
+        // on "sainifie" les entrÃ©es
         $sanEntries = filter_input_array(INPUT_POST, ['backToList' => FILTER_DEFAULT,
             'filmID' => FILTER_SANITIZE_NUMBER_INT,
             'titre' => FILTER_SANITIZE_STRING,
             'titreOriginal' => FILTER_SANITIZE_STRING,
             'modificationInProgress' => FILTER_SANITIZE_STRING]);
 
-        // si l'action demandée est retour en arrière
+        // si l'action demandÃ©e est retour en arriÃ¨re
         if ($sanEntries['backToList'] !== NULL) {
             // on redirige vers la page des films
             //header('Location: moviesList.php');
             header('Location: index.php?action=moviesList');
             exit;
         }
-        // sinon (l'action demandée est la sauvegarde d'un film)
+        // sinon (l'action demandÃ©e est la sauvegarde d'un film)
         else {
 
             // et que nous ne sommes pas en train de modifier un film
@@ -635,27 +635,27 @@ function editMovie($managers) {
             }
             // sinon, nous sommes dans le cas d'une modification
             else {
-                // mise à jour du film
+                // mise Ã  jour du film
                 //$fctManager->updateMovie($sanEntries['filmID'], $sanEntries['titre'], $sanEntries['titreOriginal']);
                 //$fctFilm->updateMovie($sanEntries['filmID'], $sanEntries['titre'], $sanEntries['titreOriginal']);
                 $managers["filmsMgr"]->updateMovie($sanEntries['filmID'], $sanEntries['titre'], $sanEntries['titreOriginal']);
             }
-            // on revient à la liste des films
+            // on revient Ã  la liste des films
             //header('Location: moviesList.php');
             header('Location: index.php?action=moviesList');
             exit;
         }
-    }// si la page est chargée avec $_GET
+    }// si la page est chargÃ©e avec $_GET
     elseif (filter_input(INPUT_SERVER, 'REQUEST_METHOD') === "GET") {
-        // on "sainifie" les entrées
+        // on "sainifie" les entrÃ©es
         $sanEntries = filter_input_array(INPUT_GET, ['filmID' => FILTER_SANITIZE_NUMBER_INT]);
         if ($sanEntries && $sanEntries['filmID'] !== NULL && $sanEntries['filmID'] !== '') {
-            // on récupère les informations manquantes 
+            // on rÃ©cupÃ¨re les informations manquantes 
             //$film = $fctManager->getMovieInformationsByID($sanEntries['filmID']);
             //$film = $fctFilm->getMovieInformationsByID($sanEntries['filmID']);
             $film = $managers["filmsMgr"]->getMovieInformationsByID($sanEntries['filmID']);
         }
-        // sinon, c'est une création
+        // sinon, c'est une crÃ©ation
         else {
             $isItACreation = true;
             $film = [
@@ -669,20 +669,20 @@ function editMovie($managers) {
 }
 
 function deleteMovie($managers) {
-    // si l'utilisateur n'est pas connecté ou sinon s'il n'est pas amdinistrateur
+    // si l'utilisateur n'est pas connectÃ© ou sinon s'il n'est pas amdinistrateur
     if (!array_key_exists("user", $_SESSION) or $_SESSION['user'] !== 'admin@adm.adm') {
-        // renvoi à la page d'accueil
+        // renvoi Ã  la page d'accueil
         header('Location: index.php');
         exit;
     }
 
-// si la méthode de formulaire est la méthode POST
+// si la mÃ©thode de formulaire est la mÃ©thode POST
     if (filter_input(INPUT_SERVER, 'REQUEST_METHOD') === "POST") {
 
-        // on "sainifie" les entrées
+        // on "sainifie" les entrÃ©es
         $sanitizedEntries = filter_input_array(INPUT_POST, ['filmID' => FILTER_SANITIZE_NUMBER_INT]);
 
-        // suppression de la préférence de film
+        // suppression de la prÃ©fÃ©rence de film
         //$fctManager->deleteMovie($sanitizedEntries['filmID']);
         //$fctFilm->deleteMovie($sanitizedEntries['filmID']);
         $managers["filmsMgr"]->deleteMovie($sanitizedEntries['filmID']);
@@ -694,14 +694,14 @@ function deleteMovie($managers) {
 }
 
 function deleteShowtime($managers) {
-    // si l'utilisateur n'est pas connecté
+    // si l'utilisateur n'est pas connectÃ©
     if (!array_key_exists("user", $_SESSION)) {
-// renvoi à la page d'accueil
+// renvoi Ã  la page d'accueil
         header('Location: index.php');
         exit;
     }
 
-// si la méthode de formulaire est la méthode POST
+// si la mÃ©thode de formulaire est la mÃ©thode POST
     if (filter_input(INPUT_SERVER, 'REQUEST_METHOD') === "POST") {
 
         // on assainie les variables
@@ -713,7 +713,7 @@ function deleteShowtime($managers) {
             'from' => FILTER_SANITIZE_STRING
         ]);
 
-        // suppression de la séance
+        // suppression de la sÃ©ance
         /*
           $fctManager->deleteShowtime($sanitizedEntries['cinemaID'],
           $sanitizedEntries['filmID'], $sanitizedEntries['heureDebut'],
@@ -729,7 +729,7 @@ function deleteShowtime($managers) {
          */
         $managers["seancesMgr"]->deleteShowtime($sanitizedEntries['cinemaID'], $sanitizedEntries['filmID'], $sanitizedEntries['heureDebut'], $sanitizedEntries['heureFin']
         );
-        // en fonction d'où je viens, je redirige
+        // en fonction d'oÃ¹ je viens, je redirige
         if (strstr($sanitizedEntries['from'], 'movie')) {
             //header('Location: movieShowtimes.php?filmID=' . $sanitizedEntries['filmID']);
             header('Location: index.php?action=movieShowtimes&filmID=' . $sanitizedEntries['filmID']);
@@ -740,54 +740,54 @@ function deleteShowtime($managers) {
             exit;
         }
     } else {
-        // renvoi à la page d'accueil
+        // renvoi Ã  la page d'accueil
         header('Location: index.php');
         exit;
     }
 }
 
 function deleteCinema($managers) {
-    // si l'utilisateur n'est pas connecté ou sinon s'il n'est pas amdinistrateur
+    // si l'utilisateur n'est pas connectÃ© ou sinon s'il n'est pas amdinistrateur
     if (!array_key_exists("user", $_SESSION) or $_SESSION['user'] !== 'admin@adm.adm') {
-        // renvoi à la page d'accueil
+        // renvoi Ã  la page d'accueil
         header('Location: index.php');
         exit;
     }
 
-// si la méthode de formulaire est la méthode POST
+// si la mÃ©thode de formulaire est la mÃ©thode POST
     if (filter_input(INPUT_SERVER, 'REQUEST_METHOD') === "POST") {
 
-        // on "sainifie" les entrées
+        // on "sainifie" les entrÃ©es
         $sanitizedEntries = filter_input_array(INPUT_POST, ['cinemaID' => FILTER_SANITIZE_NUMBER_INT]);
 
-        // suppression de la préférence de film
+        // suppression de la prÃ©fÃ©rence de film
         //$fctManager->deleteCinema($sanitizedEntries['cinemaID']);
         //$fctCinema->deleteCinema($sanitizedEntries['cinemaID']);
         $managers["seancesMgr"]->deleteShowtimeByIdCinema($sanitizedEntries['cinemaID']);
         $managers["cinemasMgr"]->deleteCinema($sanitizedEntries['cinemaID']);
     }
-// redirection vers la liste des cinémas
+// redirection vers la liste des cinÃ©mas
 //header("Location: cinemasList.php");
     header("Location: index.php?action=cinemasList");
     exit;
 }
 
 function deleteFavoriteMovie($managers) {
-    // si l'utilisateur n'est pas connecté
+    // si l'utilisateur n'est pas connectÃ©
     if (!array_key_exists("user", $_SESSION)) {
-// renvoi à la page d'accueil
+// renvoi Ã  la page d'accueil
         header('Location: index.php');
         exit;
     }
 
-// si la méthode de formulaire est la méthode POST
+// si la mÃ©thode de formulaire est la mÃ©thode POST
     if (filter_input(INPUT_SERVER, 'REQUEST_METHOD') === "POST") {
 
-        // on "sainifie" les entrées
+        // on "sainifie" les entrÃ©es
         $sanitizedEntries = filter_input_array(INPUT_POST, ['userID' => FILTER_SANITIZE_NUMBER_INT,
             'filmID' => FILTER_SANITIZE_NUMBER_INT]);
 
-        // suppression de la préférence de film
+        // suppression de la prÃ©fÃ©rence de film
         // $fctManager->deleteFavoriteMovie($sanitizedEntries['userID'],
         //         $sanitizedEntries['filmID']);
         /*
@@ -796,7 +796,7 @@ function deleteFavoriteMovie($managers) {
          */
         $managers["preferesMgr"]->deleteFavoriteMovie($sanitizedEntries['userID'], $sanitizedEntries['filmID']);
     }
-// redirection vers la liste des préférences de films
+// redirection vers la liste des prÃ©fÃ©rences de films
 //header("Location: editFavoriteMoviesList.php");
     header("Location: index.php?action=editFavoriteMoviesList");
     exit;
