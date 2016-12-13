@@ -128,6 +128,26 @@ class Seance extends DBFunctions{
         }
     }
     
+    
+     /**
+     * Supprime une séance pour un film donné et un cinéma donné
+     * @param type $cinemaID
+    
+     */
+    public function deleteShowtimeByIdCinema($cinemaID) {
+        $this->executeQuery("DELETE FROM seance "
+                . "WHERE cinemaID = :cinemaID ",
+                [':cinemaID' => $cinemaID]);
+
+        if ($this->logger) {
+            $this->logger->info('Showtime for the movie  ... and the cinema ' . $cinemaID . ' successfully deleted.');
+        }
+    }
+    
+    
+    
+    
+    
     /**
      * Insère une nouvelle séance pour un film donné dans un cinéma donné
      * @param integer $cinemaID

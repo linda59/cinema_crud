@@ -785,6 +785,7 @@ function deleteCinema($managers){
         // suppression de la préférence de film
         //$fctManager->deleteCinema($sanitizedEntries['cinemaID']);
         //$fctCinema->deleteCinema($sanitizedEntries['cinemaID']);
+          $managers["seancesMgr"]->deleteShowtimeByIdCinema($sanitizedEntries['cinemaID']);
         $managers["cinemasMgr"]->deleteCinema($sanitizedEntries['cinemaID']);
     }
 // redirection vers la liste des cinémas
