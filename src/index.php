@@ -11,7 +11,7 @@ require_once __DIR__ . '/init.php';
 // appel au contrôleur serviteur
 require __DIR__ . '/controllers/controleur.php';
 
-// on "sainifie" les entrées
+// on "assainit" les entrées
 session_start();
 $sanitizedEntries = filter_input_array(INPUT_GET, ['action' => FILTER_SANITIZE_STRING]);
 
