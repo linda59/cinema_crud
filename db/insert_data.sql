@@ -40,11 +40,11 @@ TRUNCATE TABLE `film`;
 -- Contenu de la table `film`
 --
 
-INSERT INTO `film` (`FILMID`, `TITRE`, `TITREORIGINAL`, `DATESORTIE`, `CLASSIFICATION`) VALUES
-(1, 'Un beau dimanche', NULL,'15/02/2015', 3),
-(2, 'La Grande Aventure Lego', 'The Lego Movie', '07/05/2014',10),
-(3, 'American Bluff', 'American Hustle', '06/08/2016',12),
-(4, 'Dallas Buyers Club', NULL, '03/12/2016',12);
+INSERT INTO `film` (`FILMID`, `TITRE`, `TITREORIGINAL`, `DATESORTIE`) VALUES
+(1, 'Un beau dimanche', NULL,'15/02/2015'),
+(2, 'La Grande Aventure Lego', 'The Lego Movie', '07/05/2014'),
+(3, 'American Bluff', 'American Hustle', '06/08/2016'),
+(4, 'Dallas Buyers Club', NULL, '03/12/2016');
 
 --
 -- Vider la table avant d'insérer `prefere`

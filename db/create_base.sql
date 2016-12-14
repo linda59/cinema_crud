@@ -46,8 +46,7 @@ CREATE TABLE IF NOT EXISTS `film` (
   `FILMID` int(11) NOT NULL,
   `TITRE` varchar(100) NOT NULL,
   `DATESORTIE` varchar(100) DEFAULT NULL,
-  `TITREORIGINAL` varchar(100),
-  `CLASSIFICATION` int(11) NOT NULL
+  `TITREORIGINAL` varchar(100)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
