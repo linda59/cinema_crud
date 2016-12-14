@@ -9,7 +9,7 @@ require_once __DIR__ . '/includes/managers.php';
 require_once __DIR__ . '/init.php';
 
 // appel au contrôleur serviteur
-require __DIR__ . '/controllers/controleur.php';
+
 
 use Semeformation\Mvc\Cinema_crud\controllers\HomeController;
 use Semeformation\Mvc\Cinema_crud\controllers\CinemaController;
