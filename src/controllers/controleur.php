@@ -1,5 +1,5 @@
 <?php
-use Semeformation\Mvc\Cinema_crud\models\View;
+use Semeformation\Mvc\Cinema_crud\views\View;
 function home($managers) {
 // personne d'authentifié à ce niveau
     $loginSuccess = false;
@@ -336,6 +336,7 @@ function cinemaShowtimes($managers) {
     $vue->generer((['sanitizedEntries'=>$sanitizedEntries,'managers'=>$managers,
                     'cinemaID'=>$cinemaID,
                     'cinema'=>$cinema,
+                    'adminConnected'=>$adminConnected,
                     'filmsUnplanned'=>$filmsUnplanned]));
 //    require 'views/viewCinemaShowtimes.php';
 }
@@ -391,9 +392,10 @@ function movieShowtimes($managers) {
     }
     $vue = new View('MovieShowtimes');
     $vue->generer((['sanitizedEntries'=>$sanitizedEntries,'managers'=>$managers,
-                    'cinemaID'=>$cinemaID,
-                    'cinema'=>$cinema,
-                    'filmsUnplanned'=>$filmsUnplanned]));
+                    'filmID'=>$filmID,
+                    'adminConnected'=>$adminConnected,
+                    'film'=>$film,
+                    'cinemasUnplanned'=>$cinemasUnplanned]));
 //    require 'views/viewMovieShowtimes.php';
 }
 
@@ -650,7 +652,16 @@ function editShowtime($managers) {
         header('Location: index.php');
         exit();
     }
-    require 'views/viewEditShowtimes.php';
+    $vue = new Semeformation\Mvc\Cinema_crud\Views\View('EditShowtimes');
+    $vue->generer((['seance'=>$seance,
+                    'film'=>$film,
+                    'cinema'=>$cinema,
+                    'from'=>$from,
+                    'cinemaID'=>$cinemaID,
+                    'filmID'=>$filmID,
+                    'isItACreation'=>$isItACreation,
+                    'fromCinema'=>$fromCinema]));
+//    require 'views/viewEditShowtimes.php';
 }
 
 function editMovie($managers) {
