@@ -12,12 +12,14 @@ require_once __DIR__ . '/init.php';
 require __DIR__ . '/controllers/controleur.php';
 use Semeformation\Mvc\Cinema_crud\controllers\HomeController;
 use Semeformation\Mvc\Cinema_crud\controllers\CinemaController;
+use Semeformation\Mvc\Cinema_crud\controllers\MovieController;
 
 // on "assainit" les entrées
 session_start();
 
 $homeCtrl   = new HomeController($logger);
 $cinemaCtrl = new CinemaController($logger);
+$movieCtrl = new MovieController($logger);
 
 $sanitizedEntries = filter_input_array(INPUT_GET, ['action' => FILTER_SANITIZE_STRING]);
 
@@ -35,7 +37,7 @@ if ($sanitizedEntries && $sanitizedEntries['action'] !== '') {
             cinemaShowtimes($managers);
             break;
         case "moviesList":
-            moviesList($managers);
+            $movieCTRL->moviesList($managers);
             break;
         case "movieShowtimes":
             movieShowtimes($managers);
@@ -44,7 +46,7 @@ if ($sanitizedEntries && $sanitizedEntries['action'] !== '') {
             editShowtime($managers);
             break;
         case "deleteMovie":
-            deleteMovie($managers);
+            $movieCtrl->deleteMovie($managers);
             break;
         case "deleteShowtime":
             deleteShowtime($managers);
@@ -59,7 +61,7 @@ if ($sanitizedEntries && $sanitizedEntries['action'] !== '') {
             $cinemaCtrl->editCinema($managers);
             break;
         case "editMovie":
-            editMovie($managers);
+            $movieCtrl->editMovie($managers);
             break;
         case "editFavoriteMoviesList":
             editFavoriteMoviesList($managers);
