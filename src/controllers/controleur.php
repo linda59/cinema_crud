@@ -177,7 +177,6 @@ function editFavoriteMoviesList($managers) {
         //$utilisateur = $fctManager->getCompleteUsernameByEmailAddress($_SESSION['user']);
         //$utilisateur = $utilisateursMgr->getCompleteUsernameByEmailAddress($_SESSION['user']);
         $utilisateur = $managers["utilisateursMgr"]->getCompleteUsernameByEmailAddress($_SESSION['user']);
-        var_dump($utilisateur);
     }
     $vue = new View('FavoriteMoviesList');
     $vue->generer((['utilisateur' => $utilisateur, 'managers' => $managers]));
