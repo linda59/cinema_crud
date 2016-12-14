@@ -15,7 +15,7 @@ class HomeController {
         $this->utilisateur = new Utilisateur($logger);
     }
 
-  public  function createNewUser($managers) {
+    public  function createNewUser($managers) {
         // variables de contrôles du formulaire de création
         $isFirstNameEmpty            = false;
         $isLastNameEmpty             = false;
