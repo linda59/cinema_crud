@@ -10,9 +10,13 @@ require_once __DIR__ . '/init.php';
 
 // appel au contrôleur serviteur
 require __DIR__ . '/controllers/controleur.php';
+use Semeformation\Mvc\Cinema_crud\controllers\HomeController;
 
 // on "assainit" les entrées
 session_start();
+
+$homeCtrl = new HomeController($logger);
+
 $sanitizedEntries = filter_input_array(INPUT_GET, ['action' => FILTER_SANITIZE_STRING]);
 
 if ($sanitizedEntries && $sanitizedEntries['action'] !== '') {
@@ -23,7 +27,7 @@ if ($sanitizedEntries && $sanitizedEntries['action'] !== '') {
             cinemasList($managers);
             break;
         case "createUser":
-            createNewUser($managers);
+            $homeCtrl->createNewUser($managers);
             break;
         case "cinemaShowtimes":
             cinemaShowtimes($managers);
@@ -63,9 +67,9 @@ if ($sanitizedEntries && $sanitizedEntries['action'] !== '') {
             break;
         default:
             // Activation de la route par défaut (page d'accueil) 
-            home($managers);
+            $homeCtrl->home($managers);
     }
 } else {
     // Activation de la route par défaut (page d'accueil) 
-    home($managers);
+$homeCtrl->home($managers);
 }
