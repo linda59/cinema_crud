@@ -15,6 +15,8 @@ use Semeformation\Mvc\Cinema_crud\controllers\HomeController;
 use Semeformation\Mvc\Cinema_crud\controllers\CinemaController;
 use Semeformation\Mvc\Cinema_crud\controllers\FavoriteController;
 use Semeformation\Mvc\Cinema_crud\controllers\ShowtimesController;
+use Semeformation\Mvc\Cinema_crud\controllers\MovieController;
+
 // on "assainit" les entrées
 session_start();
 
@@ -22,6 +24,7 @@ $cinemaCtrl = new CinemaController($logger);
 $homeCtrl = new HomeController($logger);
 $favoriteCtrl = new FavoriteController($logger);
 $showtimesCtrl = new ShowtimesController($logger);
+$movieCtrl = new MovieController($logger);
 
 $sanitizedEntries = filter_input_array(INPUT_GET, ['action' => FILTER_SANITIZE_STRING]);
 
@@ -39,7 +42,7 @@ if ($sanitizedEntries && $sanitizedEntries['action'] !== '') {
             $showtimesCtrl->cinemaShowtimes($managers);
             break;
         case "moviesList":
-            moviesList($managers);
+            $movieCTRL->moviesList($managers);
             break;
         case "movieShowtimes":
             $showtimesCtrl->movieShowtimes($managers);
@@ -48,7 +51,7 @@ if ($sanitizedEntries && $sanitizedEntries['action'] !== '') {
             $showtimesCtrl->editShowtime($managers);
             break;
         case "deleteMovie":
-            deleteMovie($managers);
+            $movieCtrl->deleteMovie($managers);
             break;
         case "deleteShowtime":
             $showtimesCtrl->deleteShowtime($managers);
@@ -63,7 +66,7 @@ if ($sanitizedEntries && $sanitizedEntries['action'] !== '') {
             $cinemaCtrl->editCinema($managers);
             break;
         case "editMovie":
-            editMovie($managers);
+            $movieCtrl->editMovie($managers);
             break;
         case "editFavoriteMoviesList":
             $favoriteCtrl->editFavoriteMoviesList($managers);
