@@ -8,7 +8,7 @@ use Psr\Log\LoggerInterface;
 use PDO;
 use Exception;
 
-abstract class DBFunctions {
+abstract class Model {
 
     // logger
     protected $logger;

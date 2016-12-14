@@ -8,14 +8,14 @@
 
 namespace Semeformation\Mvc\Cinema_crud\models;
 
-use Semeformation\Mvc\Cinema_crud\includes\DBFunctions;
+use Semeformation\Mvc\Cinema_crud\includes\Model;
 
 /**
  * Description of Film
  *
  * @author admin
  */
-class Film extends DBFunctions{
+class Film extends Model{
     /**
      * Méthode qui renvoie la liste des films
      * @return array[][]

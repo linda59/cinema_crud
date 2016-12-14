@@ -1,7 +1,7 @@
 <?php
 namespace Semeformation\Mvc\Cinema_crud\models;
 
-use Semeformation\Mvc\Cinema_crud\includes\DBFunctions;
+use Semeformation\Mvc\Cinema_crud\includes\Model;
 
 use Exception;
 
@@ -10,7 +10,7 @@ use Exception;
  *
  * @author admin
  */
-class Utilisateur extends DBFunctions {
+class Utilisateur extends Model {
     
     
     

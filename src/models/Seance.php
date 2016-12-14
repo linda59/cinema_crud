@@ -7,13 +7,13 @@
  */
 
 namespace Semeformation\Mvc\Cinema_crud\models;
-use \Semeformation\Mvc\Cinema_crud\includes\DBFunctions;
+use \Semeformation\Mvc\Cinema_crud\includes\Model;
 /**
  * Description of Seance
  *
  * @author admin
  */
-class Seance extends DBFunctions{
+class Seance extends Model{
     /**
      * Renvoie une liste de films pas encore programmés pour un cinema donné
      * @param integer $cinemaID
