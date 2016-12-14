@@ -10,14 +10,18 @@ require_once __DIR__ . '/init.php';
 
 // appel au contrôleur serviteur
 require __DIR__ . '/controllers/controleur.php';
+
 use Semeformation\Mvc\Cinema_crud\controllers\HomeController;
 use Semeformation\Mvc\Cinema_crud\controllers\CinemaController;
-
+use Semeformation\Mvc\Cinema_crud\controllers\FavoriteController;
+use Semeformation\Mvc\Cinema_crud\controllers\ShowtimesController;
 // on "assainit" les entrées
 session_start();
 
-$homeCtrl   = new HomeController($logger);
 $cinemaCtrl = new CinemaController($logger);
+$homeCtrl = new HomeController($logger);
+$favoriteCtrl = new FavoriteController($logger);
+$showtimesCtrl = new ShowtimesController($logger);
 
 $sanitizedEntries = filter_input_array(INPUT_GET, ['action' => FILTER_SANITIZE_STRING]);
 
@@ -32,28 +36,28 @@ if ($sanitizedEntries && $sanitizedEntries['action'] !== '') {
             $homeCtrl->createNewUser($managers);
             break;
         case "cinemaShowtimes":
-            cinemaShowtimes($managers);
+            $showtimesCtrl->cinemaShowtimes($managers);
             break;
         case "moviesList":
             moviesList($managers);
             break;
         case "movieShowtimes":
-            movieShowtimes($managers);
+            $showtimesCtrl->movieShowtimes($managers);
             break;
         case "editShowtime":
-            editShowtime($managers);
+            $showtimesCtrl->editShowtime($managers);
             break;
         case "deleteMovie":
             deleteMovie($managers);
             break;
         case "deleteShowtime":
-            deleteShowtime($managers);
+            $showtimesCtrl->deleteShowtime($managers);
             break;
         case "deleteCinema":
             $cinemaCtrl->deleteCinema($managers);
             break;
         case "deleteFavoriteMovie":
-            deleteFavoriteMovie($managers);
+            $favoriteCtrl->deleteFavoriteMovie($managers);
             break;
         case "editCinema":
             $cinemaCtrl->editCinema($managers);
@@ -62,10 +66,10 @@ if ($sanitizedEntries && $sanitizedEntries['action'] !== '') {
             editMovie($managers);
             break;
         case "editFavoriteMoviesList":
-            editFavoriteMoviesList($managers);
+            $favoriteCtrl->editFavoriteMoviesList($managers);
             break;
         case "editFavoriteMovie":
-            editFavoriteMovie($managers);
+            $favoriteCtrl->editFavoriteMovie($managers);
             break;
         default:
             // Activation de la route par défaut (page d'accueil) 
@@ -73,5 +77,5 @@ if ($sanitizedEntries && $sanitizedEntries['action'] !== '') {
     }
 } else {
     // Activation de la route par défaut (page d'accueil) 
-$homeCtrl->home($managers);
+    $homeCtrl->home($managers);
 }
