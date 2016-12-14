@@ -177,6 +177,7 @@ function editFavoriteMoviesList($managers) {
         //$utilisateur = $fctManager->getCompleteUsernameByEmailAddress($_SESSION['user']);
         //$utilisateur = $utilisateursMgr->getCompleteUsernameByEmailAddress($_SESSION['user']);
         $utilisateur = $managers["utilisateursMgr"]->getCompleteUsernameByEmailAddress($_SESSION['user']);
+        var_dump($utilisateur);
     }
     $vue = new View('FavoriteMoviesList');
     $vue->generer((['utilisateur' => $utilisateur, 'managers' => $managers]));
@@ -306,7 +307,7 @@ function editFavoriteMovie($managers) {
                 "commentaire" => ""];
         }
     }
-    $vue = new View('FavoriteMoviesList');
+    $vue = new View('FavoriteMovie');
     $vue->generer((['sanitizedEntries' => $sanitizedEntries, 'managers'         => $managers,
         'preference'       => $preference,
         'aFilmIsSelected'  => $aFilmIsSelected,
@@ -790,6 +791,7 @@ function editMovie($managers) {
     //require 'views/viewEditMovie.php';
     $vue = new View('EditMovie');
     $vue->generer((['film'          => $film,
+        
         'isItACreation'        => $isItACreation]));
 }
 
