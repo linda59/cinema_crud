@@ -62,6 +62,7 @@
                         //$seances = $fctSeance->getMovieShowtimes($cinemaID, $film['FILMID']);
                         //$seances = $managers["seancesMgr"]->getMovieShowtimes($cinemaID, $film['FILMID']);
                         // boucle sur les séances
+//                        foreach ($seances as $seance) {
                         foreach ($seances[$film['FILMID']] as $seance) {
                             /*
                              * Formatage des dates

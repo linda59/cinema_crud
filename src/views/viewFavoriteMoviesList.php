@@ -58,7 +58,8 @@ and open the template in the editor.
 }
 ?>
 <?php
-if (count($managers['filmsMgr']->getMoviesList()) > count($films)){
+if (count($nbfilms) > count($films)){
+//if (count($managers['filmsMgr']->getMoviesList()) > count($films)){
     ?>
     <tr class="new">
         <td colspan="4">

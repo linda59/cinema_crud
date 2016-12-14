@@ -20,7 +20,7 @@
                         if ($isItACreation) {
                             //$films = $fctManager->getMoviesNonAlreadyMarkedAsFavorite($_SESSION['userID']);                            
                             //$films =  $fctPrefere->getMoviesNonAlreadyMarkedAsFavorite($_SESSION['userID']);
-                            $films =  $managers["preferesMgr"]->getMoviesNonAlreadyMarkedAsFavorite($_SESSION['userID']);
+                            //$films =  $managers["preferesMgr"]->getMoviesNonAlreadyMarkedAsFavorite($_SESSION['userID']);
                             // s'il y a des résultats
                             if ($films) {
                                 foreach ($films as $film) {
