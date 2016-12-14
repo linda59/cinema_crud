@@ -2,6 +2,7 @@
 
 use Semeformation\Mvc\Cinema_crud\views\View;
 
+
 function home($managers) {
 // personne d'authentifié à ce niveau
     $loginSuccess = false;
@@ -692,7 +693,7 @@ function editShowtime($managers) {
         header('Location: index.php');
         exit();
     }
-    $vue = new Semeformation\Mvc\Cinema_crud\Views\View('EditShowtimes');
+    $vue = new View('EditShowtimes');
     $vue->generer((['seance'        => $seance,
         'film'          => $film,
         'cinema'        => $cinema,
@@ -786,7 +787,10 @@ function editMovie($managers) {
             ];
         }
     }
-    require 'views/viewEditMovie.php';
+    //require 'views/viewEditMovie.php';
+    $vue = new View('EditMovie');
+    $vue->generer((['film'          => $film,
+        'isItACreation'        => $isItACreation]));
 }
 
 function deleteMovie($managers) {
