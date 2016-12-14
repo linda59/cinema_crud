@@ -22,7 +22,7 @@ and open the template in the editor.
         // on récupère la liste des films préférés grâce à l'utilisateur identifié
         //$films = $fctManager->getFavoriteMoviesFromUser($utilisateur['userID']);
         //$films = $fctPrefere->getFavoriteMoviesFromUser($utilisateur['userID']);
-        $films = $managers["preferesMgr"]->getFavoriteMoviesFromUser($utilisateur['userID']);
+        //$films = $managers["preferesMgr"]->getFavoriteMoviesFromUser($utilisateur['userID']);
         // si des films ont été trouvés
         if ($films) {
             // boucle de création du tableau

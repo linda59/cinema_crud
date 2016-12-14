@@ -39,7 +39,7 @@
             // on récupère la liste des films de ce cinéma
             //$films = $fctManager->getCinemaMoviesByCinemaID($cinemaID);
             //$films = $fctSeance->getCinemaMoviesByCinemaID($cinemaID);
-            $films = $managers["seancesMgr"]->getCinemaMoviesByCinemaID($cinemaID);
+            //$films = $managers["seancesMgr"]->getCinemaMoviesByCinemaID($cinemaID);
             // si au moins un résultat
             if (count($films) > 0) {
                 // on boucle sur les résultats
@@ -60,9 +60,9 @@
                         // on récupère pour chaque film de ce cinéma, la liste des séances
                         //$seances = $fctManager->getMovieShowtimes($cinemaID, $film['FILMID']);
                         //$seances = $fctSeance->getMovieShowtimes($cinemaID, $film['FILMID']);
-                        $seances = $managers["seancesMgr"]->getMovieShowtimes($cinemaID, $film['FILMID']);
+                        //$seances = $managers["seancesMgr"]->getMovieShowtimes($cinemaID, $film['FILMID']);
                         // boucle sur les séances
-                        foreach ($seances as $seance) {
+                        foreach ($seances[$film['FILMID']] as $seance) {
                             /*
                              * Formatage des dates
                              */

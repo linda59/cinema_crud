@@ -55,8 +55,9 @@ function cinemasList($managers) {
     if (array_key_exists("user", $_SESSION) and $_SESSION['user'] == 'admin@adm.adm') {
         $isUserAdmin = true;
     }
+    $cinemas = $managers["cinemasMgr"]->getCinemasList();
     $vue = new View('CinemasList');
-    $vue->generer((['isUserAdmin' => $isUserAdmin, 'managers' => $managers]));
+    $vue->generer((['isUserAdmin' => $isUserAdmin, 'cinemas' => $cinemas]));
 //    require 'views/viewCinemasList.php';
 }
 
@@ -153,7 +154,7 @@ function createNewUser($managers) {
         $sanitizedEntries['email']     = '';
     }
     $vue = new View('CreateUser');
-    $vue->generer((['sanitizedEntries'            => $sanitizedEntries, 'managers'                    => $managers,
+    $vue->generer((['sanitizedEntries'=> $sanitizedEntries, 
         'isFirstNameEmpty'            => $isFirstNameEmpty,
         'isLastNameEmpty'             => $isLastNameEmpty,
         'isEmailAddressEmpty'         => $isEmailAddressEmpty,
@@ -178,8 +179,10 @@ function editFavoriteMoviesList($managers) {
         //$utilisateur = $utilisateursMgr->getCompleteUsernameByEmailAddress($_SESSION['user']);
         $utilisateur = $managers["utilisateursMgr"]->getCompleteUsernameByEmailAddress($_SESSION['user']);
     }
+    $films = $managers["preferesMgr"]->getFavoriteMoviesFromUser($utilisateur['userID']);
+    $nbfilms=$managers['filmsMgr']->getMoviesList();
     $vue = new View('FavoriteMoviesList');
-    $vue->generer((['utilisateur' => $utilisateur, 'managers' => $managers]));
+    $vue->generer((['utilisateur' => $utilisateur, 'films' => $films,'nbfilms'=>$nbfilms]));
 //    require 'views/viewFavoriteMoviesList.php';
 }
 
@@ -306,8 +309,9 @@ function editFavoriteMovie($managers) {
                 "commentaire" => ""];
         }
     }
+    $films =  $managers["preferesMgr"]->getMoviesNonAlreadyMarkedAsFavorite($_SESSION['userID']);
     $vue = new View('FavoriteMovie');
-    $vue->generer((['sanitizedEntries' => $sanitizedEntries, 'managers'         => $managers,
+    $vue->generer((['sanitizedEntries' => $sanitizedEntries,'films'=> $films,
         'preference'       => $preference,
         'aFilmIsSelected'  => $aFilmIsSelected,
         'isItACreation'    => $isItACreation]));
@@ -353,8 +357,13 @@ function cinemaShowtimes($managers) {
         header('Location: index.php');
         exit();
     }
+    $films = $managers["seancesMgr"]->getCinemaMoviesByCinemaID($cinemaID);
+    foreach ($films as $film){
+        $seances[$film['FILMID']] = $managers["seancesMgr"]->getMovieShowtimes($cinemaID, $film['FILMID']);
+    }
     $vue = new View('CinemaShowtimes');
-    $vue->generer((['sanitizedEntries' => $sanitizedEntries, 'managers'         => $managers,
+    $vue->generer((['sanitizedEntries' => $sanitizedEntries, 'films'=> $films,
+        'seances'=>$seances,
         'cinemaID'         => $cinemaID,
         'cinema'           => $cinema,
         'adminConnected'   => $adminConnected,
@@ -370,8 +379,9 @@ function moviesList($managers) {
     if (array_key_exists("user", $_SESSION) and $_SESSION['user'] == 'admin@adm.adm') {
         $isUserAdmin = true;
     }
+    $films = $managers["filmsMgr"]->getMoviesList();
     $vue = new View('MoviesList');
-    $vue->generer((['isUserAdmin' => $isUserAdmin, 'managers' => $managers]));
+    $vue->generer((['isUserAdmin' => $isUserAdmin, 'films' => $films]));
 //    require 'views/viewMoviesList.php';
 }
 
@@ -413,8 +423,18 @@ function movieShowtimes($managers) {
         header('Location: index.php');
         exit();
     }
+    $cinemas = $managers["filmsMgr"]->getMovieCinemasByMovieID($filmID);
+    
+     if (count($cinemas) > 0):
+         foreach ($cinemas as $cinema) {
+            $seances[$cinema['CINEMAID']] = $managers["seancesMgr"]->getMovieShowtimes($cinema['CINEMAID'],
+                                $filmID);
+         }
+     endif;
+     
     $vue = new View('MovieShowtimes');
-    $vue->generer((['sanitizedEntries' => $sanitizedEntries, 'managers'         => $managers,
+    $vue->generer((['sanitizedEntries' => $sanitizedEntries, 'cinemas'=> $cinemas,
+        'seances'=> $seances,
         'filmID'           => $filmID,
         'adminConnected'   => $adminConnected,
         'film'             => $film,
@@ -499,7 +519,7 @@ function editCinema($managers) {
         }
     }
     $vue = new View('EditCinema');
-    $vue->generer((['sanEntries'    => $sanEntries, 'managers'      => $managers,
+    $vue->generer((['sanEntries'    => $sanEntries,
         'cinema'        => $cinema,
         'isItACreation' => $isItACreation]));
 //    require 'views/viewEditCinema.php';
@@ -789,8 +809,7 @@ function editMovie($managers) {
     }
     //require 'views/viewEditMovie.php';
     $vue = new View('EditMovie');
-    $vue->generer((['film'          => $film,
-        
+    $vue->generer((['film'          => $film,        
         'isItACreation'        => $isItACreation]));
 }
 

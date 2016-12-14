@@ -17,7 +17,7 @@
             // on récupère la liste des cinémas ainsi que leurs informations
             //$cinemas = $fctManager->getCinemasList();          
             //$cinemas = $fctCinema->getCinemasList();
-            $cinemas = $managers["cinemasMgr"]->getCinemasList();
+            //$cinemas = $managers["cinemasMgr"]->getCinemasList();
             // boucle de construction de la liste des cinémas
             foreach ($cinemas as $cinema) {
                 ?>
