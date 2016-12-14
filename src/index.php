@@ -11,6 +11,7 @@ require_once __DIR__ . '/init.php';
 // appel au contrôleur serviteur
 require __DIR__ . '/controllers/controleur.php';
 use Semeformation\Mvc\Cinema_crud\controllers\HomeController;
+use Semeformation\Mvc\Cinema_crud\controllers\CinemaController;
 
 // on "assainit" les entrées
 session_start();
