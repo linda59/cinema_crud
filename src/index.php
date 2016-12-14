@@ -8,9 +8,6 @@ require_once __DIR__ . '/includes/managers.php';
 // initialisation de l'application 
 require_once __DIR__ . '/init.php';
 
-// appel au contrôleur serviteur
-
-
 use Semeformation\Mvc\Cinema_crud\controllers\HomeController;
 use Semeformation\Mvc\Cinema_crud\controllers\CinemaController;
 use Semeformation\Mvc\Cinema_crud\controllers\FavoriteController;
@@ -42,7 +39,7 @@ if ($sanitizedEntries && $sanitizedEntries['action'] !== '') {
             $showtimesCtrl->cinemaShowtimes($managers);
             break;
         case "moviesList":
-            $movieCTRL->moviesList($managers);
+            $movieCtrl->moviesList($managers);
             break;
         case "movieShowtimes":
             $showtimesCtrl->movieShowtimes($managers);
