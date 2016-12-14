@@ -297,6 +297,8 @@ function movieShowtimes($managers) {
 //    require 'views/viewMovieShowtimes.php';
 }
 
+
+
 function editCinema($managers) {
     //   session_start();
 // si l'utilisateur n'est pas connecté ou sinon s'il n'est pas amdinistrateur
