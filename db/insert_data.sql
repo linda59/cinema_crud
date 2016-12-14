@@ -84,11 +84,11 @@ TRUNCATE TABLE `utilisateur`;
 -- Contenu de la table `utilisateur`
 --
 
-INSERT INTO `utilisateur` (`USERID`, `NOM`, `PRENOM`, `ADRESSECOURRIEL`, `PASSWORD`, `AGE`) VALUES
-(18, 'Ponsard', 'Yann', 'yp@yp.yp', '$2y$10$cOyLS7z8BjbpjEflNjFYFuBhMp0zsCJxrjrkXIGZzYhTH/xdwFxpe', 8),
-(19, 'rp', 'rp', 'rp@rp.rp', '$2y$10$5QzyFQLLfzuGNkveZnmqjOLSgxGvQuhxno63tzViYw4E04cgKjk76', 13),
-(20, 'admin', 'admin', 'admin@adm.adm', '$2y$10$r2maAvjdNftF8bzZMRl8..m6aIxo.jthpa..tgSp1ehDN.YLNFuNe', 28),
-(21, 'hs', 'hs', 'hs@hs.hs', '$2y$10$QkZ9yvL8/pns8jt5EG504.kyKMLR.Wdgwjhd/QSdhnMBqMsH5P3Qi', 17);
+INSERT INTO `utilisateur` (`USERID`, `NOM`, `PRENOM`, `ADRESSECOURRIEL`, `PASSWORD`) VALUES
+(18, 'Ponsard', 'Yann', 'yp@yp.yp', '$2y$10$cOyLS7z8BjbpjEflNjFYFuBhMp0zsCJxrjrkXIGZzYhTH/xdwFxpe'),
+(19, 'rp', 'rp', 'rp@rp.rp', '$2y$10$5QzyFQLLfzuGNkveZnmqjOLSgxGvQuhxno63tzViYw4E04cgKjk76'),
+(20, 'admin', 'admin', 'admin@adm.adm', '$2y$10$r2maAvjdNftF8bzZMRl8..m6aIxo.jthpa..tgSp1ehDN.YLNFuNe'),
+(21, 'hs', 'hs', 'hs@hs.hs', '$2y$10$QkZ9yvL8/pns8jt5EG504.kyKMLR.Wdgwjhd/QSdhnMBqMsH5P3Qi');
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

@@ -90,8 +90,7 @@ CREATE TABLE IF NOT EXISTS `utilisateur` (
   `NOM` varchar(50) NOT NULL,
   `PRENOM` varchar(30) NOT NULL,
   `ADRESSECOURRIEL` varchar(90) NOT NULL,
-  `PASSWORD` varchar(255) NOT NULL,
-  `AGE` int(11) NOT NULL
+  `PASSWORD` varchar(255) NOT NULL  
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
