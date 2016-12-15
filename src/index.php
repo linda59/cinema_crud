@@ -1,9 +1,7 @@
 <?php
 
  require_once __DIR__ . '/vendor/autoload.php'; 
- 
-// init. des managers 
-require_once __DIR__ . '/includes/managers.php';
+
 
 // initialisation de l'application 
 require_once __DIR__ . '/init.php';
@@ -30,52 +28,52 @@ if ($sanitizedEntries && $sanitizedEntries['action'] !== '') {
     switch ($sanitizedEntries['action']) {
         // Activation de la route cinemasList
         case "cinemasList":
-            $cinemaCtrl->cinemasList($managers);
+            $cinemaCtrl->cinemasList();
             break;
         case "createUser":
-            $homeCtrl->createNewUser($managers);
+            $homeCtrl->createNewUser();
             break;
         case "cinemaShowtimes":
-            $showtimesCtrl->cinemaShowtimes($managers);
+            $showtimesCtrl->cinemaShowtimes();
             break;
         case "moviesList":
-            $movieCtrl->moviesList($managers);
+            $movieCtrl->moviesList();
             break;
         case "movieShowtimes":
-            $showtimesCtrl->movieShowtimes($managers);
+            $showtimesCtrl->movieShowtimes();
             break;
         case "editShowtime":
-            $showtimesCtrl->editShowtime($managers);
+            $showtimesCtrl->editShowtime();
             break;
         case "deleteMovie":
-            $movieCtrl->deleteMovie($managers);
+            $movieCtrl->deleteMovie();
             break;
         case "deleteShowtime":
-            $showtimesCtrl->deleteShowtime($managers);
+            $showtimesCtrl->deleteShowtime();
             break;
         case "deleteCinema":
-            $cinemaCtrl->deleteCinema($managers);
+            $cinemaCtrl->deleteCinema();
             break;
         case "deleteFavoriteMovie":
-            $favoriteCtrl->deleteFavoriteMovie($managers);
+            $favoriteCtrl->deleteFavoriteMovie();
             break;
         case "editCinema":
-            $cinemaCtrl->editCinema($managers);
+            $cinemaCtrl->editCinema();
             break;
         case "editMovie":
-            $movieCtrl->editMovie($managers);
+            $movieCtrl->editMovie();
             break;
         case "editFavoriteMoviesList":
-            $favoriteCtrl->editFavoriteMoviesList($managers);
+            $favoriteCtrl->editFavoriteMoviesList();
             break;
         case "editFavoriteMovie":
-            $favoriteCtrl->editFavoriteMovie($managers);
+            $favoriteCtrl->editFavoriteMovie();
             break;
         default:
             // Activation de la route par défaut (page d'accueil) 
-            $homeCtrl->home($managers);
+            $homeCtrl->home();
     }
 } else {
     // Activation de la route par défaut (page d'accueil) 
-    $homeCtrl->home($managers);
+    $homeCtrl->home();
 }
