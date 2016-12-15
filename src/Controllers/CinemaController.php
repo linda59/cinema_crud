@@ -1,9 +1,9 @@
 <?php
 
-namespace Semeformation\Mvc\Cinema_crud\controllers;
+namespace Semeformation\Mvc\Cinema_crud\Controllers;
 
 use Semeformation\Mvc\Cinema_crud\Views\View;
-use Semeformation\Mvc\Cinema_crud\models\Cinema;
+use Semeformation\Mvc\Cinema_crud\Models\Cinema;
 
 /**
  * Description of CinemaController
@@ -11,7 +11,7 @@ use Semeformation\Mvc\Cinema_crud\models\Cinema;
  * @author admin
  */
 class CinemaController {
-    
+
     function cinemasList($managers) {
 
     $isUserAdmin = false;
@@ -86,7 +86,7 @@ class CinemaController {
                 ['cinemaID' => FILTER_SANITIZE_NUMBER_INT]);
         if ($sanEntries && $sanEntries['cinemaID'] !== NULL && $sanEntries['cinemaID'] !==
                 '') {
-            // on récupère les informations manquantes 
+            // on récupère les informations manquantes
             //$cinema = $fctManager->getCinemaInformationsByID($sanEntries['cinemaID']);
             //$cinema = $fctCinema->getCinemaInformationsByID($sanEntries['cinemaID']);
             $cinema = $managers["cinemasMgr"]->getCinemaInformationsByID($sanEntries['cinemaID']);

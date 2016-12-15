@@ -1,9 +1,9 @@
 <?php
 
-namespace Semeformation\Mvc\Cinema_crud\includes;
+namespace Semeformation\Mvc\Cinema_crud\Includes;
 
-use Semeformation\Mvc\Cinema_crud\includes\DBFactory;
-use Semeformation\Mvc\Cinema_crud\includes\Utils;
+use Semeformation\Mvc\Cinema_crud\Includes\DBFactory;
+use Semeformation\Mvc\Cinema_crud\Includes\Utils;
 use Psr\Log\LoggerInterface;
 use PDO;
 use Exception;

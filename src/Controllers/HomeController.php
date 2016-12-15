@@ -1,9 +1,9 @@
 <?php
 
-namespace Semeformation\Mvc\Cinema_crud\controllers;
+namespace Semeformation\Mvc\Cinema_crud\Controllers;
 
 use Semeformation\Mvc\Cinema_crud\Views\View;
-use Semeformation\Mvc\Cinema_crud\models\Utilisateur;
+use Semeformation\Mvc\Cinema_crud\Models\Utilisateur;
 
 /**
  * Description of HomeController
@@ -48,7 +48,7 @@ class HomeController {
 
                     // on enregistre l'utilisateur
                     $_SESSION['user'] = $sanitizedEntries['email'];
-                    //$_SESSION['userID'] = $fctManager->getUserIDByEmailAddress($_SESSION['user']);          
+                    //$_SESSION['userID'] = $fctManager->getUserIDByEmailAddress($_SESSION['user']);
                     //$_SESSION['userID'] = $utilisateursMgr->getUserIDByEmailAddress($_SESSION['user']);
                     $_SESSION['userID'] = $managers["utilisateursMgr"]->getUserIDByEmailAddress($_SESSION['user']);
                     // on redirige vers la page d'édition des films préférés
@@ -166,8 +166,8 @@ class HomeController {
             'isPasswordValid' => $isPasswordValid]));
 //    require 'views/viewCreateUser.php';
     }
-    
-    public function logout(){        
+
+    public function logout(){
         session_start();
         session_destroy();
         header('Location: index.php');

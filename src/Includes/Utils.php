@@ -1,6 +1,6 @@
 <?php
 
-namespace Semeformation\Mvc\Cinema_crud\includes;
+namespace Semeformation\Mvc\Cinema_crud\Includes;
 
 /*
  * To change this license header, choose License Headers in Project Properties.

@@ -6,8 +6,8 @@
  * and open the template in the editor.
  */
 
-namespace Semeformation\Mvc\Cinema_crud\models;
-use Semeformation\Mvc\Cinema_crud\includes\Model;
+namespace Semeformation\Mvc\Cinema_crud\Models;
+use Semeformation\Mvc\Cinema_crud\Includes\Model;
 /**
  * Description of Prefere
  *
