@@ -2,8 +2,7 @@
 
  require_once __DIR__ . '/vendor/autoload.php';
 
-// init. des managers
-require_once __DIR__ . '/Includes/managers.php';
+
 
 // initialisation de l'application
 require_once __DIR__ . '/init.php';

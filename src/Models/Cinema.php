@@ -8,14 +8,14 @@
 
 namespace Semeformation\Mvc\Cinema_crud\Models;
 
-use Semeformation\Mvc\Cinema_crud\Includes\Model;
+use Semeformation\Mvc\Cinema_crud\Includes\DAO;
 
 /**
  * Description of Cinema
  *
  * @author admin
  */
-class Cinema extends Model{
+class Cinema extends DAO{
     
     
     
