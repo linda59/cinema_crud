@@ -11,7 +11,7 @@ namespace Semeformation\Mvc\Cinema_crud\Controllers;
 use Semeformation\Mvc\Cinema_crud\Views\View;
 use Semeformation\Mvc\Cinema_crud\Models\Prefere;
 use Semeformation\Mvc\Cinema_crud\DAO\UtilisateurDAO;
-use Semeformation\Mvc\Cinema_crud\Models\Film;
+use Semeformation\Mvc\Cinema_crud\DAO\FilmDAO;
 use \Psr\Log\LoggerInterface;
 
 class FavoriteController {
@@ -21,7 +21,7 @@ class FavoriteController {
     */
     private $prefere;
     private $utilisateurDAO;
-    //private $film;
+    private $filmDAO;
 
     /**
     * Constructeur de la classe
@@ -29,7 +29,7 @@ class FavoriteController {
     public function __construct(LoggerInterface $logger = null) {
         $this->prefere = new Prefere($logger);
         $this->utilisateurDAO = new UtilisateurDAO($logger);
-        $this->film = new Film($logger);
+        $this->filmDAO = new FilmDAO($logger);
     }
 
     public function editFavoriteMovie() {
@@ -142,7 +142,7 @@ class FavoriteController {
                     $utilisateur = $this->utilisateurDAO->getUserByEmailAddress($_SESSION['user']);
                 }
                 $films = $this->prefere->getFavoriteMoviesFromUser($utilisateur->getUserId());
-                $nbfilms= $this->film->getMoviesList();
+                $nbfilms= $this->filmDAO->getMoviesList();
                 $vue = new View('FavoriteMoviesList');
                 $vue->generer((['utilisateur' => $utilisateur, 'films' => $films,'nbfilms'=>$nbfilms]));
                 //    require 'views/viewFavoriteMoviesList.php';

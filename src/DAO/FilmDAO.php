@@ -8,7 +8,7 @@
  
 namespace Semeformation\Mvc\Cinema_crud\dao; 
 use Semeformation\Mvc\Cinema_crud\Includes\DAO; 
-use Semeformation\Mvc\Cinema_crud\models\Film; 
+use Semeformation\Mvc\Cinema_crud\Models\Film; 
 /** 
  * Description of FilmDAO 
  * 
@@ -112,7 +112,11 @@ class FilmDAO extends DAO{
                 . $filmID; 
         $resultat = $this->extraire1xN($requete); 
         // on retourne le résultat extrait 
-        return $resultat; 
+//        return $resultat; 
+        
+        $film = $this->buildBusinessObject($resultat);
+        
+        return film;
     } 
  
      
