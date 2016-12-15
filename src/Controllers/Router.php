@@ -3,7 +3,7 @@
 namespace Semeformation\Mvc\Cinema_crud\Controllers;
 
 use  Semeformation\Mvc\Cinema_crud\Controllers\CinemaController;
-use  Semeformation\Mvc\Cinema_crud\Controllers\FavoriteController;
+//use  Semeformation\Mvc\Cinema_crud\Controllers\FavoriteController;
 use  Semeformation\Mvc\Cinema_crud\Controllers\HomeController;
 use  Semeformation\Mvc\Cinema_crud\Controllers\MovieController;
 use  Semeformation\Mvc\Cinema_crud\Controllers\ShowtimesController;
@@ -24,7 +24,7 @@ class Router{
         $this -> logger = $logger;
         $this -> cinemaCtrl = new CinemaController($this -> logger);
         $this -> homeCtrl = new HomeController($this -> logger);
-        $this -> favoriteCtrl = new FavoriteController($this -> logger);
+//        $this -> favoriteCtrl = new FavoriteController($this -> logger);
         $this -> showtimeCtrl = new ShowtimesController($this -> logger);
         $this -> movieCtrl = new MovieController($this -> logger);
     }
@@ -62,21 +62,21 @@ class Router{
                 case "deleteCinema":
                 $this -> cinemaCtrl->deleteCinema();
                 break;
-                case "deleteFavoriteMovie":
-                $this -> favoriteCtrl->deleteFavoriteMovie();
-                break;
+//                case "deleteFavoriteMovie":
+//                $this -> favoriteCtrl->deleteFavoriteMovie();
+//                break;
                 case "editCinema":
                 $this -> cinemaCtrl->editCinema();
                 break;
                 case "editMovie":
                 $this -> movieCtrl->editMovie();
                 break;
-                case "editFavoriteMoviesList":
-                $this -> favoriteCtrl->editFavoriteMoviesList();
-                break;
-                case "editFavoriteMovie":
-                $this -> favoriteCtrl->editFavoriteMovie();
-                break;
+//                case "editFavoriteMoviesList":
+//                $this -> favoriteCtrl->editFavoriteMoviesList();
+//                break;
+//                case "editFavoriteMovie":
+//                $this -> favoriteCtrl->editFavoriteMovie();
+//                break;
                 default:
                 // Activation de la route par défaut (page d'accueil)
                 $this -> homeCtrl->home();
