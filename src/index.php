@@ -1,18 +1,18 @@
 <?php
 
- require_once __DIR__ . '/vendor/autoload.php'; 
- 
-// init. des managers 
-require_once __DIR__ . '/includes/managers.php';
+ require_once __DIR__ . '/vendor/autoload.php';
 
-// initialisation de l'application 
+// init. des managers
+require_once __DIR__ . '/Includes/managers.php';
+
+// initialisation de l'application
 require_once __DIR__ . '/init.php';
 
-use Semeformation\Mvc\Cinema_crud\controllers\HomeController;
-use Semeformation\Mvc\Cinema_crud\controllers\CinemaController;
-use Semeformation\Mvc\Cinema_crud\controllers\FavoriteController;
-use Semeformation\Mvc\Cinema_crud\controllers\ShowtimesController;
-use Semeformation\Mvc\Cinema_crud\controllers\MovieController;
+use Semeformation\Mvc\Cinema_crud\Controllers\HomeController;
+use Semeformation\Mvc\Cinema_crud\Controllers\CinemaController;
+use Semeformation\Mvc\Cinema_crud\Controllers\FavoriteController;
+use Semeformation\Mvc\Cinema_crud\Controllers\ShowtimesController;
+use Semeformation\Mvc\Cinema_crud\Controllers\MovieController;
 
 // on "assainit" les entrées
 session_start();
@@ -26,7 +26,7 @@ $movieCtrl = new MovieController($logger);
 $sanitizedEntries = filter_input_array(INPUT_GET, ['action' => FILTER_SANITIZE_STRING]);
 
 if ($sanitizedEntries && $sanitizedEntries['action'] !== '') {
-// si l'action demandée est la liste des cinémas 
+// si l'action demandée est la liste des cinémas
     switch ($sanitizedEntries['action']) {
         // Activation de la route cinemasList
         case "cinemasList":
@@ -72,10 +72,10 @@ if ($sanitizedEntries && $sanitizedEntries['action'] !== '') {
             $favoriteCtrl->editFavoriteMovie($managers);
             break;
         default:
-            // Activation de la route par défaut (page d'accueil) 
+            // Activation de la route par défaut (page d'accueil)
             $homeCtrl->home($managers);
     }
 } else {
-    // Activation de la route par défaut (page d'accueil) 
+    // Activation de la route par défaut (page d'accueil)
     $homeCtrl->home($managers);
 }

@@ -6,9 +6,9 @@
  * and open the template in the editor.
  */
 
-namespace Semeformation\Mvc\Cinema_crud\controllers;
+namespace Semeformation\Mvc\Cinema_crud\Controllers;
 
-use Semeformation\Mvc\Cinema_crud\models\Seance;
+use Semeformation\Mvc\Cinema_crud\Models\Seance;
 use Semeformation\Mvc\Cinema_crud\Views\View;
 /**
  * Description of ShowtimesController

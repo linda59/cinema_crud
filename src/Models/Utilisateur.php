@@ -1,7 +1,7 @@
 <?php
-namespace Semeformation\Mvc\Cinema_crud\models;
+namespace Semeformation\Mvc\Cinema_crud\Models;
 
-use Semeformation\Mvc\Cinema_crud\includes\Model;
+use Semeformation\Mvc\Cinema_crud\Includes\Model;
 
 use Exception;
 

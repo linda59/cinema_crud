@@ -1,13 +1,13 @@
 <?php
 
-use Semeformation\Mvc\Cinema_crud\includes\DBFunctions;
+use Semeformation\Mvc\Cinema_crud\Includes\DBFunctions;
 use Monolog\Logger;
 use Monolog\Handler\StreamHandler;
-use Semeformation\Mvc\Cinema_crud\models\Utilisateur;
-use Semeformation\Mvc\Cinema_crud\models\Cinema;
-use Semeformation\Mvc\Cinema_crud\models\Film;
-use Semeformation\Mvc\Cinema_crud\models\Prefere;
-use Semeformation\Mvc\Cinema_crud\models\Seance;
+use Semeformation\Mvc\Cinema_crud\Models\Utilisateur;
+use Semeformation\Mvc\Cinema_crud\Models\Cinema;
+use Semeformation\Mvc\Cinema_crud\Models\Film;
+use Semeformation\Mvc\Cinema_crud\Models\Prefere;
+use Semeformation\Mvc\Cinema_crud\Models\Seance;
 
 
 // Création du logger

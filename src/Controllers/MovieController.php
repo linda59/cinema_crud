@@ -6,10 +6,10 @@
  * and open the template in the editor.
  */
 
-namespace Semeformation\Mvc\Cinema_crud\controllers;
+namespace Semeformation\Mvc\Cinema_crud\Controllers;
 
 use Semeformation\Mvc\Cinema_crud\Views\View;
-use Semeformation\Mvc\Cinema_crud\models\Film;
+use Semeformation\Mvc\Cinema_crud\Models\Film;
 
 /**
  * Description of MovieController

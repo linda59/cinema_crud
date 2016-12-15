@@ -1,6 +1,6 @@
 <?php
 
-require __DIR__ . '/includes/functions.php';
+require __DIR__ . '/Includes/functions.php';
 
 
 
