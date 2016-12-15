@@ -1,8 +1,9 @@
 <?php
 
 namespace Semeformation\Mvc\Cinema_crud\Controllers;
+
 use Semeformation\Mvc\Cinema_crud\Views\View;
-use Semeformation\Mvc\Cinema_crud\Models\Utilisateur;
+use Semeformation\Mvc\Cinema_crud\DAO\UtilisateurDAO;
 use \Psr\Log\LoggerInterface;
 
 /**
@@ -15,13 +16,13 @@ class HomeController {
     /**
      * L'utilisateur de l'application
      */
-    private $utilisateur;
+    private $utilisateurDAO;
 
     /**
      * Constructeur de la classe
      */
     public function __construct(LoggerInterface $logger=null) {
-        $this->utilisateur = new Utilisateur($logger);
+        $this->utilisateurDAO = new UtilisateurDAO($logger);
     }
 
     public function home() {
@@ -45,13 +46,13 @@ class HomeController {
 
 
                     //$managers["utilisateursMgr"]->verifyUserCredentials($sanitizedEntries['email'], $sanitizedEntries['password']);
-                    $this->utilisateur->verifyUserCredentials($sanitizedEntries['email'], $sanitizedEntries['password']);
+                    $this->utilisateurDAO->verifyUserCredentials($sanitizedEntries['email'], $sanitizedEntries['password']);
                     // on enregistre l'utilisateur
                     $_SESSION['user'] = $sanitizedEntries['email'];
                     //$_SESSION['userID'] = $fctManager->getUserIDByEmailAddress($_SESSION['user']);
                     //$_SESSION['userID'] = $utilisateursMgr->getUserIDByEmailAddress($_SESSION['user']);
                     //$_SESSION['userID'] = $managers["utilisateursMgr"]->getUserIDByEmailAddress($_SESSION['user']);
-                    $_SESSION['userID'] = $this->utilisateur->getUserIDByEmailAddress($_SESSION['user']);
+                    $_SESSION['userID'] = $this->utilisateurDAO->getUserIDByEmailAddress($_SESSION['user']);
                     // on redirige vers la page d'édition des films préférés
                     //header("Location: editFavoriteMoviesList.php");
                     //header("Location: index.php?action=editFavoriteMoviesList.php");
@@ -105,7 +106,7 @@ class HomeController {
                 //$userID = $fctManager->getUserIDByEmailAddress($sanitizedEntries['email']);
                 //$userID = $utilisateursMgr->getUserIDByEmailAddress($sanitizedEntries['email']);
                 //$userID = $managers["utilisateursMgr"]->getUserIDByEmailAddress($sanitizedEntries['email']);
-                $userID = $this->utilisateur->getUserIDByEmailAddress($sanitizedEntries['email']);
+                $userID = $this->utilisateurDAO->getUserIDByEmailAddress($sanitizedEntries['email']);
                 // si on a un résultat, cela signifie que cette adresse email existe déjà
                 if ($userID) {
                     $isUserUnique = false;
@@ -137,13 +138,13 @@ class HomeController {
                   $password);
                  * */
                 //$utilisateursMgr->createUser($sanitizedEntries['firstName'], $sanitizedEntries['lastName'], $sanitizedEntries['email'], $password);
-                $this->utilisateur->createUser($sanitizedEntries['firstName'], $sanitizedEntries['lastName'], $sanitizedEntries['email'], $password);
+                $this->utilisateurDAO->createUser($sanitizedEntries['firstName'], $sanitizedEntries['lastName'], $sanitizedEntries['email'], $password);
                 //session_start();
                 // authentifier l'utilisateur
                 $_SESSION['user'] = $sanitizedEntries['email'];
                 //$_SESSION['userID'] = $fctManager->getUserIDByEmailAddress($_SESSION['user']);
                 //$_SESSION['userID'] = $utilisateursMgr->getUserIDByEmailAddress($_SESSION['user']);
-                $_SESSION['userID'] = $this->utilisateur->getUserIDByEmailAddress($_SESSION['user']);
+                $_SESSION['userID'] = $this->utilisateurDAO->getUserIDByEmailAddress($_SESSION['user']);
                 // on redirige vers la page d'édition des films préférés
                 //header("Location: editFavoriteMoviesList.php");
                 header("Location: index.php?action=editFavoriteMoviesList");

@@ -20,4 +20,3 @@ session_start();
 // Initialisation du routeur et utilisation de sa méthode :
 $routeur = new Router($logger);
 $routeur->routeRequest();
-

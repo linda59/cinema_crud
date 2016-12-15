@@ -2,6 +2,8 @@
 
 namespace Semeformation\Mvc\Cinema_crud\Views;
 
+use \Exception;
+
 /**
  * Description of View
  *
@@ -18,7 +20,7 @@ class View {
 
     public function __construct($action) {
 // La vue à générer dépend de l'action demandée
-        $this->fichier = "views/view" . $action . ".php";
+        $this->fichier = "Views/view" . $action . ".php";
     }
 
     /*

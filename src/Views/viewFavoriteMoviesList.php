@@ -1,6 +1,6 @@
 <?php $this->titre = "Espace personnel - Films préférés"; ?>
 
-<header><h1><?= $utilisateur['prenom'] ?> <?= $utilisateur['nom'] ?>, ci-dessous vos films préférés</h1></header>
+<header><h1><?= $utilisateur->getPrenom() ?> <?= $utilisateur->getNom() ?>, ci-dessous vos films préférés</h1></header>
 <table class="std">
     <tr>
         <th>Titre</th>
@@ -26,7 +26,7 @@
                     -->
                     <form name="modifyFavoriteMovie" action="index.php" >
                         <input name="action" type="hidden" value="editFavoriteMovie"/>
-                        <input type="hidden" name="userID" value="<?= $utilisateur['userID'] ?>"/>
+                        <input type="hidden" name="userID" value="<?= $utilisateur->getUserId() ?>"/>
                         <input type="hidden" name="filmID" value="<?= $film['filmID'] ?>"/>
                         <input type="image" src="images/modifyIcon.png" alt="Modify"/>
                     </form>
@@ -36,7 +36,7 @@
                     <form name="deleteFavoriteMovie" action="deleteFavoriteMovie.php" method="POST">
                     -->
                     <form name="deleteFavoriteMovie" action="index.php?action=deleteFavoriteMovie" method="POST">
-                        <input type="hidden" name="userID" value="<?= $utilisateur['userID'] ?>"/>
+                        <input type="hidden" name="userID" value="<?= $utilisateur->getUserId() ?>"/>
                         <input type="hidden" name="filmID" value="<?= $film['filmID'] ?>"/>
                         <input type="image" src="images/deleteIcon.png" alt="Delete"/>
                     </form>

@@ -1,12 +1,13 @@
 <?php
-namespace Semeformation\Mvc\Cinema_crud\dao;
+namespace Semeformation\Mvc\Cinema_crud\DAO;
+use \Exception;
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
 Use Semeformation\Mvc\Cinema_crud\Includes\DAO;
-use Semeformation\Mvc\Cinema_crud\models\Utilisateur;
+use Semeformation\Mvc\Cinema_crud\Models\Utilisateur;
 /**
  * Description of UtilisateurDAO
  *
@@ -37,7 +38,7 @@ class UtilisateurDAO extends DAO{
     }
 
     /**
-     * 
+     *
      * @param type $passwordSaisi
      * @param type $passwordBDD
      * @param type $email
@@ -119,12 +120,12 @@ class UtilisateurDAO extends DAO{
             $this->logger->info('User ' . $email . ' successfully created.');
         }
     }
-    
-    
-    
+
+
+
     /**
      * Méthode qui instancie un objet Utilisateur et qui le retourne.
-     * @param array $row  un tableau résultat d’une requête SELECT     
+     * @param array $row  un tableau résultat d’une requête SELECT
      */
     public function buildUtilisateur($row){
         $utilsateur = new Utilisateur();
@@ -133,7 +134,7 @@ class UtilisateurDAO extends DAO{
         $utilsateur->setPrenom($row['PRENOM']);
         $utilsateur->setAdresseCourriel($row['ADRESSECOURRIEL']);
         $utilsateur->setPassword($row['PASSWORD']);
-        return $utilsateur;                                     
+        return $utilsateur;
     }
 
 }
