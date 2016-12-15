@@ -27,7 +27,7 @@ class View {
 
     public function generer($donnees = null) {
 // Génération de la partie spécifique de la vue
-        $vue = $this->genererFichier($this->fichier, $donnees);
+        $content = $this->genererFichier($this->fichier, $donnees);
         // utilisation du template avec chargement des données spécifiques
         $vue = $this->genererFichier(View::TEMPLATE, ['title' => $this->titre,
             'content' => $content]);
