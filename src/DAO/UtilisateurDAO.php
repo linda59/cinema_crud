@@ -92,7 +92,7 @@ class UtilisateurDAO extends DAO{
         $resultat = $this->extraire1xN($requete, ['email' => $email], false);
 
 // on construit l'objet Utilisateur
-        $utilisateur = $this->buildUtilisateur($resultat);
+        $utilisateur = $this->buildBusinessObject($resultat);
 // on retourne l'utilisateur
         return $utilisateur;
     }
@@ -127,7 +127,7 @@ class UtilisateurDAO extends DAO{
      * Méthode qui instancie un objet Utilisateur et qui le retourne.
      * @param array $row  un tableau résultat d’une requête SELECT
      */
-    public function buildUtilisateur($row){
+    public function buildBusinessObject($row){
         $utilsateur = new Utilisateur();
         $utilsateur->setUserId($row['USERID']);
         $utilsateur->setNom($row['NOM']);

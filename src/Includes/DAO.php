@@ -44,32 +44,7 @@ abstract class DAO {
             return $resultat;
     }
 
-    //public abstract  function verifyUserCredentials($email, $passwordSaisi);
-    //protected abstract function testPasswords($passwordSaisi, $passwordBDD, $email);
-    //public abstract function getUserIDByEmailAddress($utilisateur);
-    //public abstract  function getCompleteUsernameByEmailAddress($utilisateur);
     
-    
-    
-    
-
-   
-
-   
-
-    //public abstract function createUser($firstName, $lastName, $email, $password);
-    
-    
-
-    
-   
-
-   
-
-    
-
-    
-
     /*
      * Fonctions utilitaires
      */
@@ -128,4 +103,5 @@ abstract class DAO {
         return $result;
     }
 
+    public abstract function buildBusinessObject($row);
 }
