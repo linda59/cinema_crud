@@ -2,58 +2,57 @@
 
 namespace Semeformation\Mvc\Cinema_crud\Views;
 
-
-
 /**
-* Description of View
-*
-* @author admin
-*/
-class View
-{
+ * Description of View
+ *
+ * @author admin
+ */
+class View {
 
-    // Nom du fichier associé à la vue
+// Nom du fichier associé à la vue
     private $fichier;
+    // titre onglet
+    private $titre;
+    //  template principal
+    const TEMPLATE = "views/viewTemplate.php";
 
-    public function __construct($action)
-    {
-        // La vue à générer dépend de l'action demandée
-        $this->fichier = "Views/view" . $action . ".php";
+    public function __construct($action) {
+// La vue à générer dépend de l'action demandée
+        $this->fichier = "views/view" . $action . ".php";
     }
 
     /*
-    * Génère et affiche la vue
-    */
+     * Génère et affiche la vue
+     */
 
-    public function generer($donnees = null)
-    {
-        // Génération de la partie spécifique de la vue
+    public function generer($donnees = null) {
+// Génération de la partie spécifique de la vue
         $vue = $this->genererFichier($this->fichier, $donnees);
-        // Renvoi de la vue au navigateur
+        // utilisation du template avec chargement des données spécifiques
+        $vue = $this->genererFichier(View::TEMPLATE, ['title' => $this->titre,
+            'content' => $content]);
+// Renvoi de la vue au navigateur
         echo $vue;
     }
 
     /*
-    * Génère et retourne la vue générée
-    */
+     * Génère et retourne la vue générée
+     */
 
-    private function genererFichier($fichier, $donnees)
-    {
-        try {
-            if (file_exists($fichier)){
-                // déclare autant de variables qu'il y en a dans le tableau
-                if ($donnees !== null){
-                    extract($donnees);
-                }
-                // Toutes les données ne vont pas au navigateur mais dans un tampon
-                ob_start();
-                // La vue est envoyée dans la tampon de sortie
-                include $fichier;
-                // Renvoi du contenu du tampon et nettoyage
-                return ob_get_clean();
+    private function genererFichier($fichier, $donnees) {
+        if (file_exists($fichier)) {
+// déclare autant de variables qu'il y en a dans le tableau
+            if ($donnees !== null) {
+                extract($donnees);
             }
-        } catch (Exception $e) {
-            echo ('Impossible de trouver une vue nommée ' . $fichier);
+// Toutes les données ne vont pas au navigateur mais dans un tampon
+            ob_start();
+// La vue est envoyée dans la tampon de sortie
+            include $fichier;
+// Renvoi du contenu du tampon et nettoyage
+            return ob_get_clean();
+        } else {
+            throw new Exception('Impossible de trouver une vue nommée ' . $fichier);
         }
     }
 
