@@ -12,6 +12,9 @@ use Semeformation\Mvc\Cinema_crud\Models\Seance;
 use Semeformation\Mvc\Cinema_crud\Views\View;
 use Semeformation\Mvc\Cinema_crud\Models\Cinema;
 Use Semeformation\Mvc\Cinema_crud\Models\Film;
+Use Semeformation\Mvc\Cinema_crud\DAO\SeanceDAO;
+Use Semeformation\Mvc\Cinema_crud\DAO\CinemaDAO;
+Use Semeformation\Mvc\Cinema_crud\DAO\FilmDAO;
 use \Psr\Log\LoggerInterface;
 
 /**
@@ -21,17 +24,17 @@ use \Psr\Log\LoggerInterface;
  */
 class ShowtimesController {
 
-    private $seance;
-    private $cinema;
-    private $film;
+    private $seanceDAO;
+    private $cinemaDAO;
+    private $filmDAO;
 
     /**
      * Constructeur de la classe
      */
     public function __construct(LoggerInterface $logger = null) {
-        $this->seance = new Seance($logger);
-        $this->cinema = new Cinema($logger);
-        $this->film = new Film($logger);
+        $this->seanceDAO = new SeanceDAO();
+        $this->cinemaDAO = new CinemaDAO();
+        $this->filmDAO = new FilmDAO();
     }
 
     public function cinemaShowtimes() {
@@ -56,11 +59,11 @@ class ShowtimesController {
                 // puis on récupère les informations du cinéma en question
                 //$cinema = $fctManager->getCinemaInformationsByID($cinemaID);
                 //$cinema = $fctCinema->getCinemaInformationsByID($cinemaID);
-                $cinema = $this->cinema->getCinemaInformationsByID($cinemaID);
+                $cinema = $this->cinemaDAO->getCinemaInformationsByID($cinemaID);
                 // on récupère les films pas encore projetés
                 //$filmsUnplanned = $fctManager->getNonPlannedMovies($cinemaID);
                 //$filmsUnplanned = $fctSeance->getNonPlannedMovies($cinemaID);
-                $filmsUnplanned = $this->seance->getNonPlannedMovies($cinemaID);
+                $filmsUnplanned = $this->seanceDAO->getNonPlannedMovies($cinemaID);
             }
             // sinon, on retourne à l'accueil
             else {
@@ -71,11 +74,11 @@ class ShowtimesController {
             header('Location: index.php');
             exit();
         }
-        $films = $this->seance->getCinemaMoviesByCinemaID($cinemaID);
+        $films = $this->seanceDAO->getCinemaMoviesByCinemaID($cinemaID);
         $seances ="";
         if (count($films) > 0) {
             foreach ($films as $film) {
-                $seances[$film['FILMID']] = $this->seance->getMovieShowtimes($cinemaID, $film['FILMID']);
+                $seances[$film['FILMID']] = $this->seanceDAO->getMovieShowtimes($cinemaID, $film['FILMID']);
             }
         }
         $vue = new View('CinemaShowtimes');
@@ -109,11 +112,11 @@ class ShowtimesController {
                 // puis on récupère les informations du film en question
                 // $film = $fctManager->getMovieInformationsByID($filmID);
                 //$film = $fctFilm->getMovieInformationsByID($filmID);
-                $film = $this->film->getMovieInformationsByID($filmID);
+                $film = $this->filmDAO->getMovieInformationsByID($filmID);
                 // on récupère les cinémas qui ne projettent pas encore le film
                 //$cinemasUnplanned = $fctManager->getNonPlannedCinemas($filmID);
                 //$cinemasUnplanned = $fctSeance->getNonPlannedCinemas($filmID);
-                $cinemasUnplanned = $this->seance->getNonPlannedCinemas($filmID);
+                $cinemasUnplanned = $this->seanceDAO->getNonPlannedCinemas($filmID);
             }
             // sinon, on retourne à l'accueil
             else {
@@ -124,11 +127,11 @@ class ShowtimesController {
             header('Location: index.php');
             exit();
         }
-        $cinemas = $this->film->getMovieCinemasByMovieID($filmID);
+        $cinemas = $this->filmDAO->getMovieCinemasByMovieID($filmID);
 
         if (count($cinemas) > 0):
             foreach ($cinemas as $cinema) {
-                $seances[$cinema['CINEMAID']] = $this->seance->getMovieShowtimes($cinema['CINEMAID'], $filmID);
+                $seances[$cinema['CINEMAID']] = $this->seanceDAO->getMovieShowtimes($cinema['CINEMAID'], $filmID);
             }
         endif;
 
@@ -185,11 +188,11 @@ class ShowtimesController {
                 // puis on récupère les informations du cinéma en question
                 //$cinema = $fctManager->getCinemaInformationsByID($cinemaID);
                 //$cinema = $fctCinema->getCinemaInformationsByID($cinemaID);
-                $cinema = $this->cinema->getCinemaInformationsByID($cinemaID);
+                $cinema = $this->cinemaDAO->getCinemaInformationsByID($cinemaID);
                 // puis on récupère les informations du film en question
                 //$film = $fctManager->getMovieInformationsByID($filmID);
                 //$film = $fctFilm->getMovieInformationsByID($filmID);
-                $film = $this->film->getMovieInformationsByID($filmID);
+                $film = $this->filmDAO->getMovieInformationsByID($filmID);
 
                 // s'il on vient des séances du film
                 if (strstr($sanitizedEntries['from'], 'movie')) {
@@ -265,10 +268,10 @@ class ShowtimesController {
                     // (cas où l'ajout/mise à jour correspond à une séance déjà existante)
                     try {
 
-                        $resultatVerifier = $this->seance->verifierFilm($sanitizedEntries['cinemaID'], $sanitizedEntries['filmID'], $datetimeDebut->format("Y-m-d H:i"), $datetimeFin->format("Y-m-d H:i"));
+                        $resultatVerifier = $this->seanceDAO->verifierFilm($sanitizedEntries['cinemaID'], $sanitizedEntries['filmID'], $datetimeDebut->format("Y-m-d H:i"), $datetimeFin->format("Y-m-d H:i"));
                         if(empty($resultatVerifier))
                         {
-                            $resultat = $this->seance->insertNewShowtime($sanitizedEntries['cinemaID'], $sanitizedEntries['filmID'], $datetimeDebut->format("Y-m-d H:i"), $datetimeFin->format("Y-m-d H:i"), $sanitizedEntries['version']);
+                            $resultat = $this->seanceDAO->insertNewShowtime($sanitizedEntries['cinemaID'], $sanitizedEntries['filmID'], $datetimeDebut->format("Y-m-d H:i"), $datetimeFin->format("Y-m-d H:i"), $sanitizedEntries['version']);
                         }
                     } catch (Exception $ex) {
                         echo $ex->getMessage();
@@ -288,7 +291,7 @@ class ShowtimesController {
                     // Le try/catch permet de corriger la contrainte des clés primaires et étrangères
                     // (cas où l'ajout/mise à jour correspond à une séance déjà existante)
                     try {
-                        $resultat = $this->seance->updateShowtime($sanitizedEntries['cinemaID'], $sanitizedEntries['filmID'], $sanitizedEntries['dateheuredebutOld'], $sanitizedEntries['dateheurefinOld'], $datetimeDebut->format("Y-m-d H:i"), $datetimeFin->format("Y-m-d H:i"), $sanitizedEntries['version']);
+                        $resultat = $this->seanceDAO->updateShowtime($sanitizedEntries['cinemaID'], $sanitizedEntries['filmID'], $sanitizedEntries['dateheuredebutOld'], $sanitizedEntries['dateheurefinOld'], $datetimeDebut->format("Y-m-d H:i"), $datetimeFin->format("Y-m-d H:i"), $sanitizedEntries['version']);
                     } catch (Exception $ex) {
                         echo $ex->getMessage();
                     }
@@ -356,7 +359,7 @@ class ShowtimesController {
               );
              *
              */
-            $this->seance->deleteShowtime($sanitizedEntries['cinemaID'], $sanitizedEntries['filmID'], $sanitizedEntries['heureDebut'], $sanitizedEntries['heureFin']
+            $this->seanceDAO->deleteShowtime($sanitizedEntries['cinemaID'], $sanitizedEntries['filmID'], $sanitizedEntries['heureDebut'], $sanitizedEntries['heureFin']
             );
             // en fonction d'où je viens, je redirige
             if (strstr($sanitizedEntries['from'], 'movie')) {
