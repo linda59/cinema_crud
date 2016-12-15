@@ -6,7 +6,7 @@
  * and open the template in the editor. 
  */ 
  
-namespace Semeformation\Mvc\Cinema_crud\dao; 
+namespace Semeformation\Mvc\Cinema_crud\DAO; 
 use Semeformation\Mvc\Cinema_crud\Includes\DAO; 
 use Semeformation\Mvc\Cinema_crud\Models\Film; 
 /** 
