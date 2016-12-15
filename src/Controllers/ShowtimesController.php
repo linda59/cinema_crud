@@ -10,6 +10,9 @@ namespace Semeformation\Mvc\Cinema_crud\Controllers;
 
 use Semeformation\Mvc\Cinema_crud\Models\Seance;
 use Semeformation\Mvc\Cinema_crud\Views\View;
+use Semeformation\Mvc\Cinema_crud\Models\Cinema;
+Use Semeformation\Mvc\Cinema_crud\Models\Film;
+
 /**
  * Description of ShowtimesController
  *
@@ -18,15 +21,19 @@ use Semeformation\Mvc\Cinema_crud\Views\View;
 class ShowtimesController {
 
     private $seance;
+    private $cinema;
+    private $film;
 
     /**
      * Constructeur de la classe
      */
     public function __construct(\Psr\Log\LoggerInterface $logger = null) {
         $this->seance = new Seance($logger);
+        $this->cinema = new Cinema($logger);
+        $this->film = new Film($logger);
     }
 
-    public function cinemaShowtimes($managers) {
+    public function cinemaShowtimes() {
         $adminConnected = false;
 
         //  session_start();
@@ -48,11 +55,11 @@ class ShowtimesController {
                 // puis on récupère les informations du cinéma en question
                 //$cinema = $fctManager->getCinemaInformationsByID($cinemaID);
                 //$cinema = $fctCinema->getCinemaInformationsByID($cinemaID);
-                $cinema = $managers["cinemasMgr"]->getCinemaInformationsByID($cinemaID);
+                $cinema = $this->cinema->getCinemaInformationsByID($cinemaID);
                 // on récupère les films pas encore projetés
                 //$filmsUnplanned = $fctManager->getNonPlannedMovies($cinemaID);
                 //$filmsUnplanned = $fctSeance->getNonPlannedMovies($cinemaID);
-                $filmsUnplanned = $managers["seancesMgr"]->getNonPlannedMovies($cinemaID);
+                $filmsUnplanned = $this->seance->getNonPlannedMovies($cinemaID);
             }
             // sinon, on retourne à l'accueil
             else {
@@ -63,9 +70,12 @@ class ShowtimesController {
             header('Location: index.php');
             exit();
         }
-        $films = $managers["seancesMgr"]->getCinemaMoviesByCinemaID($cinemaID);
-        foreach ($films as $film) {
-            $seances[$film['FILMID']] = $managers["seancesMgr"]->getMovieShowtimes($cinemaID, $film['FILMID']);
+        $films = $this->seance->getCinemaMoviesByCinemaID($cinemaID);
+        $seances ="";
+        if (count($films) > 0) {
+            foreach ($films as $film) {
+                $seances[$film['FILMID']] = $this->seance->getMovieShowtimes($cinemaID, $film['FILMID']);
+            }
         }
         $vue = new View('CinemaShowtimes');
         $vue->generer((['sanitizedEntries' => $sanitizedEntries, 'films' => $films,
@@ -77,7 +87,7 @@ class ShowtimesController {
 //    require 'views/viewCinemaShowtimes.php';
     }
 
-    public function movieShowtimes($managers) {
+    public function movieShowtimes() {
         $adminConnected = false;
 
         //session_start();
@@ -98,11 +108,11 @@ class ShowtimesController {
                 // puis on récupère les informations du film en question
                 // $film = $fctManager->getMovieInformationsByID($filmID);
                 //$film = $fctFilm->getMovieInformationsByID($filmID);
-                $film = $managers["filmsMgr"]->getMovieInformationsByID($filmID);
+                $film = $this->film->getMovieInformationsByID($filmID);
                 // on récupère les cinémas qui ne projettent pas encore le film
                 //$cinemasUnplanned = $fctManager->getNonPlannedCinemas($filmID);
                 //$cinemasUnplanned = $fctSeance->getNonPlannedCinemas($filmID);
-                $cinemasUnplanned = $managers["seancesMgr"]->getNonPlannedCinemas($filmID);
+                $cinemasUnplanned = $this->seance->getNonPlannedCinemas($filmID);
             }
             // sinon, on retourne à l'accueil
             else {
@@ -113,11 +123,11 @@ class ShowtimesController {
             header('Location: index.php');
             exit();
         }
-        $cinemas = $managers["filmsMgr"]->getMovieCinemasByMovieID($filmID);
+        $cinemas = $this->film->getMovieCinemasByMovieID($filmID);
 
         if (count($cinemas) > 0):
             foreach ($cinemas as $cinema) {
-                $seances[$cinema['CINEMAID']] = $managers["seancesMgr"]->getMovieShowtimes($cinema['CINEMAID'], $filmID);
+                $seances[$cinema['CINEMAID']] = $this->seance->getMovieShowtimes($cinema['CINEMAID'], $filmID);
             }
         endif;
 
@@ -131,7 +141,7 @@ class ShowtimesController {
 //    require 'views/viewMovieShowtimes.php';
     }
 
-    public function editShowtime($managers) {
+    public function editShowtime() {
         // si l'utilisateur n'est pas connecté ou sinon s'il n'est pas amdinistrateur
         if (!array_key_exists("user", $_SESSION) or $_SESSION['user'] !== 'admin@adm.adm') {
 // renvoi à la page d'accueil
@@ -174,11 +184,11 @@ class ShowtimesController {
                 // puis on récupère les informations du cinéma en question
                 //$cinema = $fctManager->getCinemaInformationsByID($cinemaID);
                 //$cinema = $fctCinema->getCinemaInformationsByID($cinemaID);
-                $cinema = $managers["cinemasMgr"]->getCinemaInformationsByID($cinemaID);
+                $cinema = $this->cinema->getCinemaInformationsByID($cinemaID);
                 // puis on récupère les informations du film en question
                 //$film = $fctManager->getMovieInformationsByID($filmID);
                 //$film = $fctFilm->getMovieInformationsByID($filmID);
-                $film = $managers["filmsMgr"]->getMovieInformationsByID($filmID);
+                $film = $this->film->getMovieInformationsByID($filmID);
 
                 // s'il on vient des séances du film
                 if (strstr($sanitizedEntries['from'], 'movie')) {
@@ -195,8 +205,8 @@ class ShowtimesController {
                     $seance['dateheureDebutOld'] = $sanitizedEntries['heureDebut'];
                     $seance['dateheureFinOld'] = $sanitizedEntries['heureFin'];
                     // dates PHP
-                    $dateheureDebut = new DateTime($sanitizedEntries['heureDebut']);
-                    $dateheureFin = new DateTime($sanitizedEntries['heureFin']);
+                    $dateheureDebut = new \DateTime($sanitizedEntries['heureDebut']);
+                    $dateheureFin = new \DateTime($sanitizedEntries['heureFin']);
                     // découpage en heures
                     $seance['heureDebut'] = $dateheureDebut->format("H:i");
                     $seance['heureFin'] = $dateheureFin->format("H:i");
@@ -236,8 +246,8 @@ class ShowtimesController {
                 //$datetimeDebut = new DateTime($sanitizedEntries['datedebut'] . ' ' . $sanitizedEntries['heuredebut']);
                 //$datetimeFin = new DateTime($sanitizedEntries['datefin'] . ' ' . $sanitizedEntries['heurefin']);
                 // APRES
-                $datetimeDebut = DateTime::createFromFormat('d/m/Y H:i', $sanitizedEntries['datedebut'] . ' ' . $sanitizedEntries['heuredebut']);
-                $datetimeFin = DateTime::createFromFormat('d/m/Y H:i', $sanitizedEntries['datefin'] . ' ' . $sanitizedEntries['heurefin']);
+                $datetimeDebut = \DateTime::createFromFormat('d/m/Y H:i', $sanitizedEntries['datedebut'] . ' ' . $sanitizedEntries['heuredebut']);
+                $datetimeFin = \DateTime::createFromFormat('d/m/Y H:i', $sanitizedEntries['datefin'] . ' ' . $sanitizedEntries['heurefin']);
                 // Fin correction bug #3
                 // Est-on dans le cas d'une insertion ?
                 if (!isset($sanitizedEntries['modificationInProgress'])) {
@@ -253,7 +263,7 @@ class ShowtimesController {
                     // Le try/catch permet de corriger la contrainte des clés primaires et étrangères
                     // (cas où l'ajout/mise à jour correspond à une séance déjà existante)
                     try {
-                        $resultat = $managers["seancesMgr"]->insertNewShowtime($sanitizedEntries['cinemaID'], $sanitizedEntries['filmID'], $datetimeDebut->format("Y-m-d H:i"), $datetimeFin->format("Y-m-d H:i"), $sanitizedEntries['version']);
+                        $resultat = $this->seance->insertNewShowtime($sanitizedEntries['cinemaID'], $sanitizedEntries['filmID'], $datetimeDebut->format("Y-m-d H:i"), $datetimeFin->format("Y-m-d H:i"), $sanitizedEntries['version']);
                     } catch (Exception $ex) {
                         echo $ex->getMessage();
                     }
@@ -272,7 +282,7 @@ class ShowtimesController {
                     // Le try/catch permet de corriger la contrainte des clés primaires et étrangères
                     // (cas où l'ajout/mise à jour correspond à une séance déjà existante) 
                     try {
-                        $resultat = $managers["seancesMgr"]->updateShowtime($sanitizedEntries['cinemaID'], $sanitizedEntries['filmID'], $sanitizedEntries['dateheuredebutOld'], $sanitizedEntries['dateheurefinOld'], $datetimeDebut->format("Y-m-d H:i"), $datetimeFin->format("Y-m-d H:i"), $sanitizedEntries['version']);
+                        $resultat = $this->seance->updateShowtime($sanitizedEntries['cinemaID'], $sanitizedEntries['filmID'], $sanitizedEntries['dateheuredebutOld'], $sanitizedEntries['dateheurefinOld'], $datetimeDebut->format("Y-m-d H:i"), $datetimeFin->format("Y-m-d H:i"), $sanitizedEntries['version']);
                     } catch (Exception $ex) {
                         echo $ex->getMessage();
                     }
@@ -306,7 +316,7 @@ class ShowtimesController {
 //    require 'views/viewEditShowtimes.php';
     }
 
-    function deleteShowtime($managers) {
+    function deleteShowtime() {
         // si l'utilisateur n'est pas connecté
         if (!array_key_exists("user", $_SESSION)) {
 // renvoi à la page d'accueil
@@ -340,7 +350,7 @@ class ShowtimesController {
               );
              * 
              */
-            $managers["seancesMgr"]->deleteShowtime($sanitizedEntries['cinemaID'], $sanitizedEntries['filmID'], $sanitizedEntries['heureDebut'], $sanitizedEntries['heureFin']
+            $this->seance->deleteShowtime($sanitizedEntries['cinemaID'], $sanitizedEntries['filmID'], $sanitizedEntries['heureDebut'], $sanitizedEntries['heureFin']
             );
             // en fonction d'où je viens, je redirige
             if (strstr($sanitizedEntries['from'], 'movie')) {

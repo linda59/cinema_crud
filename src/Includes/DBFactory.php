@@ -1,6 +1,6 @@
 <?php
 
-namespace Semeformation\Mvc\Cinema_crud\includes;
+namespace Semeformation\Mvc\Cinema_crud\Includes;
 
 use PDO;
 use Psr\Log\LoggerInterface;

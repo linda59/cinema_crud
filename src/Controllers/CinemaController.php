@@ -4,6 +4,7 @@ namespace Semeformation\Mvc\Cinema_crud\Controllers;
 
 use Semeformation\Mvc\Cinema_crud\Views\View;
 use Semeformation\Mvc\Cinema_crud\Models\Cinema;
+use Semeformation\Mvc\Cinema_crud\Models\Seance;
 
 /**
  * Description of CinemaController
@@ -11,21 +12,28 @@ use Semeformation\Mvc\Cinema_crud\Models\Cinema;
  * @author admin
  */
 class CinemaController {
+    private $cinemas;
+    private $seances;
 
-    function cinemasList($managers) {
+    public function __construct(\Psr\Log\LoggerInterface $logger=null) {
+        $this->cinemas = new Cinema($logger);
+        $this->seances = new Seance($logger);
+    }
+
+    function cinemasList() {
 
     $isUserAdmin = false;
 
     if (array_key_exists("user", $_SESSION) and $_SESSION['user'] == 'admin@adm.adm') {
         $isUserAdmin = true;
     }
-    $cinemas = $managers["cinemasMgr"]->getCinemasList();
+    $cinemas = $this->cinemas->getCinemasList();
     $vue = new View('CinemasList');
     $vue->generer((['isUserAdmin' => $isUserAdmin, 'cinemas' => $cinemas]));
 //    require 'views/viewCinemasList.php';
 }
 
-    function editCinema($managers) {
+    function editCinema() {
     //   session_start();
 // si l'utilisateur n'est pas connecté ou sinon s'il n'est pas amdinistrateur
     if (!array_key_exists("user", $_SESSION) or $_SESSION['user'] !== 'admin@adm.adm') {
@@ -63,7 +71,7 @@ class CinemaController {
                 // on ajoute le cinéma
                 //$fctManager->insertNewCinema($sanEntries['denomination'], $sanEntries['adresse']);
                 //$fctCinema->insertNewCinema($sanEntries['denomination'], $sanEntries['adresse']);
-                $managers["cinemasMgr"]->insertNewCinema($sanEntries['denomination'],
+                $this->cinemas->insertNewCinema($sanEntries['denomination'],
                         $sanEntries['adresse']);
             }
             // sinon, nous sommes dans le cas d'une modification
@@ -71,7 +79,7 @@ class CinemaController {
                 // mise à jour du cinéma
                 //$fctManager->updateCinema($sanEntries['cinemaID'], $sanEntries['denomination'], $sanEntries['adresse']);
                 //$fctCinema->updateCinema($sanEntries['cinemaID'], $sanEntries['denomination'], $sanEntries['adresse']);
-                $managers["cinemasMgr"]->updateCinema($sanEntries['cinemaID'],
+                $this->cinemas->updateCinema($sanEntries['cinemaID'],
                         $sanEntries['denomination'], $sanEntries['adresse']);
             }
             // on revient à la liste des cinémas
@@ -89,7 +97,7 @@ class CinemaController {
             // on récupère les informations manquantes
             //$cinema = $fctManager->getCinemaInformationsByID($sanEntries['cinemaID']);
             //$cinema = $fctCinema->getCinemaInformationsByID($sanEntries['cinemaID']);
-            $cinema = $managers["cinemasMgr"]->getCinemaInformationsByID($sanEntries['cinemaID']);
+            $cinema = $this->cinemas->getCinemaInformationsByID($sanEntries['cinemaID']);
         }
         // sinon, c'est une création
         else {
@@ -108,7 +116,7 @@ class CinemaController {
 //    require 'views/viewEditCinema.php';
 }
 
-    function deleteCinema($managers) {
+    function deleteCinema() {
     // si l'utilisateur n'est pas connecté ou sinon s'il n'est pas amdinistrateur
     if (!array_key_exists("user", $_SESSION) or $_SESSION['user'] !== 'admin@adm.adm') {
         // renvoi à la page d'accueil
@@ -126,8 +134,9 @@ class CinemaController {
         // suppression de la préférence de film
         //$fctManager->deleteCinema($sanitizedEntries['cinemaID']);
         //$fctCinema->deleteCinema($sanitizedEntries['cinemaID']);
-        $managers["seancesMgr"]->deleteShowtimeByIdCinema($sanitizedEntries['cinemaID']);
-        $managers["cinemasMgr"]->deleteCinema($sanitizedEntries['cinemaID']);
+
+        $this->seances->deleteShowtimeByIdCinema($sanitizedEntries['cinemaID']);
+        $this->cinemas->deleteCinema($sanitizedEntries['cinemaID']);
     }
 // redirection vers la liste des cinémas
 //header("Location: cinemasList.php");

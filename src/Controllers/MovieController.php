@@ -17,8 +17,17 @@ use Semeformation\Mvc\Cinema_crud\Models\Film;
  * @author admin
  */
 class MovieController {
+    private $movie;
+    
+    /**
+     * Constructeur de la classe
+     */
+    public function __construct(\Psr\Log\LoggerInterface $logger=null) {
+        $this->movie = new Film($logger);
+    }
 
-    function deleteMovie($managers) {
+    
+    function deleteMovie() {
         // si l'utilisateur n'est pas connecté ou sinon s'il n'est pas amdinistrateur
         if (!array_key_exists("user", $_SESSION) or $_SESSION['user'] !== 'admin@adm.adm') {
             // renvoi à la page d'accueil
@@ -35,7 +44,7 @@ class MovieController {
             // suppression de la préférence de film
             //$fctManager->deleteMovie($sanitizedEntries['filmID']);
             //$fctFilm->deleteMovie($sanitizedEntries['filmID']);
-            $managers["filmsMgr"]->deleteMovie($sanitizedEntries['filmID']);
+            $this->movie->deleteMovie($sanitizedEntries['filmID']);
         }
 // redirection vers la liste des films
 //header("Location: moviesList.php");
@@ -43,7 +52,7 @@ class MovieController {
         exit;
     }
 
-    function editMovie($managers) {
+    function editMovie() {
         // si l'utilisateur n'est pas connecté ou sinon s'il n'est pas amdinistrateur
         if (!array_key_exists("user", $_SESSION) or $_SESSION['user'] !== 'admin@adm.adm') {
 // renvoi à la page d'accueil
@@ -80,16 +89,16 @@ class MovieController {
                     // on ajoute le film
                     //$fctManager->insertNewMovie($sanEntries['titre'], $sanEntries['titreOriginal']);
                     //$fctFilm->insertNewMovie($sanEntries['titre'], $sanEntries['titreOriginal']);
-                    $verifieFilm = $managers["filmsMgr"]->verifierFilm($sanEntries['titre'], $sanEntries['titreOriginal'], $sanEntries['dateSortie']);
+                    $verifieFilm = $this->movie->verifierFilm($sanEntries['titre'], $sanEntries['titreOriginal'], $sanEntries['dateSortie']);
                     if (empty($verifieFilm))
-                        $managers["filmsMgr"]->insertNewMovie($sanEntries['titre'], $sanEntries['titreOriginal'], $sanEntries['dateSortie']);
+                        $this->movie->insertNewMovie($sanEntries['titre'], $sanEntries['titreOriginal'], $sanEntries['dateSortie']);
                 }
                 // sinon, nous sommes dans le cas d'une modification
                 else {
                     // mise à jour du film
                     //$fctManager->updateMovie($sanEntries['filmID'], $sanEntries['titre'], $sanEntries['titreOriginal']);
                     //$fctFilm->updateMovie($sanEntries['filmID'], $sanEntries['titre'], $sanEntries['titreOriginal']);
-                    $managers["filmsMgr"]->updateMovie($sanEntries['filmID'], $sanEntries['titre'], $sanEntries['titreOriginal'], $sanEntries['dateSortie']);
+                    $this->movie->updateMovie($sanEntries['filmID'], $sanEntries['titre'], $sanEntries['titreOriginal'], $sanEntries['dateSortie']);
                 }
                 // on revient à la liste des films
                 //header('Location: moviesList.php');
@@ -104,7 +113,7 @@ class MovieController {
                 // on récupère les informations manquantes 
                 //$film = $fctManager->getMovieInformationsByID($sanEntries['filmID']);
                 //$film = $fctFilm->getMovieInformationsByID($sanEntries['filmID']);
-                $film = $managers["filmsMgr"]->getMovieInformationsByID($sanEntries['filmID']);
+                $film = $this->movie->getMovieInformationsByID($sanEntries['filmID']);
             }
             // sinon, c'est une création
             else {
@@ -123,7 +132,7 @@ class MovieController {
             'isItACreation' => $isItACreation]));
     }
 
-    function moviesList($managers) {
+    function moviesList() {
         $isUserAdmin = false;
 
 //session_start();
@@ -131,7 +140,7 @@ class MovieController {
         if (array_key_exists("user", $_SESSION) and $_SESSION['user'] == 'admin@adm.adm') {
             $isUserAdmin = true;
         }
-        $films = $managers["filmsMgr"]->getMoviesList();
+        $films = $this->movie->getMoviesList();
         $vue = new View('MoviesList');
         $vue->generer((['isUserAdmin' => $isUserAdmin, 'films' => $films]));
 //    require 'views/viewMoviesList.php';

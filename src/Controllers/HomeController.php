@@ -1,7 +1,6 @@
 <?php
 
 namespace Semeformation\Mvc\Cinema_crud\Controllers;
-
 use Semeformation\Mvc\Cinema_crud\Views\View;
 use Semeformation\Mvc\Cinema_crud\Models\Utilisateur;
 
@@ -24,7 +23,7 @@ class HomeController {
         $this->utilisateur = new Utilisateur($logger);
     }
 
-    public function home($managers) {
+    public function home() {
 // personne d'authentifié à ce niveau
         $loginSuccess = false;
 
@@ -44,13 +43,14 @@ class HomeController {
                 try {
 
 
-                    $managers["utilisateursMgr"]->verifyUserCredentials($sanitizedEntries['email'], $sanitizedEntries['password']);
-
+                    //$managers["utilisateursMgr"]->verifyUserCredentials($sanitizedEntries['email'], $sanitizedEntries['password']);
+                    $this->utilisateur->verifyUserCredentials($sanitizedEntries['email'], $sanitizedEntries['password']);
                     // on enregistre l'utilisateur
                     $_SESSION['user'] = $sanitizedEntries['email'];
-                    //$_SESSION['userID'] = $fctManager->getUserIDByEmailAddress($_SESSION['user']);
+                    //$_SESSION['userID'] = $fctManager->getUserIDByEmailAddress($_SESSION['user']);          
                     //$_SESSION['userID'] = $utilisateursMgr->getUserIDByEmailAddress($_SESSION['user']);
-                    $_SESSION['userID'] = $managers["utilisateursMgr"]->getUserIDByEmailAddress($_SESSION['user']);
+                    //$_SESSION['userID'] = $managers["utilisateursMgr"]->getUserIDByEmailAddress($_SESSION['user']);
+                    $_SESSION['userID'] = $this->utilisateur->getUserIDByEmailAddress($_SESSION['user']);
                     // on redirige vers la page d'édition des films préférés
                     //header("Location: editFavoriteMoviesList.php");
                     //header("Location: index.php?action=editFavoriteMoviesList.php");
@@ -67,7 +67,7 @@ class HomeController {
 //    require 'views/viewHome.php';
     }
 
-    public function createNewUser($managers) {
+    public function createNewUser() {
         // variables de contrôles du formulaire de création
         $isFirstNameEmpty = false;
         $isLastNameEmpty = false;
@@ -103,7 +103,8 @@ class HomeController {
                 // On vérifie l'existence de l'utilisateur
                 //$userID = $fctManager->getUserIDByEmailAddress($sanitizedEntries['email']);
                 //$userID = $utilisateursMgr->getUserIDByEmailAddress($sanitizedEntries['email']);
-                $userID = $managers["utilisateursMgr"]->getUserIDByEmailAddress($sanitizedEntries['email']);
+                //$userID = $managers["utilisateursMgr"]->getUserIDByEmailAddress($sanitizedEntries['email']);
+                $userID = $this->utilisateur->getUserIDByEmailAddress($sanitizedEntries['email']);
                 // si on a un résultat, cela signifie que cette adresse email existe déjà
                 if ($userID) {
                     $isUserUnique = false;
@@ -135,13 +136,13 @@ class HomeController {
                   $password);
                  * */
                 //$utilisateursMgr->createUser($sanitizedEntries['firstName'], $sanitizedEntries['lastName'], $sanitizedEntries['email'], $password);
-                $managers["utilisateursMgr"]->createUser($sanitizedEntries['firstName'], $sanitizedEntries['lastName'], $sanitizedEntries['email'], $password);
+                $this->utilisateur->createUser($sanitizedEntries['firstName'], $sanitizedEntries['lastName'], $sanitizedEntries['email'], $password);
                 //session_start();
                 // authentifier l'utilisateur
                 $_SESSION['user'] = $sanitizedEntries['email'];
                 //$_SESSION['userID'] = $fctManager->getUserIDByEmailAddress($_SESSION['user']);
                 //$_SESSION['userID'] = $utilisateursMgr->getUserIDByEmailAddress($_SESSION['user']);
-                $_SESSION['userID'] = $managers["utilisateursMgr"]->getUserIDByEmailAddress($_SESSION['user']);
+                $_SESSION['userID'] = $this->utilisateur->getUserIDByEmailAddress($_SESSION['user']);
                 // on redirige vers la page d'édition des films préférés
                 //header("Location: editFavoriteMoviesList.php");
                 header("Location: index.php?action=editFavoriteMoviesList");
@@ -166,8 +167,8 @@ class HomeController {
             'isPasswordValid' => $isPasswordValid]));
 //    require 'views/viewCreateUser.php';
     }
-
-    public function logout(){
+    
+    public function logout(){        
         session_start();
         session_destroy();
         header('Location: index.php');

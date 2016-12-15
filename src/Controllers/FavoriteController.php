@@ -10,6 +10,9 @@ namespace Semeformation\Mvc\Cinema_crud\Controllers;
 
 use Semeformation\Mvc\Cinema_crud\Views\View;
 use Semeformation\Mvc\Cinema_crud\Models\Prefere;
+use Semeformation\Mvc\Cinema_crud\Models\Utilisateur;
+use Semeformation\Mvc\Cinema_crud\Models\Film;
+
 
 class FavoriteController {
 
@@ -17,15 +20,19 @@ class FavoriteController {
      * L'utilisateur de l'application
      */
     private $prefere;
+    private $utilisateur;
+    //private $film;
 
     /**
      * Constructeur de la classe
      */
     public function __construct(\Psr\Log\LoggerInterface $logger = null) {
         $this->prefere = new Prefere($logger);
+        $this->utilisateur = new Utilisateur($logger);
+        $this->film = new Film($logger);
     }
 
-    public function editFavoriteMovie($managers) {
+    public function editFavoriteMovie() {
 // si l'utilisateur n'est pas connecté
         if (!array_key_exists("user", $_SESSION)) {
             // renvoi à la page d'accueil
@@ -57,27 +64,27 @@ class FavoriteController {
             }
             // sinon (l'action demandée est la sauvegarde d'un favori)
             else {
-                // si un film a été selectionné
+                // si un film a été selectionné 
                 if ($sanitizedEntries['filmID'] !== NULL) {
 
                     // et que nous ne sommes pas en train de modifier une préférence
                     if ($sanitizedEntries['modificationInProgress'] == NULL) {
-
-                        $managers["preferesMgr"]->insertNewFavoriteMovie($sanitizedEntries['userID'], $sanitizedEntries['filmID'], $sanitizedEntries['comment']);
+                       
+                        $this->prefere->insertNewFavoriteMovie($sanitizedEntries['userID'], $sanitizedEntries['filmID'], $sanitizedEntries['comment']);
                     }
                     // sinon, nous sommes dans le cas d'une modification
                     else {
-
-                        $managers["preferesMgr"]->updateFavoriteMovie($sanitizedEntries['userID'], $sanitizedEntries['filmID'], $sanitizedEntries['comment']);
+                       
+                        $this->prefere->updateFavoriteMovie($sanitizedEntries['userID'], $sanitizedEntries['filmID'], $sanitizedEntries['comment']);
                     }
                     // on revient à la liste des préférences
-
+                    
                     header('Location: index.php?action=editFavoriteMoviesList');
                     exit;
                 }
                 // sinon (un film n'a pas été sélectionné)
                 else {
-                    //
+                    // 
                     $aFilmIsSelected = false;
                     $isItACreation = true;
                     // initialisation des champs du formulaire
@@ -97,8 +104,8 @@ class FavoriteController {
                 'userID' => FILTER_SANITIZE_NUMBER_INT]);
 
             if ($sanitizedEntries && $sanitizedEntries['filmID'] !== NULL && $sanitizedEntries['filmID'] !== '' && $sanitizedEntries['userID'] !== NULL && $sanitizedEntries['userID'] !== '') {
-
-                $preference = $managers["preferesMgr"]->getFavoriteMovieInformations($sanitizedEntries['userID'], $sanitizedEntries['filmID']);
+                
+                $preference = $this->prefere->getFavoriteMovieInformations($sanitizedEntries['userID'], $sanitizedEntries['filmID']);
                 // sinon, c'est une création
             } else {
                 // C'est une création
@@ -111,7 +118,7 @@ class FavoriteController {
                     "commentaire" => ""];
             }
         }
-        $films = $managers["preferesMgr"]->getMoviesNonAlreadyMarkedAsFavorite($_SESSION['userID']);
+        $films = $this->prefere->getMoviesNonAlreadyMarkedAsFavorite($_SESSION['userID']);
         $vue = new View('FavoriteMovie');
         $vue->generer((['sanitizedEntries' => $sanitizedEntries, 'films' => $films,
             'preference' => $preference,
@@ -119,8 +126,8 @@ class FavoriteController {
             'isItACreation' => $isItACreation]));
 //    require 'views/viewFavoriteMovie.php';
     }
-
-    public function editFavoriteMoviesList($managers) {
+    
+    public function editFavoriteMoviesList() {
 // session_start();
 // si l'utilisateur n'est pas connecté
     if (!array_key_exists("user", $_SESSION)) {
@@ -132,16 +139,16 @@ class FavoriteController {
     else {
         //$utilisateur = $fctManager->getCompleteUsernameByEmailAddress($_SESSION['user']);
         //$utilisateur = $utilisateursMgr->getCompleteUsernameByEmailAddress($_SESSION['user']);
-        $utilisateur = $managers["utilisateursMgr"]->getCompleteUsernameByEmailAddress($_SESSION['user']);
+        $utilisateur = $this->utilisateur->getCompleteUsernameByEmailAddress($_SESSION['user']);
     }
-    $films = $managers["preferesMgr"]->getFavoriteMoviesFromUser($utilisateur['userID']);
-    $nbfilms=$managers['filmsMgr']->getMoviesList();
+    $films = $this->prefere->getFavoriteMoviesFromUser($utilisateur['userID']);
+    $nbfilms= $this->film->getMoviesList();
     $vue = new View('FavoriteMoviesList');
     $vue->generer((['utilisateur' => $utilisateur, 'films' => $films,'nbfilms'=>$nbfilms]));
 //    require 'views/viewFavoriteMoviesList.php';
 }
 
-    public function deleteFavoriteMovie($managers) {
+    public function deleteFavoriteMovie() {
         // si l'utilisateur n'est pas connecté
         if (!array_key_exists("user", $_SESSION)) {
 // renvoi à la page d'accueil
@@ -156,8 +163,8 @@ class FavoriteController {
             $sanitizedEntries = filter_input_array(INPUT_POST, ['userID' => FILTER_SANITIZE_NUMBER_INT,
                 'filmID' => FILTER_SANITIZE_NUMBER_INT]);
 
-
-            $managers["preferesMgr"]->deleteFavoriteMovie($sanitizedEntries['userID'], $sanitizedEntries['filmID']);
+           
+            $this->prefere->deleteFavoriteMovie($sanitizedEntries['userID'], $sanitizedEntries['filmID']);
         }
 // redirection vers la liste des préférences de films
 
