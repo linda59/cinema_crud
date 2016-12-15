@@ -17,3 +17,8 @@ use Semeformation\Mvc\Cinema_crud\Controllers\Router;
 
 // on "assainit" les entrées
 session_start();
+
+// Initialisation du routeur et utilisation de sa méthode :
+$routeur = new Router($logger);
+$routeur->routeRequest();
+
