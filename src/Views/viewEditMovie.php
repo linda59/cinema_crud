@@ -6,13 +6,13 @@
 -->
 <form method="POST" name="editCinema" action="index.php?action=editMovie">
     <label>Titre :</label>
-    <input name="titre" type="text" value="<?= $film['TITRE'] ?>" required/>
+    <input name="titre" type="text" value="<?= $film->getTitre() ?>" required/>
     <label>Titre original :</label>
-    <input name="titreOriginal" type="text" value="<?= $film['TITREORIGINAL'] ?>" /> <br/>
+    <input name="titreOriginal" type="text" value="<?= $film->getTitreOriginal() ?>" /> <br/>
     <label>Date sortie :</label><br/>
-    <input name="dateSortie" type="text" value="<?= $film['DATESORTIE'] ?>"  placeholder="01/01/2010"/><br/>
+    <input name="dateSortie" type="text" value="<?= $film->getDateSortie() ?>"  placeholder="01/01/2010"/><br/>
     <br/>
-    <input type="hidden" value="<?= $film['FILMID'] ?>" name="filmID"/>
+    <input type="hidden" value="<?= $film->getFilmID() ?>" name="filmID"/>
 
     <!--ajout de la liste deroulante pour choisir la categorie du film
         ajout de FILMTYPE-->

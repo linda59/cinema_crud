@@ -17,16 +17,16 @@
     foreach ($films as $film) {
         ?>
         <tr>
-            <td><?= $film['TITRE'] ?></td>
-            <td><?= $film['TITREORIGINAL'] ?></td>
-            <td><?= $film['DATESORTIE'] ?></td>
+            <td><?= $film->getTitre() ?></td>
+            <td><?= $film->getTitreOriginal() ?></td>
+            <td><?= $film->getDateSortie() ?></td>
             <td>
                 <!--
                 <form name="movieShowtimes" action="movieShowtimes.php" method="GET">
                 -->
                 <form name="movieShowtimes" action="index.php" method="GET">              
                     <input name="action" type="hidden" value="movieShowtimes"/> 
-                    <input name="filmID" type="hidden" value="<?= $film['FILMID'] ?>"/>
+                    <input name="filmID" type="hidden" value="<?= $film->getFilmID() ?>"/>
                     <input type="submit" value="Consulter les séances"/>
                 </form>
             </td>
@@ -36,7 +36,7 @@
                     -->
                     <form name="modifyMovie" action="index.php" method="GET">              
                         <input name="action" type="hidden" value="editMovie"/> 
-                        <input type="hidden" name="filmID" value="<?= $film['FILMID'] ?>"/>
+                        <input type="hidden" name="filmID" value="<?= $film->getFilmID() ?>"/>
                         <input type="image" src="images/modifyIcon.png" alt="Modify"/>
                     </form>
                 </td>
@@ -45,7 +45,7 @@
                     <form name="deleteMovie" action="deleteMovie.php" method="POST">
                     -->                            
                     <form  name="deleteMovie" action="index.php?action=deleteMovie" method="POST">  
-                        <input type="hidden" name="filmID" value="<?= $film['FILMID'] ?>"/>
+                        <input type="hidden" name="filmID" value="<?= $film->getFilmID() ?>"/>
                         <input type="image" src="images/deleteIcon.png" alt="Delete"/>
                     </form>
                 </td>

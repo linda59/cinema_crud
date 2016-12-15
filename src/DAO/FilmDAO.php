@@ -6,9 +6,9 @@
  * and open the template in the editor. 
  */ 
  
-namespace Semeformation\Mvc\Cinema_crud\dao; 
+namespace Semeformation\Mvc\Cinema_crud\DAO; 
 use Semeformation\Mvc\Cinema_crud\Includes\DAO; 
-use Semeformation\Mvc\Cinema_crud\models\Film; 
+use Semeformation\Mvc\Cinema_crud\Models\Film; 
 /** 
  * Description of FilmDAO 
  * 
@@ -112,7 +112,11 @@ class FilmDAO extends DAO{
                 . $filmID; 
         $resultat = $this->extraire1xN($requete); 
         // on retourne le résultat extrait 
-        return $resultat; 
+//        return $resultat; 
+        
+        $film = $this->buildBusinessObject($resultat);
+        
+        return film;
     } 
  
      
@@ -132,8 +136,13 @@ class FilmDAO extends DAO{
         return $resultat; 
     }
 
-    public function buildBusinessObject($row) {
-        
+    public function buildBusinessObject($row){
+        $film = new Film();
+        $film->setFilmId($row['FILMID']);
+        $film->setTitre($row['TITRE']);
+        $film->setDateSortie($row['DATESORTIE']);
+        $film->setTitreOriginal($row['TITREORIGINAL']);
+        return $film;
     }
 
 } 

@@ -9,7 +9,7 @@
 namespace Semeformation\Mvc\Cinema_crud\Controllers;
 
 use Semeformation\Mvc\Cinema_crud\Views\View;
-use Semeformation\Mvc\Cinema_crud\Models\Film;
+use Semeformation\Mvc\Cinema_crud\DAO\FilmDAO;
 use \Psr\Log\LoggerInterface;
 
 /**
@@ -18,13 +18,13 @@ use \Psr\Log\LoggerInterface;
  * @author admin
  */
 class MovieController {
-    private $movie;
+    private $movieDAO;
 
     /**
      * Constructeur de la classe
      */
     public function __construct(LoggerInterface $logger=null) {
-        $this->movie = new Film($logger);
+        $this->movieDAO = new FilmDAO($logger);
     }
 
 
@@ -45,7 +45,7 @@ class MovieController {
             // suppression de la préférence de film
             //$fctManager->deleteMovie($sanitizedEntries['filmID']);
             //$fctFilm->deleteMovie($sanitizedEntries['filmID']);
-            $this->movie->deleteMovie($sanitizedEntries['filmID']);
+            $this->movieDAO->deleteMovie($sanitizedEntries['filmID']);
         }
 // redirection vers la liste des films
 //header("Location: moviesList.php");
@@ -90,16 +90,16 @@ class MovieController {
                     // on ajoute le film
                     //$fctManager->insertNewMovie($sanEntries['titre'], $sanEntries['titreOriginal']);
                     //$fctFilm->insertNewMovie($sanEntries['titre'], $sanEntries['titreOriginal']);
-                    $verifieFilm = $this->movie->verifierFilm($sanEntries['titre'], $sanEntries['titreOriginal'], $sanEntries['dateSortie']);
+                    $verifieFilm = $this->movieDAO->verifierFilm($sanEntries['titre'], $sanEntries['titreOriginal'], $sanEntries['dateSortie']);
                     if (empty($verifieFilm))
-                        $this->movie->insertNewMovie($sanEntries['titre'], $sanEntries['titreOriginal'], $sanEntries['dateSortie']);
+                        $this->movieDAO->insertNewMovie($sanEntries['titre'], $sanEntries['titreOriginal'], $sanEntries['dateSortie']);
                 }
                 // sinon, nous sommes dans le cas d'une modification
                 else {
                     // mise à jour du film
                     //$fctManager->updateMovie($sanEntries['filmID'], $sanEntries['titre'], $sanEntries['titreOriginal']);
                     //$fctFilm->updateMovie($sanEntries['filmID'], $sanEntries['titre'], $sanEntries['titreOriginal']);
-                    $this->movie->updateMovie($sanEntries['filmID'], $sanEntries['titre'], $sanEntries['titreOriginal'], $sanEntries['dateSortie']);
+                    $this->movieDAO->updateMovie($sanEntries['filmID'], $sanEntries['titre'], $sanEntries['titreOriginal'], $sanEntries['dateSortie']);
                 }
                 // on revient à la liste des films
                 //header('Location: moviesList.php');
@@ -114,7 +114,7 @@ class MovieController {
                 // on récupère les informations manquantes
                 //$film = $fctManager->getMovieInformationsByID($sanEntries['filmID']);
                 //$film = $fctFilm->getMovieInformationsByID($sanEntries['filmID']);
-                $film = $this->movie->getMovieInformationsByID($sanEntries['filmID']);
+                $film = $this->movieDAO->getMovieInformationsByID($sanEntries['filmID']);
             }
             // sinon, c'est une création
             else {
@@ -141,7 +141,7 @@ class MovieController {
         if (array_key_exists("user", $_SESSION) and $_SESSION['user'] == 'admin@adm.adm') {
             $isUserAdmin = true;
         }
-        $films = $this->movie->getMoviesList();
+        $films = $this->movieDAO->getMoviesList();
         $vue = new View('MoviesList');
         $vue->generer((['isUserAdmin' => $isUserAdmin, 'films' => $films]));
 //    require 'views/viewMoviesList.php';
