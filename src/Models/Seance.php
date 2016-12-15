@@ -85,6 +85,27 @@ class Seance extends Model{
         return $resultat;
     }
 
+    
+     /**
+     * 
+     * @param type $cinemaID
+     * @param type $filmID
+     * @return type
+     */
+    public function verifierFilm($cinemaID, $filmID, $dateheuredebut,$dateheurefin) {
+        // requête qui permet de récupérer la liste des séances d'un film donné dans un cinéma donné
+        $requete = "SELECT s.* FROM seance s"
+                . " WHERE s.filmID = " . $filmID
+                . " AND s.cinemaID = " . $cinemaID
+                  . " AND s.HEUREDEBUT = '" . $dateheuredebut
+                  . "' AND s.HEUREFIN = '" . $dateheurefin."'";
+        // on extrait les résultats
+        $resultat = $this->extraire1xN($requete);
+        // on retourne la requête
+        return $resultat;
+    }
+    
+    
     /**
      * 
      * @param type $cinemaID

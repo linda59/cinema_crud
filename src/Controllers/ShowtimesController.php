@@ -263,7 +263,12 @@ class ShowtimesController {
                     // Le try/catch permet de corriger la contrainte des clés primaires et étrangères
                     // (cas où l'ajout/mise à jour correspond à une séance déjà existante)
                     try {
-                        $resultat = $this->seance->insertNewShowtime($sanitizedEntries['cinemaID'], $sanitizedEntries['filmID'], $datetimeDebut->format("Y-m-d H:i"), $datetimeFin->format("Y-m-d H:i"), $sanitizedEntries['version']);
+                        
+                        $resultatVerifier = $this->seance->verifierFilm($sanitizedEntries['cinemaID'], $sanitizedEntries['filmID'], $datetimeDebut->format("Y-m-d H:i"), $datetimeFin->format("Y-m-d H:i"));
+                        if(empty($resultatVerifier))
+                        {
+                            $resultat = $this->seance->insertNewShowtime($sanitizedEntries['cinemaID'], $sanitizedEntries['filmID'], $datetimeDebut->format("Y-m-d H:i"), $datetimeFin->format("Y-m-d H:i"), $sanitizedEntries['version']);
+                        }
                     } catch (Exception $ex) {
                         echo $ex->getMessage();
                     }
