@@ -10,6 +10,7 @@ namespace Semeformation\Mvc\Cinema_crud\Controllers;
 
 use Semeformation\Mvc\Cinema_crud\Views\View;
 use Semeformation\Mvc\Cinema_crud\Models\Film;
+use \Psr\Log\LoggerInterface;
 
 /**
  * Description of MovieController
@@ -18,15 +19,15 @@ use Semeformation\Mvc\Cinema_crud\Models\Film;
  */
 class MovieController {
     private $movie;
-    
+
     /**
      * Constructeur de la classe
      */
-    public function __construct(\Psr\Log\LoggerInterface $logger=null) {
+    public function __construct(LoggerInterface $logger=null) {
         $this->movie = new Film($logger);
     }
 
-    
+
     function deleteMovie() {
         // si l'utilisateur n'est pas connecté ou sinon s'il n'est pas amdinistrateur
         if (!array_key_exists("user", $_SESSION) or $_SESSION['user'] !== 'admin@adm.adm') {
@@ -110,7 +111,7 @@ class MovieController {
             // on "sainifie" les entrées
             $sanEntries = filter_input_array(INPUT_GET, ['filmID' => FILTER_SANITIZE_NUMBER_INT]);
             if ($sanEntries && $sanEntries['filmID'] !== NULL && $sanEntries['filmID'] !== '') {
-                // on récupère les informations manquantes 
+                // on récupère les informations manquantes
                 //$film = $fctManager->getMovieInformationsByID($sanEntries['filmID']);
                 //$film = $fctFilm->getMovieInformationsByID($sanEntries['filmID']);
                 $film = $this->movie->getMovieInformationsByID($sanEntries['filmID']);

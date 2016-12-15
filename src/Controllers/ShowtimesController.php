@@ -12,6 +12,7 @@ use Semeformation\Mvc\Cinema_crud\Models\Seance;
 use Semeformation\Mvc\Cinema_crud\Views\View;
 use Semeformation\Mvc\Cinema_crud\Models\Cinema;
 Use Semeformation\Mvc\Cinema_crud\Models\Film;
+use \Psr\Log\LoggerInterface;
 
 /**
  * Description of ShowtimesController
@@ -27,7 +28,7 @@ class ShowtimesController {
     /**
      * Constructeur de la classe
      */
-    public function __construct(\Psr\Log\LoggerInterface $logger = null) {
+    public function __construct(LoggerInterface $logger = null) {
         $this->seance = new Seance($logger);
         $this->cinema = new Cinema($logger);
         $this->film = new Film($logger);
@@ -263,7 +264,7 @@ class ShowtimesController {
                     // Le try/catch permet de corriger la contrainte des clés primaires et étrangères
                     // (cas où l'ajout/mise à jour correspond à une séance déjà existante)
                     try {
-                        
+
                         $resultatVerifier = $this->seance->verifierFilm($sanitizedEntries['cinemaID'], $sanitizedEntries['filmID'], $datetimeDebut->format("Y-m-d H:i"), $datetimeFin->format("Y-m-d H:i"));
                         if(empty($resultatVerifier))
                         {
@@ -285,7 +286,7 @@ class ShowtimesController {
                      * */
                     // $resultat = $fctSeance->updateShowtime($sanitizedEntries['cinemaID'], $sanitizedEntries['filmID'], $sanitizedEntries['dateheuredebutOld'], $sanitizedEntries['dateheurefinOld'], $datetimeDebut->format("Y-m-d H:i"), $datetimeFin->format("Y-m-d H:i"), $sanitizedEntries['version']);
                     // Le try/catch permet de corriger la contrainte des clés primaires et étrangères
-                    // (cas où l'ajout/mise à jour correspond à une séance déjà existante) 
+                    // (cas où l'ajout/mise à jour correspond à une séance déjà existante)
                     try {
                         $resultat = $this->seance->updateShowtime($sanitizedEntries['cinemaID'], $sanitizedEntries['filmID'], $sanitizedEntries['dateheuredebutOld'], $sanitizedEntries['dateheurefinOld'], $datetimeDebut->format("Y-m-d H:i"), $datetimeFin->format("Y-m-d H:i"), $sanitizedEntries['version']);
                     } catch (Exception $ex) {
@@ -353,7 +354,7 @@ class ShowtimesController {
               $sanitizedEntries['filmID'], $sanitizedEntries['heureDebut'],
               $sanitizedEntries['heureFin']
               );
-             * 
+             *
              */
             $this->seance->deleteShowtime($sanitizedEntries['cinemaID'], $sanitizedEntries['filmID'], $sanitizedEntries['heureDebut'], $sanitizedEntries['heureFin']
             );

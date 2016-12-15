@@ -5,7 +5,7 @@ namespace Semeformation\Mvc\Cinema_crud\Controllers;
 use Semeformation\Mvc\Cinema_crud\Views\View;
 use Semeformation\Mvc\Cinema_crud\Models\Cinema;
 use Semeformation\Mvc\Cinema_crud\Models\Seance;
-
+use \Psr\Log\LoggerInterface;
 /**
  * Description of CinemaController
  *
@@ -15,7 +15,7 @@ class CinemaController {
     private $cinemas;
     private $seances;
 
-    public function __construct(\Psr\Log\LoggerInterface $logger=null) {
+    public function __construct(LoggerInterface $logger=null) {
         $this->cinemas = new Cinema($logger);
         $this->seances = new Seance($logger);
     }

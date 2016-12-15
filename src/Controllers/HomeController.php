@@ -3,6 +3,7 @@
 namespace Semeformation\Mvc\Cinema_crud\Controllers;
 use Semeformation\Mvc\Cinema_crud\Views\View;
 use Semeformation\Mvc\Cinema_crud\Models\Utilisateur;
+use \Psr\Log\LoggerInterface;
 
 /**
  * Description of HomeController
@@ -19,7 +20,7 @@ class HomeController {
     /**
      * Constructeur de la classe
      */
-    public function __construct(\Psr\Log\LoggerInterface $logger=null) {
+    public function __construct(LoggerInterface $logger=null) {
         $this->utilisateur = new Utilisateur($logger);
     }
 
@@ -47,7 +48,7 @@ class HomeController {
                     $this->utilisateur->verifyUserCredentials($sanitizedEntries['email'], $sanitizedEntries['password']);
                     // on enregistre l'utilisateur
                     $_SESSION['user'] = $sanitizedEntries['email'];
-                    //$_SESSION['userID'] = $fctManager->getUserIDByEmailAddress($_SESSION['user']);          
+                    //$_SESSION['userID'] = $fctManager->getUserIDByEmailAddress($_SESSION['user']);
                     //$_SESSION['userID'] = $utilisateursMgr->getUserIDByEmailAddress($_SESSION['user']);
                     //$_SESSION['userID'] = $managers["utilisateursMgr"]->getUserIDByEmailAddress($_SESSION['user']);
                     $_SESSION['userID'] = $this->utilisateur->getUserIDByEmailAddress($_SESSION['user']);
@@ -167,8 +168,8 @@ class HomeController {
             'isPasswordValid' => $isPasswordValid]));
 //    require 'views/viewCreateUser.php';
     }
-    
-    public function logout(){        
+
+    public function logout(){
         session_start();
         session_destroy();
         header('Location: index.php');
