@@ -8,14 +8,14 @@
 
 namespace Semeformation\Mvc\Cinema_crud\Models;
 
-use Semeformation\Mvc\Cinema_crud\Includes\Model;
+use Semeformation\Mvc\Cinema_crud\Includes\DAO;
 
 /**
  * Description of Film
  *
  * @author admin
  */
-class Film extends Model{
+class Film extends DAO{
     /**
      * Méthode qui renvoie la liste des films
      * @return array[][]

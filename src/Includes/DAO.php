@@ -8,7 +8,7 @@ use Psr\Log\LoggerInterface;
 use PDO;
 use Exception;
 
-abstract class Model {
+abstract class DAO {
 
     // logger
     protected $logger;

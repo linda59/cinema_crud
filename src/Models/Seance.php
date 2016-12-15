@@ -7,13 +7,13 @@
  */
 
 namespace Semeformation\Mvc\Cinema_crud\Models;
-use \Semeformation\Mvc\Cinema_crud\Includes\Model;
+use \Semeformation\Mvc\Cinema_crud\Includes\DAO;
 /**
  * Description of Seance
  *
  * @author admin
  */
-class Seance extends Model{
+class Seance extends DAO{
     /**
      * Renvoie une liste de films pas encore programmés pour un cinema donné
      * @param integer $cinemaID
