@@ -132,8 +132,13 @@ class FilmDAO extends DAO{
         return $resultat; 
     }
 
-    public function buildBusinessObject($row) {
-        
+    public function buildBusinessObject($row){
+        $film = new Film();
+        $film->setFilmId($row['FILMID']);
+        $film->setTitre($row['TITRE']);
+        $film->setDateSortie($row['DATESORTIE']);
+        $film->setTitreOriginal($row['TITREORIGINAL']);
+        return $film;
     }
 
 } 
