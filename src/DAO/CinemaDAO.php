@@ -86,4 +86,15 @@ class CinemaDAO extends DAO
         return $resultat;
     }
     
+    /**
+     * Méthode qui instancie un objet Utilisateur et qui le retourne.
+     * @param array $row  un tableau résultat d’une requête SELECT
+     */
+    public function buildCinema($row){
+        $cinema = new Cinema();
+        $cinema->setCinemaid($row['CINEMAID']);
+        $cinema->setDenomination($row['DENOMINATION']);
+        $cinema->setAdresse($row['ADRESSE']);
+        return $cinema;
+    }
 }
