@@ -46,7 +46,7 @@ class PrefereDAO extends DAO{
         // trouver le film concerné grâce à son identifiant
         if (array_key_exists('filmID', $row)) {
             $filmId = $row['filmID'];
-            $film = $this->filmDAO->getMovieByID($filmId);
+            $film = $this->filmDAO->getMovieInformationsByID($filmId);
             $prefere->setFilm($film);
         }
         return $prefere;
