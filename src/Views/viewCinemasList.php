@@ -16,8 +16,8 @@
     foreach ($cinemas as $cinema) {
         ?>
         <tr>
-            <td><?= $cinema['DENOMINATION'] ?></td>
-            <td><?= $cinema['ADRESSE'] ?></td>
+            <td><?= $cinema->getDenomination(); ?></td>
+            <td><?= $cinema->getAdresse(); ?></td>
             <td>
                 <!--
                 <form name="cinemaShowtimes" action="cinemaShowtimes.php" method="GET">
