@@ -16,7 +16,7 @@ class CinemaController {
     private $seances;
 
     public function __construct(LoggerInterface $logger=null) {
-        $this->cinemasDAO = new CinemaDAO($logger);
+        $this->cinemasDAO = new CinemaDAO();
         $this->seances = new Seance($logger);
     }
 
