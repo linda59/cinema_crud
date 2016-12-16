@@ -28,5 +28,8 @@
     }
     ?>
     <input type="submit" name="saveEntry" value="Sauvegarder"/>
+</form>
+<form action="index.php">
+    <input type="hidden" name="action" value="moviesList"/>
     <input type="submit" name="backToList" value="Retour à la liste"/>
 </form>
