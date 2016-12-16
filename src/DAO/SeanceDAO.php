@@ -1,6 +1,5 @@
 <?php
 namespace Semeformation\Mvc\Cinema_crud\DAO;
-
 Use Semeformation\Mvc\Cinema_crud\Includes\DAO;
 use Semeformation\Mvc\Cinema_crud\Models\Seance;
 
@@ -122,7 +121,6 @@ class SeanceDAO extends DAO {
             ':filmID' => $filmID,
             ':heureDebut' => $heureDebut,
             ':heureFin' => $heureFin]);
-
         if ($this->logger) {
             $this->logger->info('Showtime for the movie ' . $filmID . ' and the cinema ' . $cinemaID . ' successfully deleted.');
         }
@@ -137,7 +135,6 @@ class SeanceDAO extends DAO {
         $this->executeQuery("DELETE FROM seance "
                 . "WHERE cinemaID = :cinemaID ",
                 [':cinemaID' => $cinemaID]);
-
         if ($this->logger) {
             $this->logger->info('Showtime for the movie  ... and the cinema ' . $cinemaID . ' successfully deleted.');
         }
@@ -166,12 +163,10 @@ class SeanceDAO extends DAO {
             ':heureDebut' => $dateheuredebut,
             ':heureFin' => $dateheurefin,
             ':version' => $version]);
-
         // log
         if ($this->logger) {
             $this->logger->info('Showtime for the movie ' . $filmID . ' at the ' . $cinemaID . ' successfully added.');
         }
-
         return $resultat;
     }
     
@@ -203,12 +198,10 @@ class SeanceDAO extends DAO {
             ':heureDebut' => $dateheuredebut,
             ':heureFin' => $dateheurefin,
             ':version' => $version]);
-
         // log
         if ($this->logger) {
             $this->logger->info('Showtime for the movie ' . $filmID . ' at the ' . $cinemaID . ' successfully updated.');
         }
-
         return $resultat;
     }
     
@@ -229,7 +222,6 @@ class SeanceDAO extends DAO {
             $film = $this->filmDAO->getMovieByID($filmID);
             $seance->setFilmID($film);
         }
-
         $seance->setHeureDebut($row['HEUREDEBUT']);
         $seance->setHeureFin($row['HEUREFIN']);
         $seance->setVersion($row['VERSION']);
@@ -238,5 +230,3 @@ class SeanceDAO extends DAO {
     
 }
 
-
-//$seance = new SeanceDAO()->buildBusinessObject($row);

@@ -3,8 +3,8 @@
 namespace Semeformation\Mvc\Cinema_crud\Controllers;
 
 use Semeformation\Mvc\Cinema_crud\Views\View;
-use Semeformation\Mvc\Cinema_crud\DAO\CinemaDAO;
-use Semeformation\Mvc\Cinema_crud\Models\Seance;
+use Semeformation\Mvc\Cinema_crud\Models\Cinema;
+use Semeformation\Mvc\Cinema_crud\DAO\SeanceDAO;
 use \Psr\Log\LoggerInterface;
 /**
  * Description of CinemaController
@@ -16,8 +16,8 @@ class CinemaController {
     private $seances;
 
     public function __construct(LoggerInterface $logger=null) {
-        $this->cinemasDAO = new CinemaDAO();
-        $this->seances = new Seance($logger);
+        $this->cinemas = new Cinema($logger);
+        $this->seances = new SeanceDAO();
     }
 
     function cinemasList() {
