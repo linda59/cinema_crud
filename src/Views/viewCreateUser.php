@@ -57,11 +57,6 @@
         ?>
     </div>
 
-    <!--ajout de l age de l'utilisateur-->
-    <!---
-    <label>Indiquez vôtre age :</label>
-    <input name='age' type="int"/>
-    -->
     <br/>
     <br/>
     <input type="submit" value="Créer un nouvel utilisateur"/>

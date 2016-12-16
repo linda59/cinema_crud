@@ -4,7 +4,7 @@
 <!--
 <form method="POST" name="editCinema" action="editMovie.php">
 -->
-<form method="POST" name="editCinema" action="index.php?action=editMovie">
+<form method="POST" name="editMovie" action="index.php?action=editMovie">
     <label>Titre :</label>
     <input name="titre" type="text" value="<?= $film['TITRE'] ?>" required/>
     <label>Titre original :</label>
@@ -13,9 +13,6 @@
     <input name="dateSortie" type="text" value="<?= $film['DATESORTIE'] ?>"  placeholder="01/01/2010"/><br/>
     <br/>
     <input type="hidden" value="<?= $film['FILMID'] ?>" name="filmID"/>
-
-    <!--ajout de la liste deroulante pour choisir la categorie du film
-        ajout de FILMTYPE-->
 
     <br/>
     <br/>
