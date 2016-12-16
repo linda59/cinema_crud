@@ -72,7 +72,7 @@ class ShowtimesController {
             exit();
         }
         $films = $this->seance->getCinemaMoviesByCinemaID($cinemaID);
-        $seances ="";
+        $seances = "";
         if (count($films) > 0) {
             foreach ($films as $film) {
                 $seances[$film['FILMID']] = $this->seance->getMovieShowtimes($cinemaID, $film['FILMID']);
@@ -266,8 +266,7 @@ class ShowtimesController {
                     try {
 
                         $resultatVerifier = $this->seance->verifierFilm($sanitizedEntries['cinemaID'], $sanitizedEntries['filmID'], $datetimeDebut->format("Y-m-d H:i"), $datetimeFin->format("Y-m-d H:i"));
-                        if(empty($resultatVerifier))
-                        {
+                        if (empty($resultatVerifier)) {
                             $resultat = $this->seance->insertNewShowtime($sanitizedEntries['cinemaID'], $sanitizedEntries['filmID'], $datetimeDebut->format("Y-m-d H:i"), $datetimeFin->format("Y-m-d H:i"), $sanitizedEntries['version']);
                         }
                     } catch (Exception $ex) {
@@ -305,8 +304,7 @@ class ShowtimesController {
                 }
             }
         }
-        
-// sinon, on retourne à l'accueil
+        // sinon, on retourne à l'accueil
         else {
             header('Location: index.php');
             exit();
@@ -320,7 +318,6 @@ class ShowtimesController {
             'filmID' => $filmID,
             'isItACreation' => $isItACreation,
             'fromCinema' => $fromCinema]));
-//    require 'views/viewEditShowtimes.php';
     }
 
     function deleteShowtime() {
