@@ -83,7 +83,12 @@ class CinemaDAO extends DAO
                 . $cinemaID;
         $resultat = $this->extraire1xN($requete);
         // on retourne le résultat extrait
-        return $resultat;
+        
+        // on construit l'objet Utilisateur
+        $cinema = $this->buildCinema($resultat);
+        // on retourne l'utilisateur
+        return $cinema;
+
     }
     
     /**
