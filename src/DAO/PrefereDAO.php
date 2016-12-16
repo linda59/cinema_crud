@@ -9,6 +9,7 @@ use \Exception;
 Use Semeformation\Mvc\Cinema_crud\Includes\DAO;
 use Semeformation\Mvc\Cinema_crud\DAO\UtilisateurDAO;
 use Semeformation\Mvc\Cinema_crud\DAO\FilmDAO;
+use Semeformation\Mvc\Cinema_crud\Models\Prefere;
 
 /**
 * Description of UtilisateurDAO
@@ -21,7 +22,7 @@ class PrefereDAO extends DAO{
     private $utilisateurDAO;
 
     function __construct(){
-        // $this->filmDAO = new FilmDAO($logger);
+        $this->filmDAO = new FilmDAO();
         $this->utilisateurDAO = new UtilisateurDAO();
 
     }
