@@ -308,6 +308,7 @@ class ShowtimesController {
                 }
             }
         }
+        
 // sinon, on retourne à l'accueil
         else {
             header('Location: index.php');
