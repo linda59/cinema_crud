@@ -17,7 +17,7 @@ use Semeformation\Mvc\Cinema_crud\Models\Film;
  * @author admin
  */
 class FilmDAO extends DAO {
-    
+
     /**
      * Méthode qui renvoie la liste des films
      * @return array[][]
@@ -27,26 +27,26 @@ class FilmDAO extends DAO {
         // on retourne le résultat
         return $this->extraireNxN($requete, null, false);
     }
-    
-    
+
+
     /**
-     * 
+     *
      * @param type $titre
      * @param type $titreOriginal
      */
     public function verifierFilm($titre, $titreOriginal = null,$dateSortie) {
-        
-        
+
+
          $requete = "SELECT * FROM film WHERE titre = '". $titre."' and titreOriginal ='". $titreOriginal."'  and dateSortie ='". $dateSortie."'";
         $resultat = $this->extraire1xN($requete);
         // on retourne le résultat extrait
-        return $resultat;        
-        
+        return $resultat;
+
     }
-    
+
 
     /**
-     * 
+     *
      * @param type $titre
      * @param type $titreOriginal
      */
@@ -62,9 +62,9 @@ class FilmDAO extends DAO {
             $this->logger->info('Movie ' . $titre . ' successfully added.');
         }
     }
-    
+
      /**
-     * 
+     *
      * @param type $filmID
      * @param type $titre
      * @param type $titreOriginal
@@ -83,10 +83,10 @@ class FilmDAO extends DAO {
         // exécution de la requête
         $this->executeQuery($requete);
     }
-    
-    
+
+
      /**
-     * 
+     *
      * @param type $movieID
      */
     public function deleteMovie($movieID) {
@@ -96,17 +96,17 @@ class FilmDAO extends DAO {
                         . $movieID);
         $this->executeQuery("DELETE FROM film WHERE filmID = "
                 . $movieID);
-       
-        
-        
+
+
+
         if ($this->logger) {
             $this->logger->info('Movie ' . $movieID . ' successfully deleted.');
         }
     }
-    
-    
+
+
      /**
-     * 
+     *
      * @param type $filmID
      * @return type
      */
@@ -114,17 +114,17 @@ class FilmDAO extends DAO {
         $requete = "SELECT * FROM film WHERE filmID = "
                 . $filmID;
         $resultat = $this->extraire1xN($requete);
-        
+
         // On construit l'objet Film :
         $film = $this->buildFilm($resultat);
-        
+
         // on retourne le film
         return $film;
     }
 
-    
+
      /**
-     * 
+     *
      * @param type $filmID
      * @return type
      */
@@ -138,7 +138,7 @@ class FilmDAO extends DAO {
         // on retourne le résultat
         return $resultat;
     }
-    
+
      /**
      * Méthode qui instancie un objet Film et qui le retourne.
      * @param array $row  un tableau résultat d’une requête SELECT
@@ -149,7 +149,7 @@ class FilmDAO extends DAO {
         $film->setTitre($row['TITRE']);
         $film->setDateSortie($row['DATESORTIE']);
         $film->setTitreOriginal($row['TITREORIGINAL']);
-        $film->setClassification($row['CLASSIFICATION']);
+        // $film->setClassification($row['CLASSIFICATION']);
         return $film;
     }
 }

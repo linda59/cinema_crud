@@ -35,7 +35,7 @@ class PrefereDAO extends DAO{
     */
     protected function buildBusinessObject($row) {
         $prefere = new Prefere();
-        var_dump($prefere);
+
         $prefere->setCommentaire($row['commentaire']);
         // trouver l'utilisateur concerné grâce à son identifiant
         if (array_key_exists('userID', $row)) {
@@ -55,8 +55,10 @@ class PrefereDAO extends DAO{
 
     protected function buildBusinessObjects($row) {
         $preferes = array();
-        foreach ($row as $value) {
-            $preferes[]= $this->buildBusinessObject($value);
+        if ($row){
+            foreach ($row as $value) {
+                $preferes[]= $this->buildBusinessObject($value);
+            }
         }
         return $preferes;
     }

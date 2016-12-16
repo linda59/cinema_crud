@@ -18,7 +18,7 @@
         foreach ($films as $film) {
             ?>
             <tr>
-                <td><?= $film->getTitre() ?></td>
+                <td><?= $film->getFilm()->getTitre() ?></td>
                 <td><?= $film->getCommentaire() ?></td>
                 <td>
                     <!--
@@ -27,7 +27,7 @@
                     <form name="modifyFavoriteMovie" action="index.php" >
                         <input name="action" type="hidden" value="editFavoriteMovie"/>
                         <input type="hidden" name="userID" value="<?= $utilisateur->getUserId() ?>"/>
-                        <input type="hidden" name="filmID" value="<?= $film->getFilmId() ?>"/>
+                        <input type="hidden" name="filmID" value="<?= $film->getFilm()->getFilmId() ?>"/>
                         <input type="image" src="images/modifyIcon.png" alt="Modify"/>
                     </form>
                 </td>
@@ -37,7 +37,7 @@
                     -->
                     <form name="deleteFavoriteMovie" action="index.php?action=deleteFavoriteMovie" method="POST">
                         <input type="hidden" name="userID" value="<?= $utilisateur->getUserId() ?>"/>
-                        <input type="hidden" name="filmID" value="<?= $film->getFilmId() ?>"/>
+                        <input type="hidden" name="filmID" value="<?= $film->getFilm()->getFilmId() ?>"/>
                         <input type="image" src="images/deleteIcon.png" alt="Delete"/>
                     </form>
                 </td>

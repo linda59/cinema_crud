@@ -16,13 +16,13 @@ use Semeformation\Mvc\Cinema_crud\Includes\DAO;
  * @author admin
  */
 class Film {
-    
+
     private $filmId ;
     private $titre ;
     private $dateSortie;
     private $titreOriginal;
-    private $classification;
-    
+    // private $classification;
+
     /*
      * Getteurs et setteurs des attributs pour le passage en DAO (POPO)
      */
@@ -37,19 +37,19 @@ class Film {
     function getDateSortie() {
         return $this->dateSortie;
     }
-     
+
     function getTitreOriginal() {
         return $this->titreOriginal;
     }
 
-    function getClassification() {
-        return $this->classification;
-    }
+    // function getClassification() {
+    //     return $this->classification;
+    // }
 
     function setFilmId($filmId) {
         $this->filmId = $filmId;
     }
-    
+
     function setTitre($titre) {
         $this->titre = $titre;
     }
@@ -57,13 +57,13 @@ class Film {
     function setDateSortie($dateSortie) {
         $this->dateSortie = $dateSortie;
     }
-    
+
     function setTitreOriginal($titreOriginal) {
         $this->titreOriginal = $titreOriginal;
     }
 
-    function setClassification($classification) {
-        $this->classification = $classification;
-    }
+    // function setClassification($classification) {
+    //     $this->classification = $classification;
+    // }
 
 }
