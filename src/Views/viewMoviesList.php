@@ -56,7 +56,7 @@
     ?>
     <?php if ($isUserAdmin): ?>
         <tr class="new">
-            <td colspan="5">
+            <td colspan="6">
                 <!--
                 <form name="addMovie" action="editMovie.php">
                 -->

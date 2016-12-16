@@ -94,18 +94,18 @@
                                     <input type="hidden" name="heureFin" value="<?= $seance['HEUREFIN'] ?>"/>
                                     <input type="hidden" name="version" value="<?= $seance['VERSION'] ?>"/>
                                     <input type="image" src="images/modifyIcon.png" alt="Modify"/>
-                                    <input name="from" type="hidden" value="<?= $_SERVER['SCRIPT_NAME'] ?>">
+                                    <input name="from" type="hidden" value="movie">
                                 </form>
                             </td>
                             <td>
-                                <form name="deleteMovieShowtime" action="deleteShowtime.php" method="POST">
+                                <form name="deleteMovieShowtime" action="index.php?action=deleteShowtime" method="POST">
                                     <input type="hidden" name="cinemaID" value="<?= $cinema['CINEMAID'] ?>"/>
                                     <input type="hidden" name="filmID" value="<?= $filmID ?>"/>
                                     <input type="hidden" name="heureDebut" value="<?= $seance['HEUREDEBUT'] ?>"/>
                                     <input type="hidden" name="heureFin" value="<?= $seance['HEUREFIN'] ?>"/>
                                     <input type="hidden" name="version" value="<?= $seance['VERSION'] ?>"/>
                                     <input type="image" src="images/deleteIcon.png" alt="Delete"/>
-                                    <input name="from" type="hidden" value="<?= $_SERVER['SCRIPT_NAME'] ?>">
+                                    <input name="from" type="hidden" value="movie"/>
                                 </form>
                             </td>
                         <?php endif; ?>
@@ -123,7 +123,7 @@
                                 <input name="action" type="hidden" value="editShowtime"/>
                                 <input name="cinemaID" type="hidden" value="<?= $cinema['CINEMAID'] ?>">
                                 <input name="filmID" type="hidden" value="<?= $filmID ?>">
-                                <input name="from" type="hidden" value="<?= $_SERVER['SCRIPT_NAME'] ?>">
+                                <input name="from" type="hidden" value="movie">
                                 <button class="add" type="submit">Cliquer ici pour ajouter une séance...</button>
                             </form>
                         </td>

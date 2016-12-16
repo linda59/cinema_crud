@@ -4,7 +4,6 @@ namespace Semeformation\Mvc\Cinema_crud\Controllers;
 
 use Semeformation\Mvc\Cinema_crud\Views\View;
 use Semeformation\Mvc\Cinema_crud\Models\Cinema;
-use Semeformation\Mvc\Cinema_crud\Models\Seance;
 use \Psr\Log\LoggerInterface;
 /**
  * Description of CinemaController
@@ -13,11 +12,11 @@ use \Psr\Log\LoggerInterface;
  */
 class CinemaController {
     private $cinemas;
-    private $seances;
+    private $seancesDAO;
 
     public function __construct(LoggerInterface $logger=null) {
         $this->cinemas = new Cinema($logger);
-        $this->seances = new Seance($logger);
+        $this->seancesDAO = new \Semeformation\Mvc\Cinema_crud\DAO\SeanceDAO($logger);
     }
 
     function cinemasList() {
@@ -135,7 +134,7 @@ class CinemaController {
         //$fctManager->deleteCinema($sanitizedEntries['cinemaID']);
         //$fctCinema->deleteCinema($sanitizedEntries['cinemaID']);
 
-        $this->seances->deleteShowtimeByIdCinema($sanitizedEntries['cinemaID']);
+        $this->seancesDAO->deleteShowtimeByIdCinema($sanitizedEntries['cinemaID']);
         $this->cinemas->deleteCinema($sanitizedEntries['cinemaID']);
     }
 // redirection vers la liste des cinémas

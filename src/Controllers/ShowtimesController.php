@@ -8,10 +8,12 @@
 
 namespace Semeformation\Mvc\Cinema_crud\Controllers;
 
-use Semeformation\Mvc\Cinema_crud\Models\Seance;
 use Semeformation\Mvc\Cinema_crud\Views\View;
 use Semeformation\Mvc\Cinema_crud\Models\Cinema;
 Use Semeformation\Mvc\Cinema_crud\Models\Film;
+Use Semeformation\Mvc\Cinema_crud\DAO\SeanceDAO;
+//Use Semeformation\Mvc\Cinema_crud\DAO\CinemaDAO;
+//Use Semeformation\Mvc\Cinema_crud\DAO\FilmDAO;
 use \Psr\Log\LoggerInterface;
 
 /**
@@ -21,34 +23,30 @@ use \Psr\Log\LoggerInterface;
  */
 class ShowtimesController {
 
-    private $seance;
-    private $cinema;
-    private $film;
+    private $seanceDAO;
+    private $cinemaDAO;
+    private $filmDAO;
 
     /**
      * Constructeur de la classe
      */
     public function __construct(LoggerInterface $logger = null) {
-        $this->seance = new Seance($logger);
-        $this->cinema = new Cinema($logger);
-        $this->film = new Film($logger);
+        $this->seanceDAO = new SeanceDAO();
+        $this->cinemaDAO = new Cinema($logger);
+        $this->filmDAO = new Film($logger);
     }
 
     public function cinemaShowtimes() {
         $adminConnected = false;
-
         //  session_start();
 // si l'utilisateur admin est connexté
         if (array_key_exists("user", $_SESSION) and $_SESSION['user'] == 'admin@adm.adm') {
             $adminConnected = true;
         }
-
 // si la méthode de formulaire est la méthode GET
         if (filter_input(INPUT_SERVER, 'REQUEST_METHOD') === "GET") {
-
             // on assainie les entrées
             $sanitizedEntries = filter_input_array(INPUT_GET, ['cinemaID' => FILTER_SANITIZE_NUMBER_INT]);
-
             // si l'identifiant du cinéma a bien été passé en GET
             if ($sanitizedEntries && $sanitizedEntries['cinemaID'] !== NULL && $sanitizedEntries['cinemaID'] != '') {
                 // on récupère l'identifiant du cinéma
@@ -56,11 +54,11 @@ class ShowtimesController {
                 // puis on récupère les informations du cinéma en question
                 //$cinema = $fctManager->getCinemaInformationsByID($cinemaID);
                 //$cinema = $fctCinema->getCinemaInformationsByID($cinemaID);
-                $cinema = $this->cinema->getCinemaInformationsByID($cinemaID);
+                $cinema = $this->cinemaDAO->getCinemaInformationsByID($cinemaID);
                 // on récupère les films pas encore projetés
                 //$filmsUnplanned = $fctManager->getNonPlannedMovies($cinemaID);
                 //$filmsUnplanned = $fctSeance->getNonPlannedMovies($cinemaID);
-                $filmsUnplanned = $this->seance->getNonPlannedMovies($cinemaID);
+                $filmsUnplanned = $this->seanceDAO->getNonPlannedMovies($cinemaID);
             }
             // sinon, on retourne à l'accueil
             else {
@@ -71,11 +69,11 @@ class ShowtimesController {
             header('Location: index.php');
             exit();
         }
-        $films = $this->seance->getCinemaMoviesByCinemaID($cinemaID);
-        $seances ="";
+        $films = $this->seanceDAO->getCinemaMoviesByCinemaID($cinemaID);
+        $seances = "";
         if (count($films) > 0) {
             foreach ($films as $film) {
-                $seances[$film['FILMID']] = $this->seance->getMovieShowtimes($cinemaID, $film['FILMID']);
+                $seances[$film['FILMID']] = $this->seanceDAO->getMovieShowtimes($cinemaID, $film['FILMID']);
             }
         }
         $vue = new View('CinemaShowtimes');
@@ -90,16 +88,13 @@ class ShowtimesController {
 
     public function movieShowtimes() {
         $adminConnected = false;
-
         //session_start();
 // si l'utilisateur admin est connexté
         if (array_key_exists("user", $_SESSION) and $_SESSION['user'] == 'admin@adm.adm') {
             $adminConnected = true;
         }
-
 // si la méthode de formulaire est la méthode GET
         if (filter_input(INPUT_SERVER, 'REQUEST_METHOD') === "GET") {
-
             // on "sainifie" les entrées
             $sanitizedEntries = filter_input_array(INPUT_GET, ['filmID' => FILTER_SANITIZE_NUMBER_INT]);
             // si l'identifiant du film a bien été passé en GET'
@@ -109,11 +104,11 @@ class ShowtimesController {
                 // puis on récupère les informations du film en question
                 // $film = $fctManager->getMovieInformationsByID($filmID);
                 //$film = $fctFilm->getMovieInformationsByID($filmID);
-                $film = $this->film->getMovieInformationsByID($filmID);
+                $film = $this->filmDAO->getMovieInformationsByID($filmID);
                 // on récupère les cinémas qui ne projettent pas encore le film
                 //$cinemasUnplanned = $fctManager->getNonPlannedCinemas($filmID);
                 //$cinemasUnplanned = $fctSeance->getNonPlannedCinemas($filmID);
-                $cinemasUnplanned = $this->seance->getNonPlannedCinemas($filmID);
+                $cinemasUnplanned = $this->seanceDAO->getNonPlannedCinemas($filmID);
             }
             // sinon, on retourne à l'accueil
             else {
@@ -124,14 +119,13 @@ class ShowtimesController {
             header('Location: index.php');
             exit();
         }
-        $cinemas = $this->film->getMovieCinemasByMovieID($filmID);
-
+        $seances = null;
+        $cinemas = $this->filmDAO->getMovieCinemasByMovieID($filmID);
         if (count($cinemas) > 0):
             foreach ($cinemas as $cinema) {
-                $seances[$cinema['CINEMAID']] = $this->seance->getMovieShowtimes($cinema['CINEMAID'], $filmID);
+                $seances[$cinema['CINEMAID']] = $this->seanceDAO->getMovieShowtimes($cinema['CINEMAID'], $filmID);
             }
         endif;
-
         $vue = new View('MovieShowtimes');
         $vue->generer((['sanitizedEntries' => $sanitizedEntries, 'cinemas' => $cinemas,
             'seances' => $seances,
@@ -149,12 +143,10 @@ class ShowtimesController {
             header('Location: index.php');
             exit;
         }
-
 // init. des flags. Etat par défaut => je viens du cinéma et je créé
         $fromCinema = true;
         $fromFilm = false;
         $isItACreation = true;
-
 // init. des variables du formulaire
         $seance = ['dateDebut' => '',
             'heureDebut' => '',
@@ -164,7 +156,6 @@ class ShowtimesController {
             'dateheureFinOld' => '',
             'heureFinOld' => '',
             'version' => ''];
-
 // si l'on est en GET
         if (filter_input(INPUT_SERVER, 'REQUEST_METHOD') == 'GET') {
             // on assainie les variables
@@ -185,19 +176,17 @@ class ShowtimesController {
                 // puis on récupère les informations du cinéma en question
                 //$cinema = $fctManager->getCinemaInformationsByID($cinemaID);
                 //$cinema = $fctCinema->getCinemaInformationsByID($cinemaID);
-                $cinema = $this->cinema->getCinemaInformationsByID($cinemaID);
+                $cinema = $this->cinemaDAO->getCinemaInformationsByID($cinemaID);
                 // puis on récupère les informations du film en question
                 //$film = $fctManager->getMovieInformationsByID($filmID);
                 //$film = $fctFilm->getMovieInformationsByID($filmID);
-                $film = $this->film->getMovieInformationsByID($filmID);
-
+                $film = $this->filmDAO->getMovieInformationsByID($filmID);
                 // s'il on vient des séances du film
                 if (strstr($sanitizedEntries['from'], 'movie')) {
                     $fromCinema = false;
                     // on vient du film
                     $fromFilm = true;
                 }
-
                 // ici, on veut savoir si on modifie ou si on ajoute
                 if (isset($sanitizedEntries['heureDebut'], $sanitizedEntries['heureFin'], $sanitizedEntries['version'])) {
                     // nous sommes dans le cas d'une modification
@@ -264,11 +253,9 @@ class ShowtimesController {
                     // Le try/catch permet de corriger la contrainte des clés primaires et étrangères
                     // (cas où l'ajout/mise à jour correspond à une séance déjà existante)
                     try {
-
-                        $resultatVerifier = $this->seance->verifierFilm($sanitizedEntries['cinemaID'], $sanitizedEntries['filmID'], $datetimeDebut->format("Y-m-d H:i"), $datetimeFin->format("Y-m-d H:i"));
-                        if(empty($resultatVerifier))
-                        {
-                            $resultat = $this->seance->insertNewShowtime($sanitizedEntries['cinemaID'], $sanitizedEntries['filmID'], $datetimeDebut->format("Y-m-d H:i"), $datetimeFin->format("Y-m-d H:i"), $sanitizedEntries['version']);
+                        $resultatVerifier = $this->seanceDAO->verifierFilm($sanitizedEntries['cinemaID'], $sanitizedEntries['filmID'], $datetimeDebut->format("Y-m-d H:i"), $datetimeFin->format("Y-m-d H:i"));
+                        if (empty($resultatVerifier)) {
+                            $resultat = $this->seanceDAO->insertNewShowtime($sanitizedEntries['cinemaID'], $sanitizedEntries['filmID'], $datetimeDebut->format("Y-m-d H:i"), $datetimeFin->format("Y-m-d H:i"), $sanitizedEntries['version']);
                         }
                     } catch (Exception $ex) {
                         echo $ex->getMessage();
@@ -288,7 +275,7 @@ class ShowtimesController {
                     // Le try/catch permet de corriger la contrainte des clés primaires et étrangères
                     // (cas où l'ajout/mise à jour correspond à une séance déjà existante)
                     try {
-                        $resultat = $this->seance->updateShowtime($sanitizedEntries['cinemaID'], $sanitizedEntries['filmID'], $sanitizedEntries['dateheuredebutOld'], $sanitizedEntries['dateheurefinOld'], $datetimeDebut->format("Y-m-d H:i"), $datetimeFin->format("Y-m-d H:i"), $sanitizedEntries['version']);
+                        $resultat = $this->seanceDAO->updateShowtime($sanitizedEntries['cinemaID'], $sanitizedEntries['filmID'], $sanitizedEntries['dateheuredebutOld'], $sanitizedEntries['dateheurefinOld'], $datetimeDebut->format("Y-m-d H:i"), $datetimeFin->format("Y-m-d H:i"), $sanitizedEntries['version']);
                     } catch (Exception $ex) {
                         echo $ex->getMessage();
                     }
@@ -329,10 +316,8 @@ class ShowtimesController {
             header('Location: index.php');
             exit;
         }
-
 // si la méthode de formulaire est la méthode POST
         if (filter_input(INPUT_SERVER, 'REQUEST_METHOD') === "POST") {
-
             // on assainie les variables
             $sanitizedEntries = filter_input_array(INPUT_POST, ['cinemaID' => FILTER_SANITIZE_NUMBER_INT,
                 'filmID' => FILTER_SANITIZE_NUMBER_INT,
@@ -341,7 +326,6 @@ class ShowtimesController {
                 'version' => FILTER_SANITIZE_STRING,
                 'from' => FILTER_SANITIZE_STRING
             ]);
-
             // suppression de la séance
             /*
               $fctManager->deleteShowtime($sanitizedEntries['cinemaID'],
@@ -356,7 +340,7 @@ class ShowtimesController {
               );
              *
              */
-            $this->seance->deleteShowtime($sanitizedEntries['cinemaID'], $sanitizedEntries['filmID'], $sanitizedEntries['heureDebut'], $sanitizedEntries['heureFin']
+            $this->seanceDAO->deleteShowtime($sanitizedEntries['cinemaID'], $sanitizedEntries['filmID'], $sanitizedEntries['heureDebut'], $sanitizedEntries['heureFin']
             );
             // en fonction d'où je viens, je redirige
             if (strstr($sanitizedEntries['from'], 'movie')) {
