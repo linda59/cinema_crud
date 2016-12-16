@@ -1,16 +1,13 @@
 <?php
 
-
 namespace Semeformation\Mvc\Cinema_crud\DAO;
-use \Exception;
 
+use \Exception;
 Use Semeformation\Mvc\Cinema_crud\Includes\DAO;
 use Semeformation\Mvc\Cinema_crud\Models\Cinema;
 
+class CinemaDAO extends DAO {
 
-class CinemaDAO extends DAO
-{
-    
     /**
      * 
      * @param type $denomination
@@ -22,15 +19,14 @@ class CinemaDAO extends DAO
                 . ":denomination"
                 . ", :adresse)";
         // exécution
-        $this->executeQuery($requete,
-                ['denomination' => $denomination,
+        $this->executeQuery($requete, ['denomination' => $denomination,
             'adresse' => $adresse]);
         // log
         if ($this->logger) {
             $this->logger->info('Cinema ' . $denomination . ' successfully added.');
         }
     }
-    
+
     /**
      * 
      * @param type $cinemaID
@@ -70,7 +66,13 @@ class CinemaDAO extends DAO
     public function getCinemasList() {
         $requete = "SELECT * FROM cinema";
         // on retourne le résultat
-        return $this->extraireNxN($requete);
+        //return $this->extraireNxN($requete);
+        $resultats = $this->extraireNxN($requete);
+        $tabCinemaObj = array();
+        foreach ($resultats as $resultat) {
+            $tabCinemaObj[] = $this->buildBusinessObject($resultat);
+        }
+        return $tabCinemaObj;
     }
 
     /**
@@ -83,23 +85,22 @@ class CinemaDAO extends DAO
                 . $cinemaID;
         $resultat = $this->extraire1xN($requete);
         // on retourne le résultat extrait
-        
         // on construit l'objet Utilisateur
-        $cinema = $this->buildCinema($resultat);
+        $cinema = $this->buildBusinessObject($resultat);
         // on retourne l'utilisateur
         return $cinema;
-
     }
-    
+
     /**
      * Méthode qui instancie un objet Utilisateur et qui le retourne.
      * @param array $row  un tableau résultat d’une requête SELECT
      */
-    public function buildCinema($row){
+    public function buildBusinessObject($row) {
         $cinema = new Cinema();
         $cinema->setCinemaid($row['CINEMAID']);
         $cinema->setDenomination($row['DENOMINATION']);
         $cinema->setAdresse($row['ADRESSE']);
         return $cinema;
     }
+
 }
