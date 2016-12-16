@@ -14,6 +14,7 @@
     //$cinemas = $managers["cinemasMgr"]->getCinemasList();
     // boucle de construction de la liste des cinémas
     foreach ($cinemas as $cinema) {
+        var_dump($cinema);
         ?>
         <tr>
             <td><?= $cinema->getDenomination() ?></td>
