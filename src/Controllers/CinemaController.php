@@ -5,6 +5,7 @@ namespace Semeformation\Mvc\Cinema_crud\Controllers;
 use Semeformation\Mvc\Cinema_crud\Views\View;
 use Semeformation\Mvc\Cinema_crud\Models\Cinema;
 use Semeformation\Mvc\Cinema_crud\Models\Seance;
+use Semeformation\Mvc\Cinema_crud\DAO\CinemaDAO;
 use \Psr\Log\LoggerInterface;
 /**
  * Description of CinemaController
@@ -12,12 +13,14 @@ use \Psr\Log\LoggerInterface;
  * @author admin
  */
 class CinemaController {
-    private $cinemas;
     private $seances;
+    //private $cinemas;
+    private $cinemaDAO;
 
     public function __construct(LoggerInterface $logger=null) {
         $this->cinemas = new Cinema($logger);
         $this->seances = new Seance($logger);
+        $this->cinemaDAO = new CinemaDAO($logger);
     }
 
     function cinemasList() {
@@ -27,7 +30,8 @@ class CinemaController {
     if (array_key_exists("user", $_SESSION) and $_SESSION['user'] == 'admin@adm.adm') {
         $isUserAdmin = true;
     }
-    $cinemas = $this->cinemas->getCinemasList();
+    //$cinemas = $this->cinemas->getCinemasList();
+    $cinemas = $this->cinemaDAO->getCinemasList();
     $vue = new View('CinemasList');
     $vue->generer((['isUserAdmin' => $isUserAdmin, 'cinemas' => $cinemas]));
 //    require 'views/viewCinemasList.php';
@@ -71,7 +75,7 @@ class CinemaController {
                 // on ajoute le cinéma
                 //$fctManager->insertNewCinema($sanEntries['denomination'], $sanEntries['adresse']);
                 //$fctCinema->insertNewCinema($sanEntries['denomination'], $sanEntries['adresse']);
-                $this->cinemas->insertNewCinema($sanEntries['denomination'],
+                $this->cinemaDAO->insertNewCinema($sanEntries['denomination'],
                         $sanEntries['adresse']);
             }
             // sinon, nous sommes dans le cas d'une modification
@@ -79,7 +83,7 @@ class CinemaController {
                 // mise à jour du cinéma
                 //$fctManager->updateCinema($sanEntries['cinemaID'], $sanEntries['denomination'], $sanEntries['adresse']);
                 //$fctCinema->updateCinema($sanEntries['cinemaID'], $sanEntries['denomination'], $sanEntries['adresse']);
-                $this->cinemas->updateCinema($sanEntries['cinemaID'],
+                $this->cinemaDAO->updateCinema($sanEntries['cinemaID'],
                         $sanEntries['denomination'], $sanEntries['adresse']);
             }
             // on revient à la liste des cinémas
@@ -97,7 +101,7 @@ class CinemaController {
             // on récupère les informations manquantes
             //$cinema = $fctManager->getCinemaInformationsByID($sanEntries['cinemaID']);
             //$cinema = $fctCinema->getCinemaInformationsByID($sanEntries['cinemaID']);
-            $cinema = $this->cinemas->getCinemaInformationsByID($sanEntries['cinemaID']);
+            $cinema = $this->cinemaDAO->getCinemaInformationsByID($sanEntries['cinemaID']);
         }
         // sinon, c'est une création
         else {
@@ -136,7 +140,7 @@ class CinemaController {
         //$fctCinema->deleteCinema($sanitizedEntries['cinemaID']);
 
         $this->seances->deleteShowtimeByIdCinema($sanitizedEntries['cinemaID']);
-        $this->cinemas->deleteCinema($sanitizedEntries['cinemaID']);
+        $this->cinemaDAO->deleteCinema($sanitizedEntries['cinemaID']);
     }
 // redirection vers la liste des cinémas
 //header("Location: cinemasList.php");
