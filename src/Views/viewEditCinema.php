@@ -3,15 +3,14 @@
 <h1>Ajouter/Modifier un cinéma</h1>
 <form method="POST" name="editCinema" action="index.php?action=editCinema">
     <label>Dénomination :</label>
-    <input name="denomination" type="text" value="<?= $cinema['DENOMINATION'] ?>" required/>
+    <input name="denomination" type="text" value="<?= $cinema->getDenomination(); ?>" required/>
     <label>Adresse :</label>
-<<<<<<< Updated upstream
-    <textarea name="adresse" required><?= $cinema->getAdresse() ?></textarea>
-=======
-    <textarea name="adresse" ><?= $cinema['ADRESSE'] ?></textarea>
->>>>>>> Stashed changes
+
+    <textarea name="adresse" required><?= $cinema->getAdresse(); ?></textarea>
+
+    
     <br/>
-    <input type="hidden" value="<?= $cinema['CINEMAID'] ?>" name="cinemaID"/>
+    <input type="hidden" value="<?= $cinema->getCinemaId(); ?>" name="cinemaID"/>
     <?php
     // si c'est une modification, c'est une information dont nous avons besoin
     if (!$isItACreation) {
