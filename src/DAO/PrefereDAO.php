@@ -72,4 +72,8 @@ class Prefere extends DAO{
         return $this;
     }
 
+    public function buildBusinessObject($row) {
+        
+    }
+
 }

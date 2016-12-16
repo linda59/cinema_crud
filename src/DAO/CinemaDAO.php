@@ -75,8 +75,12 @@ class CinemaDAO extends DAO {
      */
     public function getCinemasList() {
         $requete = "SELECT * FROM cinema";
+        
         // on retourne le résultat 
-        return $this->extraireNxN($requete);
+        //return $this->extraireNxN($requete);
+        $resultat = $this->extraireNxN($requete);
+        
+        return $resultat;
     }
 
     /**
